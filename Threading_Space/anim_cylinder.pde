@@ -71,26 +71,6 @@ void animCylinder() {
   
 }
 
-int [][][] getCylinderBottom(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
-  float angle = 2 * PI/(pairs.length-1);
-  int spots[][][] = new int[nPairs][2][3];
-
-
-  for (int i = 0; i < pairs.length; i++) {
-    float newAngle = angle*i  +globalAngle;
-    spots[i][0][0] = int(x + topR*cos(newAngle + topOffsetAngle)); //x
-    spots[i][0][1] = int(y + topR*sin(newAngle + topOffsetAngle)); //y
-    spots[i][0][2] = int((360 * (newAngle + topOffsetAngle) / (2 * PI)) + 90); //theta
-
-    spots[i][1][0] = int(x + bottomR*cos(newAngle + bottomOffsetAngle)); //x
-    spots[i][1][1]= int(y + bottomR*sin(newAngle + bottomOffsetAngle)); //y
-    spots[i][1][2] = int((360 * (newAngle + bottomOffsetAngle) / (2 * PI)) + 90); //theta
-  }
-
-  return spots;
-}
-
-
 int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
   float angle = 2 * PI/(pairs.length-1);
   int spots[][][] = new int[nPairs][2][3];

@@ -1,9 +1,8 @@
-
 float overallTimeMillis = 5 * 60 * 1000; // 5 mins
 float playSpeed = 1;
 
 float globalAngleOffset=0;
-float globalAngleOffsetSpeed = 0.1; //0.05;
+float globalAngleOffsetSpeed = 0.1; //0.05; 
 
 
 float t_offsetAngle = 0;
@@ -21,16 +20,19 @@ float b_radiusSpeed = -2;
 
 int lastMillis = 0;
 
+int lastSpot [][][] = new int[nPairs][2][5];
+
 
 void animCylinder() {
-
+  
 
 
   int elapsedTime = millis() - lastMillis;
   lastMillis = millis();
 
   visualize(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle));
-
+  
+  lastSpot = getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle);
 
   float timeScale = playSpeed * float(elapsedTime)/1000;
 
@@ -39,7 +41,7 @@ void animCylinder() {
 
   t_radius += t_radiusSpeed * timeScale;
   b_radius += b_radiusSpeed * timeScale;
-
+  
   t_offsetAngle += t_offsetAngleSpeed * timeScale;
   b_offsetAngle += b_offsetAngleSpeed * timeScale;
 
@@ -67,13 +69,14 @@ void animCylinder() {
   } else if (b_offsetAngle < radians(-360)) {
     b_offsetAngleSpeed = abs(b_offsetAngleSpeed);
   }
-
-
+  
+  
 }
+
 
 int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
   float angle = 2 * PI/(pairs.length-1);
-  int spots[][][] = new int[nPairs][2][3];
+  int spots[][][] = new int[nPairs][2][5]; //[num of pairs] [top or bottom] [x, y, theta, vx, vy]
 
 
   for (int i = 0; i < pairs.length; i++) {

@@ -68,13 +68,12 @@ class Sequence {
 
 interface Movement  {
   int[][] get(int time);
-  int[][] get();
 }
 
 interface IndependentMovement {
   int[][][] get(int time);
-  int[][][] get();
 }
+
 
 
 class SmoothSequence extends Sequence {

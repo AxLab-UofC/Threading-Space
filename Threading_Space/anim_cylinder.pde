@@ -3,7 +3,7 @@ float overallTimeMillis = 5 * 60 * 1000; // 5 mins
 float playSpeed = 1;
 
 float globalAngleOffset=0;
-float globalAngleOffsetSpeed = 0.1; //0.05; 
+float globalAngleOffsetSpeed = 0.1; //0.05;
 
 
 float t_offsetAngle = 0;
@@ -23,7 +23,7 @@ int lastMillis = 0;
 
 
 void animCylinder() {
-  
+
 
 
   int elapsedTime = millis() - lastMillis;
@@ -39,7 +39,7 @@ void animCylinder() {
 
   t_radius += t_radiusSpeed * timeScale;
   b_radius += b_radiusSpeed * timeScale;
-  
+
   t_offsetAngle += t_offsetAngleSpeed * timeScale;
   b_offsetAngle += b_offsetAngleSpeed * timeScale;
 
@@ -67,29 +67,9 @@ void animCylinder() {
   } else if (b_offsetAngle < radians(-360)) {
     b_offsetAngleSpeed = abs(b_offsetAngleSpeed);
   }
-  
-  
+
+
 }
-
-int [][][] getCylinderBottom(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
-  float angle = 2 * PI/(pairs.length-1);
-  int spots[][][] = new int[nPairs][2][5]; //[num of pairs] [top or bottom] [x, y, theta, vx, vy]
-
-
-  for (int i = 0; i < pairs.length; i++) {
-    float newAngle = angle*i  +globalAngle;
-    spots[i][0][0] = int(x + topR*cos(newAngle + topOffsetAngle)); //x
-    spots[i][0][1] = int(y + topR*sin(newAngle + topOffsetAngle)); //y
-    spots[i][0][2] = int((360 * (newAngle + topOffsetAngle) / (2 * PI)) + 90); //theta
-
-    spots[i][1][0] = int(x + bottomR*cos(newAngle + bottomOffsetAngle)); //x
-    spots[i][1][1]= int(y + bottomR*sin(newAngle + bottomOffsetAngle)); //y
-    spots[i][1][2] = int((360 * (newAngle + bottomOffsetAngle) / (2 * PI)) + 90); //theta
-  }
-
-  return spots;
-}
-
 
 int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
   float angle = 2 * PI/(pairs.length-1);

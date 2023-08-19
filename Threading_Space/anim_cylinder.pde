@@ -73,7 +73,7 @@ void animCylinder() {
 
 int [][][] getCylinderBottom(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
   float angle = 2 * PI/(pairs.length-1);
-  int spots[][][] = new int[nPairs][2][3];
+  int spots[][][] = new int[nPairs][2][5]; //[num of pairs] [top or bottom] [x, y, theta, vx, vy]
 
 
   for (int i = 0; i < pairs.length; i++) {

@@ -28,6 +28,11 @@ class Pair {
     b.target(control, timeout, mode, maxspeed, speedchange, x, y, theta);
   }
   
+  void velocitytarget(int mode, int x, int y, int theta, float vx, float vy) {
+    t.velocitytarget(mode, x, y, theta, vx, vy);
+    b.velocitytarget(mode, x, y, theta, vx, vy);
+  }
+  
   void multiTarget(int mode, int[][] targets) {
     t.multiTarget(mode, targets);
     b.multiTarget(mode, targets);

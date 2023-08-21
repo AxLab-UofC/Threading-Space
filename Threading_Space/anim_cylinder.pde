@@ -30,11 +30,10 @@ void animCylinder() {
   elapsedTime = millis() - lastMillis;
   lastMillis = millis();
 
-
-
-
   // visualize
+  
   visualizeVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
+  movePairsVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
 
   // save last spot to calculate velocity.
   lastSpots = getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle);
@@ -47,8 +46,11 @@ void animCylinder() {
   globalAngleOffset += globalAngleOffsetSpeed * timeScale;
 
 
-  t_radius += t_radiusSpeed * timeScale;
-  b_radius += b_radiusSpeed * timeScale;
+  //t_radius += t_radiusSpeed * timeScale;
+  //b_radius += b_radiusSpeed * timeScale;
+  
+  t_radius = (xmax * 3/8);
+  b_radius = (xmax * 3/8);
 
   t_offsetAngle += t_offsetAngleSpeed * timeScale;
   b_offsetAngle += b_offsetAngleSpeed * timeScale;
@@ -82,11 +84,11 @@ void animCylinder() {
 
 
 int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
-  float angle = 2 * PI/(pairs.length-1);
+  float angle = 2 * PI/(nPairs);
   int spots[][][] = new int[nPairs][2][3]; //[num of pairs] [top or bottom] [x, y, theta, vx, vy]
 
 
-  for (int i = 0; i < pairs.length; i++) {
+  for (int i = 0; i < nPairs; i++) {
     float newAngle = angle*i  +globalAngle;
     spots[i][0][0] = int(x + topR*cos(newAngle + topOffsetAngle)); //x
     spots[i][0][1] = int(y + topR*sin(newAngle + topOffsetAngle)); //y
@@ -100,7 +102,7 @@ int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globa
   if (lastSpots != null) {
     
     // calculate Velocity
-    for (int i = 0; i < pairs.length; i++) {
+    for (int i = 0; i < nPairs; i++) {
       velocity[i][0][0] = float(lastSpots[i][0][0] - spots[i][0][0] )/  float(elapsedTime); // x
       velocity[i][0][1] = float(lastSpots[i][0][1] - spots[i][0][1] )/  float(elapsedTime); // y
             

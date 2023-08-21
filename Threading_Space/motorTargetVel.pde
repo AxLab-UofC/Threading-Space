@@ -47,7 +47,9 @@ void motorTargetVelocity(int id, int x, int y, float vx, float vy){
 
   float velIntegrate = sqrt(sq(vx)+sq(vy)); // integrate velocity x + y
 
-  float aimMotSpeed = velIntegrate / 2.0; // translate the speed (pixel/s)  to motor control command /// Maximum is 115 =>
+  float aimMotSpeed = velIntegrate / 10.0; // translate the speed (pixel/s)  to motor control command /// Maximum is 115 =>
+  println(velIntegrate, aimMotSpeed);
+
 
   //println("diffVAngle = ", degrees(diffVAngle));
   float aa = 0;
@@ -63,21 +65,15 @@ void motorTargetVelocity(int id, int x, int y, float vx, float vy){
   //if (dd <.10) return true; // keep the motor moving
 
 
-
-
-
-
   float left_ = constrain(aa + (lr[0]*dd), -maxMotorSpeed, maxMotorSpeed);
   float right_ = constrain(aa + (lr[1]*dd), -maxMotorSpeed, maxMotorSpeed);
   int duration = (50);
+  
+  println("motor command:", id, left_, right_);
   
 
   
   
   motorDuration(id, (int)left_, (int)right_, duration);
-  
-  
-  
-  
   
 }

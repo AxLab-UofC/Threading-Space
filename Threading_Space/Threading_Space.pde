@@ -21,7 +21,7 @@ boolean debugMode = false;
 //Enable and Disable Zorozoro
 boolean zorozoro = false;
 int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, {172, 148}};
-int npairs = zoropairs.length;
+//int npairs = zoropairs.length;
 
 //For Visualizing Posistions in GUI
 boolean visualOn = true;
@@ -101,13 +101,13 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  DiscreteSequence seq = new DiscreteSequence();
-  for (float step: smoothen(0, pairs.length, 29)) {
-    //println(step);
-    seq.addFrame(new Frame(moveType.BOTTOM, getCircle(step)));
-  }
-  seq.setSpeed(45);
-  animator.add(seq);
+  //DiscreteSequence seq = new DiscreteSequence();
+  //for (float step: smoothen(0, pairs.length, 29)) {
+  //  //println(step);
+  //  seq.addFrame(new Frame(moveType.BOTTOM, getCircle(step)));
+  //}
+  //seq.setSpeed(45);
+  //animator.add(seq);
 }
 
 void draw() {
@@ -121,8 +121,16 @@ void draw() {
     animator.update();
   }
   
-
-  animCylinder();
+  switch (guiChoose) {
+    case CYLINDER:
+      animCylinder();
+      break;
+    
+    case LINE:
+      animLine();
+      break;
+  }
+  
   
 
 
@@ -151,13 +159,15 @@ void draw() {
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
-
-    text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ animator.getCurrentSeq().status, debugUIx, 30 + debugUIy+60);
-    if (animator.getCurrentSeq() instanceof DiscreteSequence) {
-      DiscreteSequence discseq = (DiscreteSequence) animator.getCurrentSeq();
-      text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+    if (animator.size() > 0) {
+      text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ animator.getCurrentSeq().status, debugUIx, 30 + debugUIy+60);
+      if (animator.getCurrentSeq() instanceof DiscreteSequence) {
+        DiscreteSequence discseq = (DiscreteSequence) animator.getCurrentSeq();
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+      }
+      textSize(24);
     }
-    textSize(24);
+
     for (int i  = 0; i < pairs.length; i++) {
       text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
     }

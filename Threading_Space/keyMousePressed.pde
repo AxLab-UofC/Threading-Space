@@ -98,21 +98,18 @@ void keyPressed() {
      break; 
     
   case 'c':
-    //movePairs(getCircle(0));
     seq = new DiscreteSequence();
-    for (float step: smoothen(0, pairs.length, 29)) {
-      //println(step);
-      seq.addFrame(new Frame(moveType.PAIR, getCircle(step)));
+    for (int i = 0; i < nPairs; i ++) {
+      seq.addFrame(new Frame(moveType.BOTTOM, getCircle(i)));
     }
-    seq.setSpeed(45);
+    seq.setSpeed(10);
     animator.add(seq);
     break;
     
   case 'x':
     seq = new DiscreteSequence();
-    for (float step: smoothen(0, pairs.length, 29)) {
-      //println(step);
-      seq.addFrame(new Frame(moveType.PAIR, getSpiral(step)));
+    for (int i = 0; i < nPairs; i ++) {
+      seq.addFrame(new Frame(moveType.BOTTOM, getSpiral(i)));
     }
     seq.setSpeed(10);
     animator.add(seq);
@@ -149,7 +146,7 @@ void keyPressed() {
     break;
     
   case 'l':
-    moveLine(6);
+    //moveLine(6);
     break;
     
   default:

@@ -83,9 +83,9 @@ class Cube {
     motorTarget(id, control, timeout, mode, maxspeed, speedchange, x, y, theta);
   }
   
-  void velocitytarget(int mode, int x, int y, int theta, float vx, float vy) {
+  void velocitytarget(int x, int y, float vx, float vy) {
     status = moveStatus.INPROGRESS;
-    motorTargetVelocity(id, mode, x, y, theta, vx, vy);
+    motorTargetVelocity(id, x, y, vx, vy);
   }
   
   

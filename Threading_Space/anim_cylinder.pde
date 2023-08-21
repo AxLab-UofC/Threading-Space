@@ -31,7 +31,9 @@ void animCylinder() {
   lastMillis = millis();
 
   // visualize
+  
   visualizeVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
+  movePairsVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
 
   // save last spot to calculate velocity.
   lastSpots = getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle);

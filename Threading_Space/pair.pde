@@ -81,11 +81,21 @@ void movePairs(int[][] spots) {
   }
 }
 
+
+void movePairsVelocity(int[][][] targets, float[][][] velocity) {
+  for (int i = 0; i < targets.length; i++) {
+    pairs[i].t.velocitytarget(targets[i][0][0], targets[i][0][1], velocity[i][0][0], velocity[i][0][1]);
+    pairs[i].b.velocitytarget(targets[i][1][0], targets[i][1][1], velocity[i][1][0], velocity[i][1][1]);
+  }  
+}
+
+
 void movePairs(float[][] spots) {
   for(int i = 0;i < spots.length; i++) {
     pairs[i].target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
   }
 }
+
 
 void moveTop(int[][] spots) {
   for(int i = 0;i < spots.length; i++) {

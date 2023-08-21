@@ -57,11 +57,10 @@ void visualize(int[][][] targets) {
 
 void visualizeVelocity(int[][][] targets, float [][][] velocity) {
   for (int i = 0; i < targets.length; i++) {
-    pairsViz[i].t.target(targets[i][0][0], targets[i][0][1], targets[i][0][2], velocity[i][0][0],velocity[i][0][1]);
-    pairsViz[i].b.target(targets[i][1][0], targets[i][1][1], targets[i][1][2], velocity[i][1][0],velocity[i][1][1]);
+    pairsViz[i].t.target(targets[i][0][0], targets[i][0][1], targets[i][0][2], velocity[i][0][0], velocity[i][0][1]);
+    pairsViz[i].b.target(targets[i][1][0], targets[i][1][1], targets[i][1][2], velocity[i][1][0], velocity[i][1][1]);
   }
 }
-
 
 void visualizeTop(int[][] targets) {
   for (int i = 0; i < targets.length; i++) {

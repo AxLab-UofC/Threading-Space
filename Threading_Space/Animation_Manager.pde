@@ -21,7 +21,9 @@ class AnimManager {
   }
   
   void start() {
-    sequences.get(iterator).start();
+    if (sequences.size() > 0) {
+      sequences.get(iterator).start();
+    }
     status = moveStatus.INPROGRESS;
   }
   
@@ -30,19 +32,25 @@ class AnimManager {
   }
   
   void update() {
-    boolean seqComplete = sequences.get(iterator).update();
-    if (seqComplete) {
-      if (iterator + 1 == sequences.size()) {
-        status = moveStatus.COMPLETE;
-      } else {
-        iterator++;
-        sequences.get(iterator).start();
-      }
-    } 
+    if (sequences.size() > 0) {
+      boolean seqComplete = sequences.get(iterator).update();
+      if (seqComplete) {
+        if (iterator + 1 == sequences.size()) {
+          status = moveStatus.COMPLETE;
+        } else {
+          iterator++;
+          sequences.get(iterator).start();
+        }
+      } 
+    }
   }
   
   Sequence getCurrentSeq() {
-    return sequences.get(iterator);
+    if (size() > 0) {
+      return sequences.get(iterator);
+    }
+    
+    return null;
   }
   
   int size() {

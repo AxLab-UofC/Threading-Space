@@ -1,3 +1,8 @@
+enum GUI {
+  CYLINDER, LINE
+}
+
+GUI guiChoose = GUI.CYLINDER;
 
 import controlP5.*;
 ControlP5 cp5;
@@ -22,40 +27,55 @@ void setupGUI() {
 
   cp5 = new ControlP5(this);
   
-    cp5.addSlider("globalAngleOffsetSpeed")
-    .setPosition(guiX, guiY)
-    .setSize(200, 30)
-    .setRange(-1, 1)
-    .setValue(globalAngleOffsetSpeed);
-  ;
+  
+  switch (guiChoose) {
+    case CYLINDER:
+          cp5.addSlider("globalAngleOffsetSpeed")
+          .setPosition(guiX, guiY)
+          .setSize(200, 30)
+          .setRange(-1, 1)
+          .setValue(globalAngleOffsetSpeed);
+        ;
+      
+        cp5.addSlider("t_offsetAngleSpeed")
+          .setPosition(guiX, guiY+40)
+          .setSize(200, 30)
+          .setRange(-1, 1)
+          .setValue(t_offsetAngleSpeed);
+        ;
+      
+        cp5.addSlider("b_offsetAngleSpeed")
+          .setPosition(guiX, guiY+80)
+          .setSize(200, 30)
+          .setRange(-1, 1)
+          .setValue(b_offsetAngleSpeed)
+          ;
+      
+        cp5.addSlider("t_radiusSpeed")
+          .setPosition(guiX, guiY+120)
+          .setSize(200, 30)
+          .setRange(-2, 2)
+          .setValue(t_radiusSpeed)
+          ;
+          
+         cp5.addSlider("b_radiusSpeed")
+          .setPosition(guiX, guiY+160)
+          .setSize(200, 30)
+          .setRange(-2, 2)
+          .setValue(b_radiusSpeed)
+          ;
+          break;
+    case LINE:
+          cp5.addSlider("globalLineOffsetSpeed")
+          .setPosition(guiX, guiY)
+          .setSize(200, 30)
+          .setRange(0, 1)
+          .setValue(globalLineOffsetSpeed);
+        ;
+      
+  }
+  
 
-  cp5.addSlider("t_offsetAngleSpeed")
-    .setPosition(guiX, guiY+40)
-    .setSize(200, 30)
-    .setRange(-1, 1)
-    .setValue(t_offsetAngleSpeed);
-  ;
-
-  cp5.addSlider("b_offsetAngleSpeed")
-    .setPosition(guiX, guiY+80)
-    .setSize(200, 30)
-    .setRange(-1, 1)
-    .setValue(b_offsetAngleSpeed)
-    ;
-
-  cp5.addSlider("t_radiusSpeed")
-    .setPosition(guiX, guiY+120)
-    .setSize(200, 30)
-    .setRange(-2, 2)
-    .setValue(t_radiusSpeed)
-    ;
-    
-   cp5.addSlider("b_radiusSpeed")
-    .setPosition(guiX, guiY+160)
-    .setSize(200, 30)
-    .setRange(-2, 2)
-    .setValue(b_radiusSpeed)
-    ;
 
   //cp5.addSlider("lineGap")
   //  .setPosition(20, 500)

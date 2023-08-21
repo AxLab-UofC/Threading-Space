@@ -56,7 +56,6 @@ void drawDisplay() {
     if (visualOn) {
       translate(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5);
 
-
       drawVelocityLine(pairsViz[i].t.vx, pairsViz[i].t.vy);
 
       rotate(pairsViz[i].t.theta * PI/180);

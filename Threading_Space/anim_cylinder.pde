@@ -49,8 +49,8 @@ void animCylinder() {
   //t_radius += t_radiusSpeed * timeScale;
   //b_radius += b_radiusSpeed * timeScale;
   
-  t_radius = (xmax * 3/8);
-  b_radius = (xmax * 3/8);
+  t_radius = (xmax * 3/9);
+  b_radius = (xmax * 3/9);
 
   t_offsetAngle += t_offsetAngleSpeed * timeScale;
   b_offsetAngle += b_offsetAngleSpeed * timeScale;

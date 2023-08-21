@@ -86,7 +86,9 @@ void setup() {
 
   //do not send TOO MANY PACKETS
   //we'll be updating the cubes every frame, so don't try to go too high
-  fullScreen(P3D);
+  //fullScreen(P3D);
+  size(1400, 1100, P3D);
+  
   cam = new PeasyCam(this, 400);
   cam.setDistance(1400);
   cam.rotateX(-PI/2);
@@ -95,6 +97,7 @@ void setup() {
   setupGUI();
 
   smooth();
+  blendMode(BLEND);
 
   titlefont = loadFont("Code-Light-80.vlw");
   debugfont = loadFont("Agenda-Light-48.vlw");

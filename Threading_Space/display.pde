@@ -9,6 +9,13 @@ int toioCylinderR = 12;
 int toioCylinderH = 10;
 
 
+color toioStrokeCol = 200;
+color toioFillCol = color (255, 255, 255, 200);
+
+color toioTrackedStrokeCol = color (0, 0, 255, 200);
+color toioTrackedFillCol = color (255, 255, 255, 50);
+
+
 void drawDisplay() {
   background (backgroundCol);
   noStroke();
@@ -54,22 +61,47 @@ void drawDisplay() {
     //Draw Top Toio
     pushMatrix();
     if (visualOn) {
+      pushMatrix();
       translate(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5);
 
       drawVelocityLine(pairsViz[i].t.vx, pairsViz[i].t.vy);
 
       rotate(pairsViz[i].t.theta * PI/180);
       //box(12, 12, 7);
-      drawCylinder(10, toioCylinderR, toioCylinderH);
+      drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
+      popMatrix();
+
+
+
+      if (debugMode) {
+
+
+
+        if (topActive) {
+          
+                  if (cubes[i].isActive) {
+          stroke(1);
+          line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
+        }
+          
+          pushMatrix();
+          translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+
+
+          rotate(pairs[i].t.theta * PI/180);
+          //box(12, 12, 7);
+          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
+          popMatrix();
+        }
+      }
     } else {
       if (topActive) {
         translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
 
-        drawVelocityLine(pairsViz[i].t.vx, pairsViz[i].t.vy);
 
         rotate(pairs[i].t.theta * PI/180);
         //box(12, 12, 7);
-        drawCylinder(10, toioCylinderR, toioCylinderH);
+        drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
       }
     }
     popMatrix();
@@ -78,14 +110,34 @@ void drawDisplay() {
 
     //Draw Bottom Toio
     pushMatrix();
-    if (visualOn) {
+    if (visualOn) { // enable Visualization of Animation
+      pushMatrix();
       translate(pairsViz[i].b.x, pairsViz[i].b.y, -vert + 5);
 
       drawVelocityLine(pairsViz[i].b.vx, pairsViz[i].b.vy);
 
       rotate(pairsViz[i].b.theta * PI/180);
       //box(12, 12, 7);
-      drawCylinder(10, toioCylinderR, toioCylinderH);
+      drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
+
+      popMatrix();
+
+      if (debugMode) { // overlay current toio positions, velocity, and taregetting line
+        if (cubes[i].isActive) {
+          stroke(1);
+          line(pairsViz[i].b.x, pairsViz[i].b.y, -vert + 5, pairs[i].b.x, pairs[i].b.y, -vert + 5);
+        }
+
+        if (bottomActive) {
+          pushMatrix();
+          translate(pairs[i].b.x, pairs[i].b.y, -vert + 5);
+
+          rotate(pairs[i].b.theta * PI/180);
+          //box(12, 12, 7);
+          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
+          popMatrix();
+        }
+      }
     } else {
       if (bottomActive) {
         translate(pairs[i].b.x, pairs[i].b.y, -vert + 5);
@@ -94,7 +146,7 @@ void drawDisplay() {
 
         rotate(pairs[i].b.theta * PI/180);
         //box(12, 12, 7);
-        drawCylinder(10, toioCylinderR, toioCylinderH);
+        drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
       }
     }
     popMatrix();
@@ -116,13 +168,14 @@ void drawDisplay() {
 }
 
 //Function to draw Cylinder
-void drawCylinder( int sides, float r, float h)
+void drawCylinder( int sides, float r, float h, color strokeColor, color fillColor)
 {
 
   float angle = 360 / sides;
   float halfHeight = h / 2;
   strokeWeight(2);
-  stroke(200);
+  stroke(strokeColor);
+  fill(fillColor);
   // draw top of the tube
   beginShape();
   for (int i = 0; i < sides; i++) {
@@ -165,7 +218,6 @@ void drawCylinder( int sides, float r, float h)
 void drawVelocityLine(float vx, float vy) {
 
   if (debugMode) {
-    //pushMatrix();
     float angle = atan2(vy, vx) + PI ;
     float scale = 1000; // scale the lenght of arrow
 
@@ -176,5 +228,4 @@ void drawVelocityLine(float vx, float vy) {
     strokeWeight(5);
     line(x_begin, y_begin, x_begin - vx*scale, y_begin - vy*scale);
   }
-  //popMatrix();
 }

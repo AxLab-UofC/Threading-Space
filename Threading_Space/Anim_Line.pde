@@ -54,3 +54,32 @@ int[][][] animRotateLine(){
   
   return targets;
 }
+
+
+int[][][] animWave() {
+  int[][][] targets = new int[nPairs][2][3];
+
+  float time = millis() / 1000.0;
+  float amplitude = 80;  
+  float frequency = 2;    
+
+  float initialXOffset = xmax / (nPairs + 1); // Equally spread out along x-axis
+
+  for (int i = 0; i < nPairs; i++) {
+    float yOffset = amplitude * cos(frequency * time + i * PI / nPairs);
+    int yOffsetInt = int(yOffset);
+
+    int startX = int((i + 1) * initialXOffset);
+    int startY = (ymax + 45) / 2; // Centered along y-axis
+
+    targets[i][0][0] = startX;
+    targets[i][0][1] = startY + yOffsetInt;
+    targets[i][0][2] = pairs[i].t.theta;
+
+    targets[i][1][0] = startX;
+    targets[i][1][1] = startY + yOffsetInt;
+    targets[i][1][2] = pairs[i].b.theta;
+  }
+
+  return targets;
+}

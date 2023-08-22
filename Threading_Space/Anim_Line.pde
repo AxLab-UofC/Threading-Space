@@ -27,3 +27,30 @@ int[][][] animLine(){
   
   return targets;
 }
+
+int[][][] animRotateLine(){
+  
+  elapsedTime = millis() - lastMillis;
+  lastMillis = millis();
+
+  float timeScale = playSpeed * float(elapsedTime)/1000;
+
+  // Update the parameter based on speed //
+  globalAngleOffset += (globalAngleOffsetSpeed * timeScale);
+
+  int[][][] targets = new int[nPairs][2][3];
+  
+  for (int i = 0; i < nPairs; i++) {
+    float r = (ymax * (((.8 * i)/nPairs) + .2)) - (ymax/2);
+    targets[i][0][0] = (int) ((xmax + 45)/2 + (r * sin(globalAngleOffset)));
+    targets[i][0][1] = (int) ((ymax + 45)/2 + (r * cos(globalAngleOffset)));
+    targets[i][0][2] = 0;
+    
+    
+    targets[i][1][0] = (int) ((xmax + 45)/2 + (r * sin(globalAngleOffset)));
+    targets[i][1][1] = (int) ((ymax + 45)/2 + (r * cos(globalAngleOffset)));
+    targets[i][1][2] = 0;
+  }
+  
+  return targets;
+}

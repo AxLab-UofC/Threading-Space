@@ -1,4 +1,9 @@
 void motorTargetVelocity(int id, int x, int y, float vx, float vy) {
+  
+  if (!cubes[id].onFloor) {
+    y = ymax - y;
+    vy = -vy;
+  }
 
   if (cubes[id].isActive) {
     /////previously defined as .aim
@@ -52,7 +57,7 @@ void motorTargetVelocity(int id, int x, int y, float vx, float vy) {
     float velIntegrate = sqrt(sq(vx)+sq(vy)); // integrate velocity x + y
 
     float aimMotSpeed = velIntegrate / 2.0; // translate the speed (pixel/s)  to motor control command /// Maximum is 115 =>
-    println("Vel Intagrate:", velIntegrate, "aimMotSpeed: ", aimMotSpeed);
+    //println("Vel Intagrate:", velIntegrate, "aimMotSpeed: ", aimMotSpeed);
 
 
     //println("diffVAngle = ", degrees(diffVAngle));
@@ -73,7 +78,7 @@ void motorTargetVelocity(int id, int x, int y, float vx, float vy) {
     float right_ = constrain(aa + (lr[1]*dd), -maxMotorSpeed, maxMotorSpeed);
     int duration = (50);
 
-    println("motor command:", id, left_, right_);
+    //println("motor command:", id, left_, right_);
 
 
 

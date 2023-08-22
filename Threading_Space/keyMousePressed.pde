@@ -96,14 +96,13 @@ void keyPressed() {
      motorBasic(0, true, 45, true, 30);
      motorBasic(1, true, 45, true, 30);
      break; 
+     
+  case 'l':
+    movePairs(getLine(0));
+    break;
     
   case 'c':
-    seq = new DiscreteSequence();
-    for (int i = 0; i < nPairs; i ++) {
-      seq.addFrame(new Frame(moveType.BOTTOM, getCircle(i)));
-    }
-    seq.setSpeed(10);
-    animator.add(seq);
+  movePairs(getCircle(0));
     break;
     
   case 'x':
@@ -145,9 +144,6 @@ void keyPressed() {
     debugMode = !debugMode;
     break;
     
-  case 'l':
-    //moveLine(6);
-    break;
     
   default:
     break;

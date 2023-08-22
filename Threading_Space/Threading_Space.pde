@@ -28,12 +28,12 @@ boolean visualOn = true;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
-//int xmax = 949;
-//int ymax = 898;
+int xmax = 949;
+int ymax = 898;
 int vert = 500;
 
-int xmax = 455;
-int ymax = 455;
+//int xmax = 455;
+//int ymax = 455;
 
 
 AnimManager animator;
@@ -79,8 +79,8 @@ void setup() {
   } else {
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      //pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
-      pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
+      pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
+      //pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
     }
   }
 
@@ -105,12 +105,15 @@ void setup() {
   
   animator = new AnimManager();
   SmoothSequence seq;
+  animator.add(new Frame(moveType.PAIR, getCircle(0)));
   seq = new SmoothSequence((int t) -> animCylinder());
   seq.setTimeLimit(20);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animSpiral());
+  //animator.add(new Frame(moveType.PAIR, getLine(0)));
+  seq = new SmoothSequence((int t) -> animRotateLine());
   seq.setTimeLimit(20);
   animator.add(seq);
+  animator.add(new Frame(moveType.PAIR, getLine(0)));
   seq = new SmoothSequence((int t) -> animLine());
   seq.setTimeLimit(20);
   animator.add(seq);
@@ -130,22 +133,22 @@ void draw() {
     animator.update();
   }
   
-  //int[][][] targets;
-  //switch (guiChoose) {
-  //  case CYLINDER:
-  //    targets = animCylinder();
-  //    break;
+  int[][][] targets;
+  switch (guiChoose) {
+    case CYLINDER:
+      targets = animCylinder();
+      break;
     
-  //  case LINE:
-  //    targets = animLine();
-  //    break;
+    case LINE:
+      targets = animRotateLine();
+      break;
       
-  //  default:
-  //    targets = animCylinder();
-  //    break;
-  //}
+    default:
+      targets = animCylinder();
+      break;
+  }
   
-  //visualize(targets);
+  visualize(targets);
   //movePairsVelocity(targets);
   
 

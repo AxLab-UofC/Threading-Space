@@ -2,7 +2,7 @@ float overallTimeMillis = 5 * 60 * 1000; // 5 mins
 float playSpeed = 1;
 
 float globalAngleOffset=0;
-float globalAngleOffsetSpeed = 0.1; //0.05;
+float globalAngleOffsetSpeed = 0.5; //0.05;
 
 float t_offsetAngle = 0;
 float t_offsetAngleSpeed = 0.05; //=-0.05;
@@ -25,22 +25,12 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
-void animCylinder() {
+int[][][] animCylinder() {
 
   elapsedTime = millis() - lastMillis;
   lastMillis = millis();
 
-  // visualize
-  
-  visualizeVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
-  movePairsVelocity(getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle), velocity);
-
-  // save last spot to calculate velocity.
-  lastSpots = getCylinderTwist(xmax/2, ymax/2, t_radius, b_radius, globalAngleOffset, t_offsetAngle, b_offsetAngle);
-
   float timeScale = playSpeed * float(elapsedTime)/1000;
-
-
 
   // Update the parameter based on speed //
   globalAngleOffset += globalAngleOffsetSpeed * timeScale;
@@ -80,39 +70,21 @@ void animCylinder() {
   } else if (b_offsetAngle < radians(-360)) {
     b_offsetAngleSpeed = abs(b_offsetAngleSpeed);
   }
-}
-
-
-int [][][] getCylinderTwist(int x, int y, float topR, float bottomR, float globalAngle, float topOffsetAngle, float bottomOffsetAngle) {
+  
+  int[][][] targets = new int[nPairs][2][3];
+  
   float angle = 2 * PI/(nPairs);
-  int spots[][][] = new int[nPairs][2][3]; //[num of pairs] [top or bottom] [x, y, theta, vx, vy]
-
-
+  
   for (int i = 0; i < nPairs; i++) {
-    float newAngle = angle*i  +globalAngle;
-    spots[i][0][0] = int(x + topR*cos(newAngle + topOffsetAngle)); //x
-    spots[i][0][1] = int(y + topR*sin(newAngle + topOffsetAngle)); //y
-    spots[i][0][2] = int((360 * (newAngle + topOffsetAngle) / (2 * PI)) + 90); //theta
+    float newAngle = (angle * i) + globalAngleOffset;
+    targets[i][0][0] = int((xmax + 45)/2 + t_radius*cos(newAngle + t_offsetAngle)); //x
+    targets[i][0][1] = int((ymax + 45)/2 + t_radius*sin(newAngle + t_offsetAngle)); //y
+    targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
 
-    spots[i][1][0] = int(x + bottomR*cos(newAngle + bottomOffsetAngle)); //x
-    spots[i][1][1]= int(y + bottomR*sin(newAngle + bottomOffsetAngle)); //y
-    spots[i][1][2] = int((360 * (newAngle + bottomOffsetAngle) / (2 * PI)) + 90); //theta
+    targets[i][1][0] = int((xmax + 45)/2 + b_radius*cos(newAngle + b_offsetAngle)); //x
+    targets[i][1][1]= int((ymax + 45)/2 + b_radius*sin(newAngle + b_offsetAngle)); //y
+    targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
   }
-
-  if (lastSpots != null) {
-    
-    // calculate Velocity
-    for (int i = 0; i < nPairs; i++) {
-      velocity[i][0][0] = float(lastSpots[i][0][0] - spots[i][0][0] )/  float(elapsedTime); // x
-      velocity[i][0][1] = float(lastSpots[i][0][1] - spots[i][0][1] )/  float(elapsedTime); // y
-            
-      
-      velocity[i][1][0] = float(lastSpots[i][1][0] - spots[i][1][0] )/  float(elapsedTime); // x
-      velocity[i][1][1] = float(lastSpots[i][1][1] - spots[i][1][1] )/  float(elapsedTime); // y
-    }
-    
-    
-  }
-
-  return spots;
+  
+  return targets;
 }

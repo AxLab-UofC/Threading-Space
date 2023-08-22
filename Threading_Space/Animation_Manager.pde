@@ -76,10 +76,12 @@ class Sequence {
 
 interface Movement  {
   int[][] get(int time);
+  //int[][] get();
 }
 
 interface IndependentMovement {
   int[][][] get(int time);
+  //int[][][] get();
 }
 
 
@@ -89,10 +91,13 @@ class SmoothSequence extends Sequence {
   moveType type;
   Movement func;
   int startTime;
+  int currTime;
   int timeOffset = 0;
+  int timeLimit = 30;
   IndependentMovement indieFunc;
   int[][] targets;
-  int[][] indieTargets;
+  int[][][] indieTargets;
+  
   
   SmoothSequence(IndependentMovement newFunc) {
     type = moveType.INDEPENDENT;
@@ -105,17 +110,20 @@ class SmoothSequence extends Sequence {
   }
   
   void start() {
-    startTime = millis() - timeOffset;
+    startTime = millis() - currTime;
     status = moveStatus.INPROGRESS;
   }
   
   void stop() {
-    timeOffset = millis() - startTime;
     status = moveStatus.NONE;
   }
   
+  void setTimeLimit(int limit) {
+    timeLimit = limit;
+  }
+  
   boolean update() {
-    int currTime = millis() - startTime;
+    currTime = millis() - startTime;
     switch (type) {
       case TOP:
         targets = func.get(currTime / 1000);
@@ -132,13 +140,15 @@ class SmoothSequence extends Sequence {
       case PAIR:
         targets = func.get(currTime / 1000);
         for (int i = 0; i < targets.length; i++) {
-          pairs[i].target(0, 5, 0, 50, 0, targets[i][0], targets[i][1], targets[i][2]);
+          pairs[i].velocityTarget(targets[i][0], targets[i][1]);
         }
       break;
       case INDEPENDENT:
+        indieTargets = indieFunc.get(currTime/1000);
+        movePairsVelocity(indieTargets);
       break;
     }
-    return false;
+    return (currTime > (timeLimit * 1000));
   }
 }
 

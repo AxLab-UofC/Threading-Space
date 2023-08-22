@@ -10,6 +10,11 @@ class Cube {
   //targeting
   moveStatus status = moveStatus.NONE;
   int control = -1;
+  
+  //targeting
+  int targetx;
+  int targety;
+  int targetTime;
     
   // position
   int x;
@@ -83,9 +88,25 @@ class Cube {
     motorTarget(id, control, timeout, mode, maxspeed, speedchange, x, y, theta);
   }
   
-  void velocitytarget(int x, int y, float vx, float vy) {
+  void velocityTarget(int x, int y) {
+    float elapsedTime = millis() - targetTime;
+    float vx = (targetx - x) / elapsedTime;
+    float vy = (targety - y) / elapsedTime;
+    
+    motorTargetVelocity(id, x, y, vx, vy);
+    
+    targetx = x;
+    targety = y;
+    targetTime = millis();
+  }
+  
+  void velocityTarget(int x, int y, float vx, float vy) {
     status = moveStatus.INPROGRESS;
     motorTargetVelocity(id, x, y, vx, vy);
+    
+    targetx = x;
+    targety = y;
+    targetTime = millis();
   }
   
   

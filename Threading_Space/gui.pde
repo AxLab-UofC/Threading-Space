@@ -2,7 +2,7 @@ enum GUI {
   CYLINDER, LINE
 }
 
-GUI guiChoose = GUI.CYLINDER;
+GUI guiChoose = GUI.LINE;
 
 import controlP5.*;
 ControlP5 cp5;

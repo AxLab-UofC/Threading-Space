@@ -28,9 +28,14 @@ class Pair {
     b.target(control, timeout, mode, maxspeed, speedchange, x, y, theta);
   }
   
-  void velocitytarget(int x, int y, float vx, float vy) {
-    t.velocitytarget(x, y, vx, vy);
-    b.velocitytarget(x, y,  vx, vy);
+  void velocityTarget(int x, int y) {
+    t.velocityTarget(x, y);
+    b.velocityTarget(x, y);
+  }
+  
+  void velocityTarget(int x, int y, float vx, float vy) {
+    t.velocityTarget(x, y, vx, vy);
+    b.velocityTarget(x, y,  vx, vy);
   }
   
   void multiTarget(int mode, int[][] targets) {
@@ -84,8 +89,15 @@ void movePairs(int[][] spots) {
 
 void movePairsVelocity(int[][][] targets, float[][][] velocity) {
   for (int i = 0; i < targets.length; i++) {
-    pairs[i].t.velocitytarget(targets[i][0][0], targets[i][0][1], velocity[i][0][0], velocity[i][0][1]);
-    pairs[i].b.velocitytarget(targets[i][1][0], targets[i][1][1], velocity[i][1][0], velocity[i][1][1]);
+    pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1], velocity[i][0][0], velocity[i][0][1]);
+    pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1], velocity[i][1][0], velocity[i][1][1]);
+  }  
+}
+
+void movePairsVelocity(int[][][] targets) {
+  for (int i = 0; i < targets.length; i++) {
+    pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1]);
+    pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1]);
   }  
 }
 

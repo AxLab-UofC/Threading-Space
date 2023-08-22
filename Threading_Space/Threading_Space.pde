@@ -86,8 +86,8 @@ void setup() {
 
   //do not send TOO MANY PACKETS
   //we'll be updating the cubes every frame, so don't try to go too high
-  //fullScreen(P3D);
-  size(1400, 1100, P3D);
+  fullScreen(P3D);
+  //size(1400, 1100, P3D);
   
   cam = new PeasyCam(this, 400);
   cam.setDistance(1400);
@@ -104,13 +104,19 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  //DiscreteSequence seq = new DiscreteSequence();
-  //for (float step: smoothen(0, pairs.length, 29)) {
-  //  //println(step);
-  //  seq.addFrame(new Frame(moveType.BOTTOM, getCircle(step)));
-  //}
-  //seq.setSpeed(45);
-  //animator.add(seq);
+  SmoothSequence seq;
+  seq = new SmoothSequence((int t) -> animCylinder());
+  seq.setTimeLimit(20);
+  animator.add(seq);
+  seq = new SmoothSequence((int t) -> animSpiral());
+  seq.setTimeLimit(20);
+  animator.add(seq);
+  seq = new SmoothSequence((int t) -> animLine());
+  seq.setTimeLimit(20);
+  animator.add(seq);
+  seq = new SmoothSequence((int t) -> animCylinder());
+  seq.setTimeLimit(20);
+  animator.add(seq);
 }
 
 void draw() {
@@ -124,16 +130,23 @@ void draw() {
     animator.update();
   }
   
-  switch (guiChoose) {
-    case CYLINDER:
-      animCylinder();
-      break;
+  //int[][][] targets;
+  //switch (guiChoose) {
+  //  case CYLINDER:
+  //    targets = animCylinder();
+  //    break;
     
-    case LINE:
-      animLine();
-      break;
-  }
+  //  case LINE:
+  //    targets = animLine();
+  //    break;
+      
+  //  default:
+  //    targets = animCylinder();
+  //    break;
+  //}
   
+  //visualize(targets);
+  //movePairsVelocity(targets);
   
 
 
@@ -167,6 +180,9 @@ void draw() {
       if (animator.getCurrentSeq() instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) animator.getCurrentSeq();
         text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+      } else {
+        SmoothSequence smoothseq = (SmoothSequence) animator.getCurrentSeq();
+        text("Second "+ (smoothseq.currTime / 1000) + "/" + (smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
       textSize(24);
     }

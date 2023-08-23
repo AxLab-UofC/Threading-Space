@@ -2,10 +2,18 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
+float triangleWave(float x) {
+  float ret = (x % 4) - 1;
+  if (ret > 1) return (2 - ret);
+  else return ret;
+}
+
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
   int iterator;
+  boolean loop = false;
+  boolean viz = false;
  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
@@ -19,6 +27,29 @@ class AnimManager {
   void add(Sequence newSeq) {
     sequences.add(newSeq);
   }
+  
+  void setLoop(boolean val) {
+    loop = val;
+  }
+  
+  void setLoop() {
+    loop = !loop;
+  }
+  
+  void setViz(boolean newViz) {
+    viz = newViz;
+    for (Sequence seq: sequences) {
+      seq.setViz(viz);
+    }
+  }
+  
+  void setViz() {
+    viz = !viz;
+    for (Sequence seq: sequences) {
+      seq.setViz(viz);
+    }
+  }
+  
   
   void start() {
     if (sequences.size() > 0) {
@@ -36,12 +67,22 @@ class AnimManager {
       boolean seqComplete = sequences.get(iterator).update();
       if (seqComplete) {
         if (iterator + 1 == sequences.size()) {
+          if (loop) {
+            reset();
+          }
           status = moveStatus.COMPLETE;
         } else {
           iterator++;
           sequences.get(iterator).start();
         }
       } 
+    }
+  }
+  
+  void reset(){
+    iterator = 0;
+    for (int i = 0; i < sequences.size(); i++) {
+      sequences.get(i).reset();
     }
   }
   
@@ -56,10 +97,12 @@ class AnimManager {
   int size() {
     return sequences.size();
   }
+  
 }
 
 class Sequence {
   moveStatus status = moveStatus.NONE;
+  boolean viz = false;
   
   void start() {
     status = moveStatus.INPROGRESS;
@@ -67,6 +110,14 @@ class Sequence {
   
   void stop() {
     status = moveStatus.NONE;
+  }
+  
+  void reset() {
+    status = moveStatus.NONE;
+  }
+  
+  void setViz(boolean val) {
+    viz = val;
   }
   
   boolean update(){
@@ -87,12 +138,10 @@ interface IndependentMovement {
 
 
 class SmoothSequence extends Sequence {
-  moveStatus status = moveStatus.NONE;
   moveType type;
   Movement func;
   int startTime;
   int currTime;
-  int timeOffset = 0;
   int timeLimit = 30;
   IndependentMovement indieFunc;
   int[][] targets;
@@ -118,6 +167,11 @@ class SmoothSequence extends Sequence {
     status = moveStatus.NONE;
   }
   
+  void reset() {
+    status = moveStatus.NONE;
+    currTime = 0;
+  }
+  
   void setTimeLimit(int limit) {
     timeLimit = limit;
   }
@@ -128,24 +182,28 @@ class SmoothSequence extends Sequence {
       case TOP:
         targets = func.get(currTime / 1000);
         for (int i = 0; i < targets.length; i++) {
-          pairs[i].t.target(0, 5, 0, 50, 0, targets[i][0], targets[i][1], targets[i][2]);
+          pairs[i].t.velocityTarget(targets[i][0], targets[i][1]);
+          if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
       case BOTTOM:
         targets = func.get(currTime / 1000);
         for (int i = 0; i < targets.length; i++) {
-          pairs[i].b.target(0, 5, 0, 50, 0, targets[i][0], targets[i][1], targets[i][2]);
+          pairs[i].b.velocityTarget(targets[i][0], targets[i][1]);
+          if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
         }
       break;
       case PAIR:
         targets = func.get(currTime / 1000);
         for (int i = 0; i < targets.length; i++) {
           pairs[i].velocityTarget(targets[i][0], targets[i][1]);
+          if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
         }
       break;
       case INDEPENDENT:
         indieTargets = indieFunc.get(currTime/1000);
         movePairsVelocity(indieTargets);
+        if (viz) visualize(indieTargets);
       break;
     }
     return (currTime > (timeLimit * 1000));
@@ -154,7 +212,6 @@ class SmoothSequence extends Sequence {
 
 
 class DiscreteSequence extends Sequence {
-  moveStatus status = moveStatus.NONE;
   int speed = 80;
   ArrayList<Frame> frames;
   int iterator;
@@ -179,9 +236,8 @@ class DiscreteSequence extends Sequence {
   }
   
   void addFrame(Frame newFrame) {
-    if (speed != 80) {
-      newFrame.setSpeed(speed);
-    }
+    newFrame.setSpeed(speed);
+    newFrame.setViz(viz);
     frames.add(newFrame);
   }
   
@@ -192,9 +248,25 @@ class DiscreteSequence extends Sequence {
     }
   }
   
+  void setViz(boolean newViz) {
+    viz = newViz;
+    for (Frame frame: frames) {
+      frame.setViz(viz);
+    }
+  }
+  
   void start() {
     frames.get(iterator).execute();
     status = moveStatus.INPROGRESS;
+  }
+  
+  void reset() {
+    status = moveStatus.NONE;
+    iterator = 0;
+    
+    for (int i = 0; i < frames.size(); i++) {
+      frames.get(i).reset();
+    }
   }
   
   boolean update(){
@@ -224,6 +296,7 @@ class Frame {
   moveStatus status = moveStatus.NONE;
   moveType type;
   int speed = 80;
+  boolean viz = false;
   int[][] targets;
   int[][][] indieTargets;
   
@@ -241,24 +314,31 @@ class Frame {
     speed = newSpeed;
   }
   
+  void setViz(boolean newViz) {
+     viz = newViz;
+  }
+  
   void execute() {
     status = moveStatus.INPROGRESS;
     switch(type) {
       case PAIR:
         for (int i = 0; i < targets.length; i++) {
           pairs[i].target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+          if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
       
       case TOP:
         for (int i = 0; i < targets.length; i++) {
           pairs[i].t.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+          if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
       
       case BOTTOM:
         for (int i = 0; i < targets.length; i++) {
           pairs[i].b.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+          if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
       
@@ -267,8 +347,13 @@ class Frame {
           pairs[i].t.target(0, 5, 0, speed, 0, indieTargets[i][0][0], indieTargets[i][0][1], indieTargets[i][0][2]);
           pairs[i].b.target(0, 5, 0, speed, 0, indieTargets[i][1][0], indieTargets[i][1][1], indieTargets[i][1][2]);
         }
+        visualize(indieTargets);
         break;
     }
+  }
+  
+  void reset() {
+    status = moveStatus.NONE;
   }
   
   boolean update() {

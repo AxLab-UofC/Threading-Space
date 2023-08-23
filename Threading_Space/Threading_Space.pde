@@ -28,12 +28,19 @@ boolean visualOn = true;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
-int xmax = 949;
-int ymax = 898;
+//int xmin = 34;
+//int ymin = 35;
+//int xmax = 949;
+//int ymax = 898;
 int vert = 500;
 
-//int xmax = 455;
-//int ymax = 455;
+int xmin = 45;
+int ymin = 45;
+int xmax = 455;
+int ymax = 455;
+
+int xmid = (int) (xmax + xmin)/2;
+int ymid = (int) (ymax + ymin)/2;
 
 
 AnimManager animator;
@@ -79,8 +86,8 @@ void setup() {
   } else {
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
-      //pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
+      //pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
+      pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
     }
   }
 
@@ -105,21 +112,27 @@ void setup() {
   
   animator = new AnimManager();
   SmoothSequence seq;
-  animator.add(new Frame(moveType.PAIR, getCircle(0)));
+  animator.add(new Frame(moveType.BOTTOM, getCircle(0)));
   seq = new SmoothSequence((int t) -> animCylinder());
+  seq.setTimeLimit(20);
+  animator.add(seq);
+  seq = new SmoothSequence((int t) -> animTwoCylinder());
   seq.setTimeLimit(20);
   animator.add(seq);
   //animator.add(new Frame(moveType.PAIR, getLine(0)));
   seq = new SmoothSequence((int t) -> animRotateLine());
   seq.setTimeLimit(20);
   animator.add(seq);
-  animator.add(new Frame(moveType.PAIR, getLine(0)));
+  animator.add(new Frame(moveType.BOTTOM, getLine(0)));
   seq = new SmoothSequence((int t) -> animLine());
   seq.setTimeLimit(20);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animCylinder());
+  seq = new SmoothSequence((int t) -> animWaveY());
   seq.setTimeLimit(20);
   animator.add(seq);
+  animator.setLoop();
+  animator.setViz();
+  animator.start();
 }
 
 void draw() {
@@ -151,8 +164,8 @@ void draw() {
   //    break;
   //}
   
-  targets = animTwoCylinder(); 
-  visualize(targets);
+  //targets = animTwoCylinder(); 
+  //visualize(targets);
   //movePairsVelocity(targets);
   
 

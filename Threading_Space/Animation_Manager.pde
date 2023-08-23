@@ -127,13 +127,11 @@ class Sequence {
 }
 
 interface Movement  {
-  int[][] get(int time);
-  //int[][] get();
+  int[][] get(float time);
 }
 
 interface IndependentMovement {
-  int[][][] get(int time);
-  //int[][][] get();
+  int[][][] get(float time);
 }
 
 
@@ -141,10 +139,13 @@ interface IndependentMovement {
 class SmoothSequence extends Sequence {
   moveType type;
   Movement func;
+  IndependentMovement indieFunc;
+  
   int startTime;
   int currTime;
-  int timeLimit = 30;
-  IndependentMovement indieFunc;
+  int timeLimit = 20;
+  int period = 10;
+  
   int[][] targets;
   int[][][] indieTargets;
   
@@ -177,32 +178,40 @@ class SmoothSequence extends Sequence {
     timeLimit = limit;
   }
   
+  void setPeriod(int newPeriod) {
+    period = newPeriod;
+  }
+  
   boolean update() {
     currTime = millis() - startTime;
     switch (type) {
+      
       case TOP:
-        targets = func.get(currTime / 1000);
+        targets = func.get((float) currTime/(period * 1000));
         for (int i = 0; i < targets.length; i++) {
           pairs[i].t.velocityTarget(targets[i][0], targets[i][1]);
           if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
+        
       case BOTTOM:
-        targets = func.get(currTime / 1000);
+        targets = func.get((float) currTime/(period * 1000));
         for (int i = 0; i < targets.length; i++) {
           pairs[i].b.velocityTarget(targets[i][0], targets[i][1]);
           if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
         }
       break;
+      
       case PAIR:
-        targets = func.get(currTime / 1000);
+        targets = func.get((float) currTime/(period * 1000));
         for (int i = 0; i < targets.length; i++) {
           pairs[i].velocityTarget(targets[i][0], targets[i][1]);
           if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
         }
       break;
+      
       case INDEPENDENT:
-        indieTargets = indieFunc.get(currTime/1000);
+        indieTargets = indieFunc.get((float) currTime/(period * 1000));
         movePairsVelocity(indieTargets);
         if (viz) visualize(indieTargets);
       break;

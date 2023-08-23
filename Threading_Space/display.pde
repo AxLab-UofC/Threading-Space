@@ -156,9 +156,15 @@ void drawDisplay() {
     stroke(StringCol);
     strokeWeight(stringWeight);
     if (visualOn) {
+      if (debugMode && i == 0) {
+        stroke(color(255, 255, 0));
+      }
       line(pairsViz[i].t.x, pairsViz[i].t.y, vert - toioCylinderH/2, pairsViz[i].b.x, pairsViz[i].b.y, -vert + toioCylinderH/2);
     } else {
       if (topActive && bottomActive) {
+        if (debugMode && i == 0) {
+          stroke(color(255, 255, 0));
+        }
         line(pairs[i].t.x, ymax - pairs[i].t.y, vert - toioCylinderH/2, pairs[i].b.x, pairs[i].b.y, -vert+ toioCylinderH/2);
       }
     }

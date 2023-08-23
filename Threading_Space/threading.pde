@@ -14,23 +14,6 @@ int [][] getCircle(float offset) {
   return spots;
 }
 
-int [][] getSpiral(float offset) {
-  int spots[][] = new int[pairs.length][3];
-  
-  int r = 3 * min(xmax, ymax) / 8;
-  float angle = 2 * PI/pairs.length;
-  
-  for (int i = 0; i < pairs.length; i++) {
-    float newAngle = angle* ((i + offset) % pairs.length);
-    spots[i][0] = (int)(((xmax + 45)/ 2) + (i * (float) r / pairs.length) * cos(newAngle));
-    spots[i][1] = (int)(((ymax + 45) / 2) + (i * (float) r / pairs.length) * sin(newAngle));
-    spots[i][2] = (int)((360 * newAngle / (2 * PI)) + 90);
-  }
-
-  return spots;
-}
-
-
 int[][] getLine(float offset) {
   int spots[][] = new int[pairs.length][3];
   

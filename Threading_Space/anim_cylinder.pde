@@ -32,52 +32,23 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
-int[][][] animCylinder(float t, float speed, float offset) {
+int[][][] animCircle(float t) {
+  println(t, t * 2 * PI);
+  
+  float angleOffset = t * (2 *PI);
+  float angle = (2 * PI) / nPairs;
+  float radius = (xmax * 3) / 9;
   int[][][] targets = new int[nPairs][2][3];
   
-  float angle = 2 * PI/(nPairs);
-  
   for (int i = 0; i < nPairs; i++) {
-    float newAngle = (angle * i) + globalAngleOffset;
-    targets[i][0][0] = int((xmax + xmin)/2 + t_radius*cos(newAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + t_radius*sin(newAngle)); //y
-    targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
-
-    targets[i][1][0] = int((xmax + xmin)/2 + b_radius*cos(newAngle + b_offsetAngle)); //x
-    targets[i][1][1]= int((ymax + ymin)/2 + b_radius*sin(newAngle + b_offsetAngle)); //y
-    targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
-  }
-  
-  return targets;
-  
-}
-
-int[][][] animCylinder() {
-
-  elapsedTime = millis() - lastMillis;
-  lastMillis = millis();
-
-  float timeScale = playSpeed * float(elapsedTime)/1000;
-
-  // Update the parameter based on speed //
-  globalAngleOffset += globalAngleOffsetSpeed * timeScale;
-  
-  t_radius = (xmax * 3/9);
-  b_radius = (xmax * 3/9);
-  
-  int[][][] targets = new int[nPairs][2][3];
-  
-  float angle = 2 * PI/(nPairs);
-  
-  for (int i = 0; i < nPairs; i++) {
-    float newAngle = (angle * i) + globalAngleOffset;
-    targets[i][0][0] = int((xmax + xmin)/2 + t_radius*cos(newAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + t_radius*sin(newAngle)); //y
-    targets[i][0][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
-
-    targets[i][1][0] = int((xmax + xmin)/2 + b_radius*cos(newAngle)); //x
-    targets[i][1][1]= int((ymax + ymin)/2 + b_radius*sin(newAngle)); //y
-    targets[i][1][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
+    float theta = (i * angle) + angleOffset;
+    targets[i][0][0] = (int) (xmid + (radius * sin(theta)));
+    targets[i][0][1] = (int) (ymid + (radius * cos(theta)));
+    targets[i][0][2] = (int) ((180 / PI) * (theta + PI/2));
+    
+    targets[i][1][0] = (int) (xmid + (radius * sin(theta)));
+    targets[i][1][1] = (int) (ymid + (radius * cos(theta)));
+    targets[i][1][2] = (int) ((180 / PI) * (theta + PI/2));
   }
   
   return targets;
@@ -133,12 +104,12 @@ int[][][] animCylinderTwist() {
   
   for (int i = 0; i < nPairs; i++) {
     float newAngle = (angle * i) + globalAngleOffset;
-    targets[i][0][0] = int((xmax + xmin)/2 + t_radius*cos(newAngle + t_offsetAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + t_radius*sin(newAngle + t_offsetAngle)); //y
+    targets[i][0][0] = int((xmax + xmin)/2 + t_radius*sin(newAngle + t_offsetAngle)); //x
+    targets[i][0][1] = int((ymax + ymin)/2 + t_radius*cos(newAngle + t_offsetAngle)); //y
     targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
 
-    targets[i][1][0] = int((xmax + xmin)/2 + b_radius*cos(newAngle + b_offsetAngle)); //x
-    targets[i][1][1]= int((ymax + ymin)/2 + b_radius*sin(newAngle + b_offsetAngle)); //y
+    targets[i][1][0] = int((xmax + xmin)/2 + b_radius*sin(newAngle + b_offsetAngle)); //x
+    targets[i][1][1] = int((ymax + ymin)/2 + b_radius*cos(newAngle + b_offsetAngle)); //y
     targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
   }
   
@@ -173,12 +144,12 @@ int[][][] animTwoCylinder() {
       newAngle = (angle * i) + globalAngleOffset + globalAngleOffset;
     }
     
-    targets[i][0][0] = int((xmax + xmin)/2 + r*cos(newAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + r*sin(newAngle)); //y
+    targets[i][0][0] = int((xmax + xmin)/2 + r*sin(newAngle)); //x
+    targets[i][0][1] = int((ymax + ymin)/2 + r*cos(newAngle)); //y
     targets[i][0][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
 
-    targets[i][1][0] = int((xmax + xmin)/2 + r*cos(newAngle)); //x
-    targets[i][1][1]= int((ymax + ymin)/2 + r*sin(newAngle)); //y
+    targets[i][1][0] = int((xmax + xmin)/2 + r*sin(newAngle)); //x
+    targets[i][1][1] = int((ymax + ymin)/2 + r*cos(newAngle)); //y
     targets[i][1][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
   }
   

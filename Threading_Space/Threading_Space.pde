@@ -126,30 +126,44 @@ void setup() {
   
   animator = new AnimManager();
   SmoothSequence seq;
+  
   //animator.add(new Frame(moveType.PAIR, getCircle(0)));
-  seq = new SmoothSequence((int t) -> animCylinder());
+  
+  seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setTimeLimit(20);
   animator.add(seq);
+  
   //seq = new SmoothSequence((int t) -> animTwoCylinder());
   //seq.setTimeLimit(20);
   //animator.add(seq);
   //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((int t) -> animRotateLine());
-  seq.setTimeLimit(13);
+  
+  seq = new SmoothSequence((float t) -> animRotateLine(t));
+  seq.setTimeLimit(15);
   animator.add(seq);
-  animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((int t) -> animLine());
+  
+  //animator.add(new Frame(moveType.PAIR, getLine(0)));
+  seq = new SmoothSequence((float t) -> animLine(t));
   seq.setTimeLimit(20);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animWaveY());
+  
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
+  seq.setPeriod(20);
+  seq.setTimeLimit(5);
+  animator.add(seq);
+  
+  seq = new SmoothSequence((float t) -> animWaveY());
   seq.setTimeLimit(16);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animWaveYCross());
+  
+  seq = new SmoothSequence((float t) -> animWaveYCross());
   seq.setTimeLimit(16);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animCylinder());
+  
+  seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setTimeLimit(20);
   animator.add(seq);
+  
   animator.setLoop();
   animator.setViz();
   animator.start();

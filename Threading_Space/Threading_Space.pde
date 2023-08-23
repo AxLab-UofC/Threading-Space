@@ -134,20 +134,24 @@ void draw() {
   }
   
   int[][][] targets;
-  switch (guiChoose) {
-    case CYLINDER:
-      targets = animCylinder();
-      break;
+  //switch (guiChoose) {
+  //  case CYLINDER:
+  //    targets = animCylinder();
+  //    break;
     
-    case LINE:
-      targets = animRotateLine();
-      break;
-      
-    default:
-      targets = animCylinder();
-      break;
-  }
+  //  case LINE:
+  //    targets = animRotateLine();
+  //    break;
+      //case TWOCIRCLE:
+      //  targets = animTwoCylinder();
+      //  break; 
+        
+  //  default:
+  //    targets = animCylinder();
+  //    break;
+  //}
   
+  targets = animTwoCylinder(); 
   visualize(targets);
   //movePairsVelocity(targets);
   

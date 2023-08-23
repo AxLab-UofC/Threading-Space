@@ -1,5 +1,5 @@
 enum GUI {
-  CYLINDER, LINE
+  CYLINDER, LINE, TWOCIRCLE
 }
 
 GUI guiChoose = GUI.LINE;
@@ -65,6 +65,14 @@ void setupGUI() {
           .setValue(b_radiusSpeed)
           ;
           break;
+    case TWOCIRCLE: 
+          cp5.addSlider("innerCircle")
+          .setPosition(guiX, guiY)
+          .setSize(200, 30)
+          .setRange(-1, 1)
+          .setValue(globalInnerCircle);
+        ;
+        
     case LINE:
           cp5.addSlider("globalLineOffsetSpeed")
           .setPosition(guiX, guiY)

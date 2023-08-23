@@ -69,8 +69,9 @@ class AnimManager {
         if (iterator + 1 == sequences.size()) {
           if (loop) {
             reset();
+          } else {
+            status = moveStatus.COMPLETE;
           }
-          status = moveStatus.COMPLETE;
         } else {
           iterator++;
           sequences.get(iterator).start();

@@ -2,7 +2,7 @@ enum GUI {
   CYLINDER, LINE, TWOCIRCLE
 }
 
-GUI guiChoose = GUI.LINE;
+GUI guiChoose = GUI.CYLINDER;
 
 import controlP5.*;
 ControlP5 cp5;
@@ -70,7 +70,7 @@ void setupGUI() {
           .setPosition(guiX, guiY)
           .setSize(200, 30)
           .setRange(-1, 1)
-          .setValue(globalInnerCircle);
+          .setValue(globalInnerAngleOffsetSpeed);
         ;
         
     case LINE:

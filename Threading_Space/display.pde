@@ -74,15 +74,15 @@ void drawDisplay() {
 
 
       if (debugMode) {
-
-
-
         if (topActive) {
-          
-                  if (cubes[i].isActive) {
-          stroke(1);
-          line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
-        }
+          if (cubes[i].isActive) {
+            stroke(1);
+            if (cubes[i].onFloor){
+              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
+            } else {
+              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+            }
+          }
           
           pushMatrix();
           translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);

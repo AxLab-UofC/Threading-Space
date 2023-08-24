@@ -16,7 +16,7 @@ int maxMotorSpeed = 115;
 
 //
 boolean debugMode = false;
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -35,10 +35,6 @@ int xmax = 949;
 int ymax = 898;
 int vert = 500;
 
-//int xmin = 45;
-//int ymin = 45;
-//int xmax = 455;
-//int ymax = 455;
 
 int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
@@ -69,7 +65,7 @@ void setup() {
   //launch OSC sercer
   oscP5 = new OscP5(this, 3333);
   server = new NetAddress[1];
-  server[0] = new NetAddress("127.0.0.1", 3334);
+  server[0] = new NetAddress("10.150.9.255", 3334);
 
   //create cubes
   cubes = new Cube[nCubes];
@@ -125,46 +121,7 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  SmoothSequence seq;
-  
-  //animator.add(new Frame(moveType.PAIR, getCircle(0)));
-  
-  seq = new SmoothSequence((float t) -> animCircle(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  //seq = new SmoothSequence((int t) -> animTwoCylinder());
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
-  //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  
-  seq = new SmoothSequence((float t) -> animRotateLine(t));
-  seq.setTimeLimit(15);
-  animator.add(seq);
-  
-  //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((float t) -> animLine(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
-  seq.setPeriod(20);
-  seq.setTimeLimit(5);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animWaveY());
-  seq.setTimeLimit(16);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animWaveYCross());
-  seq.setTimeLimit(16);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animCircle(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  animator.setLoop();
+  screensaver();
   animator.setViz();
   animator.start();
 }
@@ -241,11 +198,16 @@ void draw() {
         text("Second "+ (smoothseq.currTime / 1000) + "/" + (smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
       textSize(24);
+      
+      for (int i = 0; i < animator.size(); i++) {
+        text("Sequence " + (i + 1) + ": "+ animator.getSeq(i).status, debugUIx, 30 * i + debugUIy+150);
+      }
     }
 
-    for (int i  = 0; i < pairs.length; i++) {
-      text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
-    }
+    textSize(24);
+    //for (int i  = 0; i < pairs.length; i++) {
+    //  text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
+    //}
   }
   cp5.draw();
   cam.endHUD();

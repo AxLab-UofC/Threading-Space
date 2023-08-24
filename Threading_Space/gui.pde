@@ -71,7 +71,7 @@ void setupGUI() {
           .setSize(200, 30)
           .setRange(-1, 1)
           .setValue(globalInnerAngleOffsetSpeed);
-        ;
+        break;
         
     case LINE:
           cp5.addSlider("globalLineOffsetSpeed")
@@ -79,7 +79,7 @@ void setupGUI() {
           .setSize(200, 30)
           .setRange(0, 1)
           .setValue(globalLineOffsetSpeed);
-        ;
+        break;
       
   }
   

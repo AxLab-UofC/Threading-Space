@@ -50,7 +50,6 @@ class AnimManager {
     }
   }
   
-  
   void start() {
     if (sequences.size() > 0) {
       sequences.get(iterator).start();
@@ -62,13 +61,26 @@ class AnimManager {
     status = moveStatus.NONE;
   }
   
+  void reset(){
+    status = moveStatus.NONE;
+    for (int i = 0; i < sequences.size(); i++) {
+      sequences.get(i).reset();
+    }
+    iterator = 0;
+  }
+  
+  void restart() {
+    reset();
+    start();
+  }
+  
   void update() {
     if (sequences.size() > 0) {
       boolean seqComplete = sequences.get(iterator).update();
       if (seqComplete) {
         if (iterator + 1 == sequences.size()) {
           if (loop) {
-            reset();
+            restart();
           } else {
             status = moveStatus.COMPLETE;
           }
@@ -80,19 +92,16 @@ class AnimManager {
     }
   }
   
-  void reset(){
-    iterator = 0;
-    for (int i = 0; i < sequences.size(); i++) {
-      sequences.get(i).reset();
-    }
-  }
-  
   Sequence getCurrentSeq() {
     if (size() > 0) {
       return sequences.get(iterator);
     }
     
     return null;
+  }
+  
+  Sequence getSeq(int i) {
+    return sequences.get(i);
   }
   
   int size() {
@@ -160,6 +169,11 @@ class SmoothSequence extends Sequence {
     func = newFunc;
   }
   
+  SmoothSequence(Movement newFunc) {
+    type = moveType.PAIR;
+    func = newFunc;
+  }
+  
   void start() {
     startTime = millis() - currTime;
     status = moveStatus.INPROGRESS;
@@ -216,7 +230,11 @@ class SmoothSequence extends Sequence {
         if (viz) visualize(indieTargets);
       break;
     }
-    return (currTime > (timeLimit * 1000));
+    if (currTime > (timeLimit * 1000)){
+      status = moveStatus.COMPLETE;
+      return true;
+    }
+    return false;
   }
 }
 

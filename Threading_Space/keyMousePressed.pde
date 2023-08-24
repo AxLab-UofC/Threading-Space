@@ -24,6 +24,7 @@ void keyPressed() {
   }
   
   switch(key) {
+    
 
   case 'f':
     int[][] notes = {{30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 59, 20}, {30, 62, 20}, {30, 60, 20}, {30, 57, 20}};
@@ -142,6 +143,16 @@ void keyPressed() {
     
   case 'd':
     debugMode = !debugMode;
+    break;
+    
+  case 'm':
+    planPath(100, 100, 400, 400, 70, 70, 6, 1);
+    if (animator.status == moveStatus.NONE) {
+      animator.start();
+    } else {
+      stop();
+      animator.stop();
+    }
     break;
     
     

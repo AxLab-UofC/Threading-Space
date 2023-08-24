@@ -5,6 +5,8 @@ PeasyCam cam;
 import oscP5.*;
 import netP5.*;
 
+import java.util.*;
+
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
@@ -104,7 +106,7 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  SmoothSequence seq;
+  /*SmoothSequence seq;
   animator.add(new Frame(moveType.PAIR, getCircle(0)));
   seq = new SmoothSequence((int t) -> animCylinder());
   seq.setTimeLimit(20);
@@ -119,7 +121,7 @@ void setup() {
   animator.add(seq);
   seq = new SmoothSequence((int t) -> animCylinder());
   seq.setTimeLimit(20);
-  animator.add(seq);
+  animator.add(seq);*/
 }
 
 void draw() {

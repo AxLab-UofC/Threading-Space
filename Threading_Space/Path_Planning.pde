@@ -11,7 +11,7 @@ void planPath(int num_x, int num_y, int x_size, int y_size, int x_shift, int y_s
     HashMap<Integer, Integer> takenVertices = new HashMap<Integer, Integer>(); // Keep track of which vertex is taken.
     
     // ADD CURRENT LOCATIONS TO START FILE
-    /*for (int i = 0; i < num_agents; i++) {
+    for (int i = 0; i < num_agents; i++) {
         int x = cubes[i].x;
         int y = 500 - cubes[i].y;
         int x_vertex = (int)Math.round((double)(x - x_shift) / (double)x_size * (double)num_x);
@@ -40,7 +40,7 @@ void planPath(int num_x, int num_y, int x_size, int y_size, int x_shift, int y_s
         writer.println(vertex);
     }
     writer.flush();
-    writer.close();*/
+    writer.close();
     
     Command cmd = new Command(command + plannerDirectory + plannerFile + " -a " + Integer.toString(num_x)
                                                                        + " -b " + Integer.toString(num_y)
@@ -66,57 +66,35 @@ void planPath(int num_x, int num_y, int x_size, int y_size, int x_shift, int y_s
     
     for (int i = 0; i < num_agents; i++) {
         /**/toio_locs[i] = new ArrayList<Integer[]>();
-        Integer prev_pos[] = new Integer[]{-1,-1,-1};
-        char modifying = 'n'; // n -> default; x -> x-coordinate; y -> y-coordinate;
         
         for (int j = 0; j < x_y[i].length; j++) {
             String[] temp = x_y[i][j].split(",", 0);
             Integer[] p = new Integer[]{Integer.parseInt(temp[0]), y_min_plus_max - (Integer.parseInt(temp[1])), 0};
-            if (j == x_y[i].length - 1) {
-                toio_locs[i].add(p);
-                continue;
-            }
-            if (j == 0) {
-                prev_pos[0] = p[0];
-                prev_pos[1] = p[1];
-                continue;
-            }
-            if (!p[0].equals(prev_pos[0])) {
-                if (modifying != 'x') {
-                    if (Integer.compare(p[0], prev_pos[0]) < 0) {
-                        prev_pos[2] = 180;
-                    }
-                    else {
-                        prev_pos[2] = 0;
-                    }
-                    toio_locs[i].add(prev_pos.clone());
-                    modifying = 'x';
-                }
-            }
-            else { // !p[1].equals(prev_pos[1])
-                if (modifying != 'y') {
-                    if (Integer.compare(p[1], prev_pos[1]) < 0) {
-                        prev_pos[2] = 270;
-                    }
-                    else {
-                        prev_pos[2] = 90;
-                    }
-                    toio_locs[i].add(prev_pos.clone());
-                    modifying = 'y';
-                }
-            }
-            prev_pos[0] = p[0];
-            prev_pos[1] = p[1];
+            toio_locs[i].add(p);
         }
-        print("Toio " + i + " locations: ");
-        for (Integer[] loc : toio_locs[i]) {
-            print(Arrays.toString(loc) + ", ");
-        }
-        print("\n");
     }
     
+    boolean done = false;
+    DiscreteSequence seq = new DiscreteSequence();
+    while (!done) {
+        int planned_path[][] = new int[num_agents][];
+        for (int i = 0; i < num_agents; i++) {
+            done &= toio_locs[i].isEmpty();
+            if (toio_locs[i].isEmpty()) {
+                continue;
+            }
+            
+            planned_path[i] = Arrays.asList(toio_locs[i].remove(0)).stream().mapToInt(Integer::intValue).toArray();
+        }
+        if (!done) {
+            seq.addFrame(new Frame(moveType.PAIR, planned_path));
+        }
+    }
+    animator.add(seq);
+    
+    
     // FIRST LOCATION
-    for (int i = 0; i < num_agents; i++) {
+    /*for (int i = 0; i < num_agents; i++) {
         motorTarget(cubes[i].id, 2, toio_locs[i].get(0)[0], toio_locs[i].get(0)[1], toio_locs[i].get(0)[2]);
         delay(2000);
     }
@@ -153,6 +131,6 @@ void planPath(int num_x, int num_y, int x_size, int y_size, int x_shift, int y_s
             println("Stopping path execution. TIMEOUT!");
             break;
         }
-    }
+    }*/
     
 }

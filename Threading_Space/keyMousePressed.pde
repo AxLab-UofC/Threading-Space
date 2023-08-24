@@ -106,20 +106,6 @@ void keyPressed() {
   movePairs(getCircle(0));
     break;
     
-  case 'x':
-    seq = new DiscreteSequence();
-    for (int i = 0; i < nPairs; i ++) {
-      seq.addFrame(new Frame(moveType.BOTTOM, getSpiral(i)));
-    }
-    seq.setSpeed(10);
-    animator.add(seq);
-    break;
-    
-  case 'z':
-    smooth = new SmoothSequence(moveType.BOTTOM, (int t) -> getCircle(t));
-    animator.add(smooth);
-    break;
-    
   case 'v':
     visualOn = !visualOn;
     break;

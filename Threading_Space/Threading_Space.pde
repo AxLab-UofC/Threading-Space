@@ -18,24 +18,32 @@ int maxMotorSpeed = 115;
 
 //
 boolean debugMode = false;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
 boolean zorozoro = false;
 int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, {172, 148}};
-//int npairs = zoropairs.length;
 
 //For Visualizing Posistions in GUI
-boolean visualOn = true;
+boolean visualOn = true; 
+boolean guiOn = true;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
+int xmin = 34;
+int ymin = 35;
 int xmax = 949;
 int ymax = 898;
 int vert = 500;
 
+//int xmin = 45;
+//int ymin = 45;
 //int xmax = 455;
 //int ymax = 455;
+
+int xmid = (int) (xmax + xmin)/2;
+int ymid = (int) (ymax + ymin)/2;
 
 
 AnimManager animator;
@@ -74,15 +82,28 @@ void setup() {
   pairs = new Pair[nPairs];
   pairsViz = new PairVisual[nPairs];
   if (zorozoro) {
-    for (int i = 0; i < zoropairs.length; i++) {
+    nPairs = zoropairs.length;
+    for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
+    }
+  } else if (testMode) {
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
+    
+    xmid = (int) (xmax + xmin)/2;
+    ymid = (int) (ymax + ymin)/2;
+    
+    for (int i = 0; i < nPairs; i++) {
+      pairsViz[i] = new PairVisual();
+      pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
     }
   } else {
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
       pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
-      //pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
     }
   }
 
@@ -106,22 +127,48 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  /*SmoothSequence seq;
-  animator.add(new Frame(moveType.PAIR, getCircle(0)));
-  seq = new SmoothSequence((int t) -> animCylinder());
+  SmoothSequence seq;
+  
+  //animator.add(new Frame(moveType.PAIR, getCircle(0)));
+  
+  seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setTimeLimit(20);
   animator.add(seq);
+  
+  //seq = new SmoothSequence((int t) -> animTwoCylinder());
+  //seq.setTimeLimit(20);
+  //animator.add(seq);
   //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((int t) -> animRotateLine());
+  
+  seq = new SmoothSequence((float t) -> animRotateLine(t));
+  seq.setTimeLimit(15);
+  animator.add(seq);
+  
+  //animator.add(new Frame(moveType.PAIR, getLine(0)));
+  seq = new SmoothSequence((float t) -> animLine(t));
   seq.setTimeLimit(20);
   animator.add(seq);
-  animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((int t) -> animLine());
+  
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
+  seq.setPeriod(20);
+  seq.setTimeLimit(5);
+  animator.add(seq);
+  
+  seq = new SmoothSequence((float t) -> animWaveY());
+  seq.setTimeLimit(16);
+  animator.add(seq);
+  
+  seq = new SmoothSequence((float t) -> animWaveYCross());
+  seq.setTimeLimit(16);
+  animator.add(seq);
+  
+  seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setTimeLimit(20);
   animator.add(seq);
-  seq = new SmoothSequence((int t) -> animCylinder());
-  seq.setTimeLimit(20);
-  animator.add(seq);*/
+  
+  animator.setLoop();
+  animator.setViz();
+  animator.start();
 }
 
 void draw() {
@@ -133,25 +180,31 @@ void draw() {
   
   if (animator.status != moveStatus.NONE) {
     animator.update();
-  }
+  } 
   
-  int[][][] targets;
-  switch (guiChoose) {
-    case CYLINDER:
-      targets = animCylinder();
-      break;
-    
-    case LINE:
-      targets = animRotateLine();
-      break;
+  //if (guiOn) {
+  //    int[][][] targets;
+  //    switch (guiChoose) {
+  //      case CYLINDER:
+  //        targets = animCylinderTwist();
+  //        break;
+        
+  //      case LINE:
+  //        targets = animRotateLine();
+  //        break;
       
-    default:
-      targets = animCylinder();
-      break;
-  }
-  
-  visualize(targets);
-  //movePairsVelocity(targets);
+  //      case TWOCIRCLE:
+  //        targets = animTwoCylinder();
+  //        break; 
+            
+  //      default:
+  //        targets = animCylinder();
+  //        break;
+  //    }
+      
+  //    visualize(targets);
+  //    movePairsVelocity(targets);
+  //}
   
 
 

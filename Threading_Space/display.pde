@@ -74,15 +74,15 @@ void drawDisplay() {
 
 
       if (debugMode) {
-
-
-
         if (topActive) {
-          
-                  if (cubes[i].isActive) {
-          stroke(1);
-          line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
-        }
+          if (cubes[i].isActive) {
+            stroke(1);
+            if (cubes[i].onFloor){
+              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
+            } else {
+              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+            }
+          }
           
           pushMatrix();
           translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
@@ -156,9 +156,15 @@ void drawDisplay() {
     stroke(StringCol);
     strokeWeight(stringWeight);
     if (visualOn) {
+      if (debugMode) {
+        stroke(color(191+(64*sin(i)), 191+(64*sin(i + (PI/4))), 191+(64*sin(i + (PI/2)))));
+      }
       line(pairsViz[i].t.x, pairsViz[i].t.y, vert - toioCylinderH/2, pairsViz[i].b.x, pairsViz[i].b.y, -vert + toioCylinderH/2);
     } else {
       if (topActive && bottomActive) {
+        if (debugMode) {
+          stroke(color(191+sin(i), 191+sin(i + (PI/4)), 191+sin(i + (PI/4))));
+        }
         line(pairs[i].t.x, ymax - pairs[i].t.y, vert - toioCylinderH/2, pairs[i].b.x, pairs[i].b.y, -vert+ toioCylinderH/2);
       }
     }

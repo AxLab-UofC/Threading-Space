@@ -16,7 +16,7 @@ int maxMotorSpeed = 115;
 
 //
 boolean debugMode = false;
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -123,7 +123,7 @@ void setup() {
   animator = new AnimManager();
   screensaver();
   animator.setViz();
-  animator.start();
+  //animator.start();d
 }
 
 void draw() {

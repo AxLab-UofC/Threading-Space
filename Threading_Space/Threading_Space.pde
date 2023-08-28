@@ -65,7 +65,7 @@ void setup() {
   //launch OSC sercer
   oscP5 = new OscP5(this, 3333);
   server = new NetAddress[1];
-  server[0] = new NetAddress("127.0.0.1", 3334);
+  server[0] = new NetAddress("169.254.126.165", 3334);
 
   //create cubes
   cubes = new Cube[nCubes];
@@ -123,7 +123,7 @@ void setup() {
   animator = new AnimManager();
   screensaver();
   animator.setViz();
-  animator.start();
+  //animator.start();d
 }
 
 void draw() {

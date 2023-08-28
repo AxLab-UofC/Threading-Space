@@ -16,7 +16,7 @@ int maxMotorSpeed = 115;
 
 //
 boolean debugMode = false;
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -136,30 +136,31 @@ void draw() {
   if (animator.status != moveStatus.NONE) {
     animator.update();
   } 
+ 
   
-  //if (guiOn) {
-  //    int[][][] targets;
-  //    switch (guiChoose) {
-  //      case CYLINDER:
-  //        targets = animCylinderTwist();
-  //        break;
+  if (guiOn) { 
+      int[][][] targets;
+      switch (guiChoose) {
+        case CYLINDER:
+          targets = animCylinderTwist();
+          break;
         
-  //      case LINE:
-  //        targets = animRotateLine();
-  //        break;
+        case LINE:
+          targets = animRotateLine();
+          break;
       
-  //      case TWOCIRCLE:
-  //        targets = animTwoCylinder();
-  //        break; 
+        case TWOCIRCLE:
+          targets = animTwoCylinder();
+          break; 
             
-  //      default:
-  //        targets = animCylinder();
-  //        break;
-  //    }
+        default:
+          targets = animTwoCylinder();
+          break;
+      }
       
-  //    visualize(targets);
-  //    movePairsVelocity(targets);
-  //}
+      visualize(targets);
+      //movePairsVelocity(targets);
+  }
   
 
 
@@ -175,6 +176,12 @@ void draw() {
   fill(50, 50, 105);
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
+  
+  if (guiOn) {
+  fill(50, 50, 105);
+  textAlign(LEFT, TOP);
+  text("\n\nGUI", 40, 40);
+  }
 
   if (debugMode) {
 
@@ -213,3 +220,59 @@ void draw() {
   cam.endHUD();
   //END DO NOT EDIT
 }
+
+  
+
+  public void controlEvent(ControlEvent theEvent) {
+    println("got an event from"+theEvent.getController().getId());
+    
+   if (theEvent.isFrom(cp5.getController("LINEBUTTON"))) {
+    println("this event was triggered by Controller n1");
+    
+  }
+  
+    //guiChoose = GUI.LINE;
+    //setupGUI();
+    
+    
+    switch(theEvent.getController().getId()) {
+    case(1):
+    guiOn = !guiOn;
+    setupGUI(); 
+    break;
+    case(2):
+    if (guiOn == true) {
+    guiChoose = GUI.LINE;
+    setupGUI(); 
+    break;
+    }
+    case(3):
+    if (guiOn == true) {
+    guiChoose = GUI.CYLINDER; 
+    setupGUI(); 
+    break;
+    }
+    case(4):
+    if (guiOn == true) {
+    guiChoose = GUI.TWOCIRCLE; 
+    setupGUI(); 
+    break;
+    }
+  }
+  
+  }
+  
+  
+  //  public void LINEBUTTON(){
+  //  guiChoose = GUI.LINE;
+  //  setupGUI(); 
+  //  println("LINEBUTTON pressed");
+    
+  //}
+  
+  
+  //public void LINEBUTTON(int theValue) {
+  //println("a button event from colorA: "+theValue);
+  //guiChoose = GUI.LINE;
+  //setupGUI();
+  //}

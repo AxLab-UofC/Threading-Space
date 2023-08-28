@@ -19,22 +19,59 @@ int xPos = 0;
 
 Slider2D s;
 
-
 int guiX = 40;
-int guiY = 200;
+int guiY = 250;
 
 void setupGUI() {
 
   cp5 = new ControlP5(this);
   
+  //cp5.addNumberbox("n1")
+  //   .setValue(90)
+  //   .setPosition(500, 500)
+  //   .setSize(50, 50)
+  //   .setId(1);
+ 
   
+    cp5.addButton("GUI TOGGLE")
+     .setValue(100)
+     .setPosition(1100,guiY-100)
+     .setSize(200,50)
+     .setId(1)
+     ;
+     
+     if (guiOn == true) {
+     
+  
+    cp5.addButton("LINEBUTTON")
+     .setValue(100)
+     .setPosition(1100,guiY)
+     .setSize(200,50)
+     .setId(2)
+     ;
+     
+     cp5.addButton("CYLINDERBUTTON")
+     .setValue(100)
+     .setPosition(1100,guiY +80)
+     .setSize(200,50)
+     .setId(3)
+     ;
+     
+     cp5.addButton("TWOCYLINDER")
+     .setValue(100)
+     .setPosition(1100,guiY+160)
+     .setSize(200,50)
+     .setId(4)
+     ;
+     
+     
   switch (guiChoose) {
     case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")
           .setPosition(guiX, guiY)
           .setSize(200, 30)
           .setRange(-1, 1)
-          .setValue(globalAngleOffsetSpeed);
+          .setValue(globalAngleOffsetSpeed)
         ;
       
         cp5.addSlider("t_offsetAngleSpeed")
@@ -65,6 +102,7 @@ void setupGUI() {
           .setValue(b_radiusSpeed)
           ;
           break;
+          
     case TWOCIRCLE: 
           cp5.addSlider("innerCircle")
           .setPosition(guiX, guiY)
@@ -82,44 +120,49 @@ void setupGUI() {
         break;
       
   }
+     
+     }
+     
+  
+  
   
 
 
-  //cp5.addSlider("lineGap")
-  //  .setPosition(20, 500)
-  //  .setSize(200, 30)
-  //  .setRange(-380, 380)
-  //  .setValue(0)
-  //  ;
+//  cp5.addSlider("lineGap")
+//    .setPosition(20, 500)
+//    .setSize(200, 30)
+//    .setRange(-380, 380)
+//    .setValue(0)
+//    ;
 
-  //cp5.addSlider("spacing")
-  //  .setPosition(20, 550)
-  //  .setSize(200, 30)
-  //  .setRange(20, 55)
-  //  .setValue(30)
-  //  ;
+//  cp5.addSlider("spacing")
+//    .setPosition(20, 550)
+//    .setSize(200, 30)
+//    .setRange(20, 55)
+//    .setValue(30)
+//    ;
 
-  //cp5.addSlider("xPos")
-  //  .setPosition(20, 600)
-  //  .setSize(200, 30)
-  //  .setRange(-300, 300)
-  //  .setValue(0)
-  //  ;
+//  cp5.addSlider("xPos")
+//    .setPosition(20, 600)
+//    .setSize(200, 30)
+//    .setRange(-300, 300)
+//    .setValue(0)
+//    ;
 
-  // cp5.addSlider("toggle")
-  //.setPosition(20, 700)
-  //.setSize(200, 30)
-  //.setRange(0, 1)
-  //.setValue(0)
-  //;
+//   cp5.addSlider("toggle")
+//  .setPosition(20, 700)
+//  .setSize(200, 30)
+//  .setRange(0, 1)
+//  .setValue(0)
+//  ;
 
-  //s = cp5.addSlider2D("xy")
-  //  .setPosition(20, 220)
-  //  .setSize(200, 200)
-  //  .setMinMax(0, 0, 1000, 1000)
-  //  .setValue(0, 0)
-  //  //.disableCrosshair()
-  //  ;
+//  s = cp5.addSlider2D("xy")
+//    .setPosition(20, 220)
+//    .setSize(200, 200)
+//    .setMinMax(0, 0, 1000, 1000)
+//    .setValue(0, 0)
+//    //.disableCrosshair()
+//    ;
 
   cp5.setAutoDraw(false);
 }

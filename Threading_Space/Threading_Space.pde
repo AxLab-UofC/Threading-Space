@@ -10,11 +10,11 @@ import netP5.*;
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
 int nPairs = 10;
-int cubesPerHost = 10;
+int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
 //server ids
-String[] hosts = {"127.0.0.1","169.254.11.148"};
+String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
@@ -141,7 +141,8 @@ void draw() {
   
   if (animator.status != moveStatus.NONE) {
     animator.update();
-  } 
+
+} 
  
   
   if (guiOn) { 

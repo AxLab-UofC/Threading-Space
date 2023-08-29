@@ -41,6 +41,10 @@ void keyPressed() {
     movePairs(getCircle(0));
     break;
     
+    case 'p':
+    movePairs(pairCheck());
+    break;
+    
     case 'd':
     debugMode = !debugMode;
     break;

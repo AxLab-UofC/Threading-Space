@@ -10,7 +10,7 @@ int hostIndex(String host) {
 void oscEvent(OscMessage msg) {
   int hostId = hostIndex(msg.address( ).substring(1));
   int id = (cubesPerHost * hostId) + msg.get(1).intValue();
-  println(msg.address( ).substring(1) , id);
+  //println(msg.address( ).substring(1) , id, msg.addrPattern());
   
   if (msg.checkAddrPattern("/position")) {
     //this collects position information 
@@ -20,7 +20,7 @@ void oscEvent(OscMessage msg) {
     int posy = msg.get(3).intValue();
     int postheta = msg.get(4).intValue();
     
-    id = cubesPerHost*hostId + id;
+    //id = cubesPerHost*hostId + id;
     
     cubes[id].positionUpdate(posx, posy, postheta);
   } 
@@ -61,7 +61,6 @@ void oscEvent(OscMessage msg) {
     int forcex = msg.get(4).intValue();
     int forcey = msg.get(5).intValue();
     int forcez = msg.get(6).intValue();
-    println("Magnetic for id "+id +": " + state +", "+ strength + ", " + forcex + ", " + forcey + ", " + forcez);
   }
   
   else if (msg.checkAddrPattern("/postureeuler")) {

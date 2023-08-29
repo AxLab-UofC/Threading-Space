@@ -18,6 +18,7 @@ void motorBasic(int cubeId, int leftspeed, int rightspeed) {
     msg.add(0x02);
   }
   msg.add(rightspeed);
+  println(cubeId, hostId, cubesPerHost, actualcubeid);
   oscP5.send(msg, server[hostId]);
 }
 

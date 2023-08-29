@@ -30,94 +30,34 @@ void keyPressed() {
     midi(0, 1, notes);
     break;
     
-  
-  case '`':
-      midi(0, 10, 57, 255);
-      break;
-      
-  case '1':
-    midi(0, 10, 58, 255);
-    break;
-    
-  case '2':
-    midi(0, 10, 59, 255);
-    break;
-      
-  case '3':
-    midi(0, 10, 60, 255);
-    break;
-    
-  case '4':
-    midi(0, 10, 61, 255);
-    break;
-    
-  case '5':
-    midi(0, 10, 62, 255);
-    break;
-    
-  case '6':
-    midi(0, 10, 63, 255);
-    break;
-    
-  case '7':
-    midi(0, 10, 64, 255);
-    break;
-    
-  case '8':
-    midi(0, 10, 65, 255);
-    break;
-    
-  case '9':
-    midi(0, 10, 66, 255);
-    break;
-    
-  case '0':
-    midi(0, 10, 67, 255);
-    break;
-     
-  case '-':
-    midi(0, 10, 68, 255);
-    break;
-    
    case 'a':
-    
     break;
     
-  case 'k':
-    ledAll();
-    break;
-    
-   case 't':
-     motorBasic(0, 45, 30);
-     motorBasic(1, 45, 30);
-     break; 
-  
-  case 'y':
-     motorBasic(0, true, 45, true, 30);
-     motorBasic(1, true, 45, true, 30);
-     break; 
-     
-  case 'l':
-    movePairs(getLine(0));
-    break;
-    
-  case 'c':
-  movePairs(getCircle(0));
-    break;
-    
-  case 'v':
-    visualOn = !visualOn;
-    break;
-    
-  case 'b':
+   case 'b':
     visualize(getCircle(0));
     break;
     
-  case 'n':
-    visualizeTop(getCircle(1));
+    case 'c':
+    movePairs(getCircle(0));
     break;
     
-  case 's':
+    case 'd':
+    debugMode = !debugMode;
+    break;
+    
+    case 'g':
+    guiOn = !guiOn;
+    break;
+    
+    case 'k':
+    ledAll();
+    break;
+   
+    case 'l':
+    movePairs(getLine(0));
+    break;
+    
+    case 's':
     if (animator.status == moveStatus.NONE) {
       animator.start();
     } else {
@@ -125,11 +65,25 @@ void keyPressed() {
       animator.stop();
     }
     break;
-    
-  case 'd':
-    debugMode = !debugMode;
+   
+    case 'v':
+    visualOn = !visualOn;
     break;
-    
+  
+     case 'x':
+     guiChoose = GUI.TWOCIRCLE;
+     setupGUI(); 
+     break; 
+     
+     case 'y':
+     guiChoose = GUI.CYLINDER;
+     setupGUI(); 
+     break; 
+     
+     case 'z':
+     guiChoose = GUI.LINE;
+     setupGUI(); 
+     break; 
     
   default:
     break;

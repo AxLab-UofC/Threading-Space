@@ -2,12 +2,6 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
-float triangleWave(float x) {
-  float ret = (x % 4) - 1;
-  if (ret > 1) return (2 - ret);
-  else return ret;
-}
-
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
@@ -112,6 +106,7 @@ class AnimManager {
 
 class Sequence {
   moveStatus status = moveStatus.NONE;
+  boolean tangleSafe = true;
   boolean viz = false;
   
   void start() {
@@ -126,12 +121,20 @@ class Sequence {
     status = moveStatus.NONE;
   }
   
+  void setTangle(boolean tangle) {
+    tangleSafe = tangle;
+  }
+  
   void setViz(boolean val) {
     viz = val;
   }
   
   boolean update(){
     return false;
+  }
+  
+  boolean untangle() {
+    return tangleSafe;
   }
 }
 

@@ -5,17 +5,21 @@ PeasyCam cam;
 import oscP5.*;
 import netP5.*;
 
+import java.util.*;
+
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 200;
-int nPairs = 6;
-int cubesPerHost = nCubes;
+int nCubes = 20;
+int nPairs = 10;
+int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
+//server ids
+String[] hosts = {"127.0.0.1","169.254.0.2"};
 
-//
-boolean debugMode = false;
+
+//For testing on small mat
 boolean testMode = false;
 
 
@@ -23,7 +27,8 @@ boolean testMode = false;
 boolean zorozoro = false;
 int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, {172, 148}};
 
-//For Visualizing Posistions in GUI
+//For Visualizing Posistions and Debug mode in GUI
+boolean debugMode = false;
 boolean visualOn = true; 
 boolean guiOn = false;
 PairVisual[] pairsViz;
@@ -38,6 +43,15 @@ int vert = 500;
 
 int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
+
+//For Path Planning
+int num_x = 10;
+int num_y = 10;
+int x_size = 400;
+int y_size = 400;
+int x_shift = 70;
+int y_shift = 70;
+int num_instances = 1;
 
 
 AnimManager animator;
@@ -62,10 +76,12 @@ import com.jogamp.opengl.GLProfile;
 }
 
 void setup() {
-  //launch OSC sercer
+  //create OSC servers
   oscP5 = new OscP5(this, 3333);
-  server = new NetAddress[1];
-  server[0] = new NetAddress("169.254.126.165", 3334);
+  server = new NetAddress[hosts.length];
+  for (int i = 0; i < hosts.length; i++) {
+    server[i] = new NetAddress(hosts[i], 3334);
+  }
 
   //create cubes
   cubes = new Cube[nCubes];
@@ -73,6 +89,7 @@ void setup() {
     cubes[i] = new Cube(i);
   }
 
+  //create pairs
   pairs = new Pair[nPairs];
   pairsViz = new PairVisual[nPairs];
   if (zorozoro) {
@@ -123,7 +140,7 @@ void setup() {
   animator = new AnimManager();
   screensaver();
   animator.setViz();
-  //animator.start();d
+  //animator.start();
 }
 
 void draw() {
@@ -135,7 +152,8 @@ void draw() {
   
   if (animator.status != moveStatus.NONE) {
     animator.update();
-  } 
+
+} 
  
   
   if (guiOn) { 

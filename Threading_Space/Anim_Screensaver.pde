@@ -6,69 +6,69 @@ void screensaver() {
   seq.setTimeLimit(20);
   animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animCircle(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(60);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animCircle(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animCircleTwist(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(40);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animCircleTwist(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(40);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animCircleTwist(1-t));
-  //seq.setPeriod(10);
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animCircleTwist(2-t));
+  seq.setPeriod(10);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animRotateLine(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLine(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animRotateLineTwist(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(40);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLineTwist(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(40);
+  animator.add(seq);
 
-  //seq = new SmoothSequence((float t) -> animRotateLineTwist(1-t));
-  //seq.setPeriod(10);
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLineTwist(1-t));
+  seq.setPeriod(10);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animRotateLine(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(10);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLine(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(10);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animLine(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(30);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animLine(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(30);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(5);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
+  seq.setPeriod(20);
+  seq.setTimeLimit(5);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animWave(t));
-  //seq.setTimeLimit(10);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animWave(t));
+  seq.setTimeLimit(10);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animRotateLine(t + .75));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(5);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .75));
+  seq.setPeriod(20);
+  seq.setTimeLimit(5);
+  animator.add(seq);
 
-  //seq = new SmoothSequence((float t) -> animFastTwist(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(40);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animFastTwist(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(40);
+  animator.add(seq);
   
-  //seq = new SmoothSequence((float t) -> animFastTwist(1-t));
-  //seq.setPeriod(10);
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animFastTwist(1-t));
+  seq.setPeriod(10);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
   
   animator.setLoop();

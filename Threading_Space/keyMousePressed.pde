@@ -24,6 +24,7 @@ void keyPressed() {
   }
   
   switch(key) {
+    
 
   case 'f':
     int[][] notes = {{30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 59, 20}, {30, 62, 20}, {30, 60, 20}, {30, 57, 20}};
@@ -39,6 +40,10 @@ void keyPressed() {
     
     case 'c':
     movePairs(getCircle(0));
+    break;
+    
+    case 'p':
+    movePairs(pairCheck());
     break;
     
     case 'd':
@@ -84,6 +89,30 @@ void keyPressed() {
      guiChoose = GUI.LINE;
      setupGUI(); 
      break; 
+  case 'm':
+    int targets[][] = new int[nPairs][2];
+    targets[0][0] = 190;
+    targets[0][1] = 270;
+    targets[1][0] = 110;
+    targets[1][1] = 390;
+    targets[2][0] = 270;
+    targets[2][1] = 190;
+    targets[3][0] = 310;
+    targets[3][1] = 350;
+    targets[4][0] = 190;
+    targets[4][1] = 430;
+    targets[5][0] = 390;
+    targets[5][1] = 430;
+    planPath(targets);
+    if (animator.status == moveStatus.NONE) {
+      animator.start();
+    } else {
+      println("moveStatus not NONE");
+      stop();
+      animator.stop();
+    }
+    break;
+    
     
   default:
     break;

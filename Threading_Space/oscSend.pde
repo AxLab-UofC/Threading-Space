@@ -99,6 +99,7 @@ void motorDuration(int cubeId, int leftspeed, int rightspeed, int duration) {
   }
   msg.add(rightspeed);
   msg.add(duration);
+  
   oscP5.send(msg, server[hostId]);
 }
 

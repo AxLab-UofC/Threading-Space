@@ -1,5 +1,6 @@
 float globalLineOffset;
 float globalLineOffsetSpeed = 0.25;
+float globalAmplitude;
 
 int[][][] animLine(){
   
@@ -60,13 +61,13 @@ int[][] animWaveY() {
   int[][] targets = new int[nPairs][3];
 
   float time = millis() / 1000.0;
-  float amplitude = 120;  
+  float globalAmplitude = 120;  
   float frequency = 2;    
   
   int startY = ymid; // Centered along y-axis
 
   for (int i = 0; i < nPairs; i++) {
-    int yOffset = (int) (amplitude * cos(frequency * time + i * PI / nPairs));
+    int yOffset = (int) (globalAmplitude * cos(frequency * time + i * PI / nPairs));
     int startX = (xmin/2) + (int)((xmax - xmin) * (((.8 * i)/nPairs) + .2));
     
     targets[i][0] = startX;
@@ -81,12 +82,12 @@ int[][][] animWaveYCross() {
   int[][][] targets = new int[nPairs][2][3];
 
   float time = millis() / 1000.0;
-  float amplitude = 120;  
+  float globalAmplitude = 120;  
   float frequency = 2;    
 
 
   for (int i = 0; i < nPairs; i++) {
-    float yOffset = amplitude * cos(frequency * time + i * PI / nPairs);
+    float yOffset = globalAmplitude * cos(frequency * time + i * PI / nPairs);
     int yOffsetInt = int(yOffset);
 
     int startX = (xmin/2) + (int)((xmax - xmin) * (((.8 * i)/pairs.length) + .2));

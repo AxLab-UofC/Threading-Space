@@ -1,5 +1,5 @@
 enum GUI {
-  CYLINDER, LINE, TWOCIRCLE
+  CYLINDER, LINE
 }
 
 GUI guiChoose = GUI.CYLINDER;
@@ -20,11 +20,26 @@ int xPos = 0;
 Slider2D s;
 
 int guiX = 40;
-int guiY = 250;
+int guiY = 220;
+int guiYadj = 230;
+int guioffset = 60; 
+
+//PFont labelfont;
+//labelfont = loadFont("Code-Light-80.vlw");
+//frameRate(30);
+
+
+
+//labelfont = createFont("helvetica", 13); 
+
 
 void setupGUI() {
 
   cp5 = new ControlP5(this);
+  
+  //PFont labelfont;
+  //labelfont = createFont("Times",12);
+
   
   //cp5.addNumberbox("n1")
   //   .setValue(90)
@@ -33,9 +48,9 @@ void setupGUI() {
   //   .setId(1);
  
   
-    cp5.addButton("GUI TOGGLE")
+    cp5.addButton("STOP/START GUI")
      .setValue(100)
-     .setPosition(1100,guiY-100)
+     .setPosition(guiX,guiY+guioffset)
      .setSize(200,50)
      .setId(1)
      ;
@@ -43,126 +58,108 @@ void setupGUI() {
      if (guiOn == true) {
      
   
-    cp5.addButton("LINEBUTTON")
+    cp5.addButton("LINE")
      .setValue(100)
-     .setPosition(1100,guiY)
+     .setPosition(guiX,guiY+(2*guioffset))
      .setSize(200,50)
      .setId(2)
      ;
      
-     cp5.addButton("CYLINDERBUTTON")
+     cp5.addButton("CYLINDER")
      .setValue(100)
-     .setPosition(1100,guiY +80)
+     .setPosition(guiX,guiY +(3*guioffset))
      .setSize(200,50)
      .setId(3)
      ;
      
-     cp5.addButton("TWOCYLINDER")
-     .setValue(100)
-     .setPosition(1100,guiY+160)
-     .setSize(200,50)
-     .setId(4)
-     ;
+     //cp5.addButton("WAVE")
+     //.setValue(100)
+     //.setPosition(guiX,guiY+(3*guioffset))
+     //.setSize(200,50)
+     //.setId(4)
+     //;
      
      
   switch (guiChoose) {
     case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")
-          .setPosition(guiX, guiY)
+          .setPosition(guiX+230, guiYadj+(3*guioffset))
           .setSize(200, 30)
           .setRange(-1, 1)
+          .setValue(0)
+          .setCaptionLabel("Total Speed")
           .setValue(globalAngleOffsetSpeed)
         ;
       
         cp5.addSlider("t_offsetAngleSpeed")
-          .setPosition(guiX, guiY+40)
+          .setPosition(guiX+230, guiYadj+(4*guioffset))
           .setSize(200, 30)
           .setRange(-1, 1)
+          .setValue(0)
+          .setCaptionLabel("Top Speed")
           .setValue(t_offsetAngleSpeed);
         ;
       
         cp5.addSlider("b_offsetAngleSpeed")
-          .setPosition(guiX, guiY+80)
+          .setPosition(guiX+230, guiYadj+(5*guioffset))
           .setSize(200, 30)
           .setRange(-1, 1)
+          .setValue(0)
+          .setCaptionLabel("Bottom Speed")
           .setValue(b_offsetAngleSpeed)
           ;
       
-        cp5.addSlider("t_radiusSpeed")
-          .setPosition(guiX, guiY+120)
+        cp5.addSlider("globalt_radius")
+          .setPosition(guiX+230, guiYadj+(6*guioffset))
           .setSize(200, 30)
-          .setRange(-2, 2)
-          .setValue(t_radiusSpeed)
+          .setRange(80, 300)
+          .setValue(190)
+          .setCaptionLabel("Top Radius")
+          .setValue(globalt_radius)
           ;
           
-         cp5.addSlider("b_radiusSpeed")
-          .setPosition(guiX, guiY+160)
+         cp5.addSlider("globalb_radius")
+          .setPosition(guiX+230, guiYadj+(7*guioffset))
           .setSize(200, 30)
-          .setRange(-2, 2)
-          .setValue(b_radiusSpeed)
+          .setRange(80, 300)
+          .setValue(190)
+          .setCaptionLabel("Bottom Radius")
+          .setValue(globalb_radius)
           ;
           break;
           
-    case TWOCIRCLE: 
-          cp5.addSlider("innerCircle")
-          .setPosition(guiX, guiY)
-          .setSize(200, 30)
-          .setRange(-1, 1)
-          .setValue(globalInnerAngleOffsetSpeed);
-        break;
+    //case WAVE: 
+    //      cp5.addSlider("globalAmplitude")
+    //      .setPosition(guiX+230, guiYadj+(3*guioffset))
+    //      .setSize(200, 30)
+    //      .setRange(100, 150)
+    //      .setCaptionLabel("Amplitude")
+    //      .setValue(globalAmplitude);
+    //    break;
         
     case LINE:
-          cp5.addSlider("globalLineOffsetSpeed")
-          .setPosition(guiX, guiY)
+          cp5.addSlider("globalAngleOffsetSpeed")
+          .setPosition(guiX+230, guiYadj+(2*guioffset))
           .setSize(200, 30)
           .setRange(0, 1)
-          .setValue(globalLineOffsetSpeed);
+          .setValue(0.5)
+          .setCaptionLabel("Speed")
+          .setValue(globalAngleOffsetSpeed);
         break;
       
   }
      
+     } else if (guiOn == false) {
+       
+       
+     cp5.addButton("START/STOP ANIMATION")
+     .setValue(100)
+     .setPosition(guiX,(guiY))
+     .setSize(200,50)
+     .setId(5)
+     ;
+     
      }
      
-  
-  
-  
-
-
-//  cp5.addSlider("lineGap")
-//    .setPosition(20, 500)
-//    .setSize(200, 30)
-//    .setRange(-380, 380)
-//    .setValue(0)
-//    ;
-
-//  cp5.addSlider("spacing")
-//    .setPosition(20, 550)
-//    .setSize(200, 30)
-//    .setRange(20, 55)
-//    .setValue(30)
-//    ;
-
-//  cp5.addSlider("xPos")
-//    .setPosition(20, 600)
-//    .setSize(200, 30)
-//    .setRange(-300, 300)
-//    .setValue(0)
-//    ;
-
-//   cp5.addSlider("toggle")
-//  .setPosition(20, 700)
-//  .setSize(200, 30)
-//  .setRange(0, 1)
-//  .setValue(0)
-//  ;
-
-//  s = cp5.addSlider2D("xy")
-//    .setPosition(20, 220)
-//    .setSize(200, 200)
-//    .setMinMax(0, 0, 1000, 1000)
-//    .setValue(0, 0)
-//    //.disableCrosshair()
-//    ;
-
   cp5.setAutoDraw(false);
 }

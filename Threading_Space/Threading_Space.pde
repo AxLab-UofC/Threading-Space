@@ -25,7 +25,7 @@ int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, 
 
 //For Visualizing Posistions in GUI
 boolean visualOn = true; 
-boolean guiOn = true;
+boolean guiOn = false;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
@@ -149,9 +149,9 @@ void draw() {
           targets = animRotateLine();
           break;
       
-        case TWOCIRCLE:
-          targets = animTwoCylinder();
-          break; 
+      //  case WAVE:
+      //    targets = animWaveYCross();
+      //    break; 
             
         default:
           targets = animTwoCylinder();
@@ -177,11 +177,11 @@ void draw() {
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
   
-  if (guiOn) {
-  fill(50, 50, 105);
-  textAlign(LEFT, TOP);
-  text("\n\nGUI", 40, 40);
-  }
+  //if (guiOn) {
+  //fill(50, 50, 105);
+  //textAlign(LEFT, TOP);
+  //text("\n\nGUI", 40, 40);
+  //}
 
   if (debugMode) {
 
@@ -239,6 +239,11 @@ void draw() {
     case(1):
     guiOn = !guiOn;
     setupGUI(); 
+    animator.stop();
+    //if (guiOn == false) {
+    //  //stop();
+    //  animator.start();
+    //}
     break;
     case(2):
     if (guiOn == true) {
@@ -252,27 +257,21 @@ void draw() {
     setupGUI(); 
     break;
     }
-    case(4):
-    if (guiOn == true) {
-    guiChoose = GUI.TWOCIRCLE; 
-    setupGUI(); 
-    break;
+    //case(4):
+    //if (guiOn == true) {
+    //guiChoose = GUI.WAVE; 
+    //setupGUI(); 
+    //break;
+    //}
+    case(5): 
+    if (guiOn ==false) {
+     if (animator.status == moveStatus.NONE) {
+      animator.start();
+    } else {
+      stop();
+      animator.stop();
+    }
     }
   }
   
   }
-  
-  
-  //  public void LINEBUTTON(){
-  //  guiChoose = GUI.LINE;
-  //  setupGUI(); 
-  //  println("LINEBUTTON pressed");
-    
-  //}
-  
-  
-  //public void LINEBUTTON(int theValue) {
-  //println("a button event from colorA: "+theValue);
-  //guiChoose = GUI.LINE;
-  //setupGUI();
-  //}

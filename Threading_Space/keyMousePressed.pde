@@ -70,10 +70,10 @@ void keyPressed() {
     visualOn = !visualOn;
     break;
   
-     case 'x':
-     guiChoose = GUI.TWOCIRCLE;
-     setupGUI(); 
-     break; 
+     //case 'x':
+     //guiChoose = GUI.WAVE;
+     //setupGUI(); 
+     //break; 
      
      case 'y':
      guiChoose = GUI.CYLINDER;

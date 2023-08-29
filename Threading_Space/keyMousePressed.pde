@@ -132,10 +132,24 @@ void keyPressed() {
     break;
     
   case 'm':
-    planPath(100, 100, 400, 400, 70, 70, 6, 1);
+    int targets[][] = new int[nPairs][2];
+    targets[0][0] = 190;
+    targets[0][1] = 270;
+    targets[1][0] = 110;
+    targets[1][1] = 390;
+    targets[2][0] = 270;
+    targets[2][1] = 190;
+    targets[3][0] = 310;
+    targets[3][1] = 350;
+    targets[4][0] = 190;
+    targets[4][1] = 430;
+    targets[5][0] = 390;
+    targets[5][1] = 430;
+    planPath(targets);
     if (animator.status == moveStatus.NONE) {
       animator.start();
     } else {
+      println("moveStatus not NONE");
       stop();
       animator.stop();
     }

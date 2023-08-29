@@ -18,7 +18,7 @@ int maxMotorSpeed = 115;
 
 //
 boolean debugMode = false;
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -44,6 +44,15 @@ int vert = 500;
 
 int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
+
+//For Path Planning
+int num_x = 10;
+int num_y = 10;
+int x_size = 400;
+int y_size = 400;
+int x_shift = 70;
+int y_shift = 70;
+int num_instances = 1;
 
 
 AnimManager animator;
@@ -127,7 +136,9 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  SmoothSequence seq;
+  //animator.add(new Frame(moveType.BOTTOM, getCircle(0)));
+  //animator.start();
+  /*SmoothSequence seq;
   
   //animator.add(new Frame(moveType.PAIR, getCircle(0)));
   
@@ -168,7 +179,7 @@ void setup() {
   
   animator.setLoop();
   animator.setViz();
-  animator.start();
+  animator.start();*/
 }
 
 void draw() {

@@ -32,28 +32,6 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
-int[][][] animCircle(float t) {
-  println(t, t * 2 * PI);
-  
-  float angleOffset = t * (2 *PI);
-  float angle = (2 * PI) / nPairs;
-  float radius = (xmax * 3) / 9;
-  int[][][] targets = new int[nPairs][2][3];
-  
-  for (int i = 0; i < nPairs; i++) {
-    float theta = (i * angle) + angleOffset;
-    targets[i][0][0] = (int) (xmid + (radius * sin(theta)));
-    targets[i][0][1] = (int) (ymid + (radius * cos(theta)));
-    targets[i][0][2] = (int) ((180 / PI) * (theta + PI/2));
-    
-    targets[i][1][0] = (int) (xmid + (radius * sin(theta)));
-    targets[i][1][1] = (int) (ymid + (radius * cos(theta)));
-    targets[i][1][2] = (int) ((180 / PI) * (theta + PI/2));
-  }
-  
-  return targets;
-}
-
 int[][][] animCylinderTwist() {
 
   elapsedTime = millis() - lastMillis;

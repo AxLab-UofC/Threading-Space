@@ -32,8 +32,6 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
-
-
 void resetFunction() {
     overallTimeMillis = 5 * 60 * 1000; // 5 mins
     playSpeed = 1;
@@ -65,6 +63,8 @@ void resetFunction() {
         
     globalLineOffsetSpeed = 0.25;
 }
+
+
 
 int[][][] animCylinderTwist() {
 

@@ -246,13 +246,37 @@ public void controlEvent(ControlEvent theEvent) {
         resetFunction();
         setupGUI(); 
         break;
+    case (4): 
+        if (guiChoose != GUI.LINE) {
+          mode = GUImode.SELECT; 
+          guiChoose = GUI.LINE;
+          globalLoading = true;
+          setupGUI(); 
+        }
+        break; 
+    case (5): 
+        if (guiChoose != GUI.CYLINDER) {
+          mode = GUImode.SELECT; 
+          guiChoose = GUI.CYLINDER;
+          globalLoading = true;
+          setupGUI(); 
+        }
+        break;
     case(6): 
        mode = GUImode.INTERACTIVE;
-       resetFunction();
+       setupGUI();
        break;
      case(7): 
        mode = GUImode.INTERACTIVE;
-       resetFunction();
+       setupGUI();
        break;
-
+     case (8): 
+       globalLoading = false;
+       resetFunction();
+       setupGUI(); 
+     case (9): 
+       globalLoading = false;
+       resetFunction();
+       setupGUI(); 
+    }
   }

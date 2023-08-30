@@ -215,7 +215,6 @@ void draw() {
 
     if (animator.size() > 0) {
       Sequence currSeq = animator.getCurrentSeq();
-      if (animator.untangling) currSeq = animator.untangleSeq;
       text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, 30 + debugUIy+60);
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;

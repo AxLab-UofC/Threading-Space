@@ -2,15 +2,19 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
+float triangleWave(float x) {
+  float ret = (x % 4) - 1;
+  if (ret > 1) return (2 - ret);
+  else return ret;
+}
+
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
+  Sequence currSeq;
   int iterator;
   boolean loop = false;
   boolean viz = false;
-  
-  boolean untangling = false;
-  Sequence untangleSeq;
  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
@@ -49,7 +53,10 @@ class AnimManager {
   
   void start() {
     if (sequences.size() > 0) {
-      sequences.get(iterator).start();
+      if (currSeq == null) {
+        currSeq = sequences.get(0);
+      }
+      currSeq.start();
     }
     status = moveStatus.INPROGRESS;
   }
@@ -72,35 +79,27 @@ class AnimManager {
   }
   
   void update() {
-    boolean seqComplete = false;
-    if (untangling) {
-      seqComplete = untangleSeq.update();
-    } else if (sequences.size() > 0) {
-      seqComplete = sequences.get(iterator).update();
-    }
-    
-    if (seqComplete) {
-      untangling = false;
-      if (getCurrentSeq().tangle) {
-        println("Begin Untangling!");
-        untangling = true;
-        untangleSeq = getCurrentSeq().genUntangle();
-      } else if (iterator + 1 == sequences.size()) {
-        if (loop) {
-          restart();
+    if (sequences.size() > 0) {
+      boolean seqComplete = currSeq.update();
+      if (seqComplete) {
+        if (iterator + 1 == sequences.size()) {
+          if (loop) {
+            restart();
+          } else {
+            status = moveStatus.COMPLETE;
+          }
         } else {
-          status = moveStatus.COMPLETE;
+          iterator++;
+          currSeq = sequences.get(iterator);
+          currSeq.start();
         }
-      } else {
-        iterator++;
-        sequences.get(iterator).start();
-      }
-    } 
+      } 
+    }
   }
   
   Sequence getCurrentSeq() {
     if (size() > 0) {
-      return sequences.get(iterator);
+      return currSeq;
     }
     
     return null;
@@ -118,7 +117,6 @@ class AnimManager {
 
 class Sequence {
   moveStatus status = moveStatus.NONE;
-  boolean tangle = false;
   boolean viz = false;
   
   void start() {
@@ -133,24 +131,18 @@ class Sequence {
     status = moveStatus.NONE;
   }
   
-  void setTangle(boolean newTangle) {
-    tangle = newTangle;
-  }
-  
   void setViz(boolean val) {
     viz = val;
+  }
+  
+  Sequence genUntangle(){
+    return this;
   }
   
   boolean update(){
     return false;
   }
-  
-  Sequence genUntangle() {
-    return this;
-  }
 }
-
-
 
 interface Movement  {
   int[][] get(float time);
@@ -159,6 +151,8 @@ interface Movement  {
 interface IndependentMovement {
   int[][][] get(float time);
 }
+
+
 
 class SmoothSequence extends Sequence {
   moveType type;
@@ -211,17 +205,18 @@ class SmoothSequence extends Sequence {
     period = newPeriod;
   }
   
-  SmoothSequence genUntangle() {
+  SmoothSequence genUntangle(){
     SmoothSequence untangleSeq;
-    float time = (float) currTime/(period * 1000);
+    
     if (type == moveType.INDEPENDENT) {
-      untangleSeq = new SmoothSequence((float t) -> indieFunc.get(time - t));
+      untangleSeq = new SmoothSequence((float t) -> indieFunc.get(((float) currTime/(period * 1000)) - t));
     } else {
-      untangleSeq = new SmoothSequence(type, (float t) -> func.get(time - t));
+      untangleSeq = new SmoothSequence(type, (float t) -> func.get(((float) currTime/(period * 1000)) - t));
     }
+    
     untangleSeq.setPeriod(period/2);
     untangleSeq.setTimeLimit(timeLimit/2);
-    untangleSeq.setViz(viz);
+    
     return untangleSeq;
   }
   

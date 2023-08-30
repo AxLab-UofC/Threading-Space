@@ -26,7 +26,7 @@ void keyPressed() {
   switch(key) {
     
   case 'u':
-    animator.untangleClear();
+    animator.untangle();
     break;
     
 

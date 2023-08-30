@@ -12,7 +12,7 @@ import java.util.*;
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
 int nPairs = 10;
-int cubesPerHost = 20;
+int cubesPerHost = 10;
 int maxMotorSpeed = 115;
 
 //server ids
@@ -256,3 +256,4 @@ public void controlEvent(ControlEvent theEvent) {
        break;
 
   }
+}

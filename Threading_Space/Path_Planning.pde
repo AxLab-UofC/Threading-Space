@@ -1,14 +1,17 @@
-void planPath(int targets[][]) {
-  // Add inputs to python file
-  String command = "/opt/homebrew/bin/python3 ";
-  String plannerDirectory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
-  String plannerFile = "Toio_Map_Generator.py";
-  String startFile = "start.txt";
-  String goalFile = "goal.txt";
-  String outputFile = "output_path.txt";
-  int num_agents = nPairs;
-  int y_min_plus_max = ymin + ymax; // Used to reverse the y-axis to align with path planner (convert 4th quadrant to 1st quadrant).
+// Inputs for python file
+String command = "/opt/homebrew/bin/python3 ";
+String plannerDirectory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
+String plannerFile = "Toio_Map_Generator.py";
+String startFile = "start.txt";
+String goalFile = "goal.txt";
+String outputFile = "output_path.txt";
+int num_agents = nPairs;
 
+int y_min_plus_max = ymin + ymax; // Used to reverse the y-axis to align with path planner (convert 4th quadrant to 1st quadrant).
+
+
+// USES CURRENT TOIO LOCATIONS AS START POSITIONS
+void planPath(int targets[][]) {
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
   HashMap<Integer, Integer> takenVertices = new HashMap<Integer, Integer>(); // Keep track of which vertex is taken.
 
@@ -33,17 +36,17 @@ void planPath(int targets[][]) {
     }
 
     //int vertex = (int)Math.round(((cubes[i].x - x_shift) * (double)num_x / (double)x_size * (double)num_y) + ((cubes[i].y - 500 + y_shift) * (double)num_y / (double)y_size * -1));
-    println("Toio " + i + " is at " + cubes[i].x + ", " + cubes[i].y);
-    println("Toio " + i + " is at vertex " + vertex);
+    //println("Toio " + i + " is at " + cubes[i].x + ", " + cubes[i].y);
+    //println("Toio " + i + " is at vertex " + vertex);
     takenVertices.put(vertex, i);
     start_writer.println(vertex);
   }
   start_writer.flush();
   start_writer.close();
-  
+
   // ADD GOAL LOCATIONS TO GOAL FILE
   PrintWriter goal_writer = createWriter(plannerDirectory + goalFile);
-  
+
   for (int i = 0; i < num_agents; i++) {
     int x_vertex = (int)Math.round((double)(targets[i][0] - x_shift) / (double)x_size * (double)num_x);
     int y_vertex = (int)Math.round((double)(targets[i][1] - y_shift) / (double)y_size * (double)num_y);
@@ -53,8 +56,45 @@ void planPath(int targets[][]) {
   }
   goal_writer.flush();
   goal_writer.close();
-  
 
+  runPlanner();
+}
+
+
+// FOR PREDETERMINED START POSITIONS
+void planPath(int starts[][], int targets[][]) {
+
+  PrintWriter start_writer = createWriter(plannerDirectory + startFile);
+
+  // ADD START LOCATIONS TO START FILE
+  for (int i = 0; i < num_agents; i++) {
+    int x_vertex = (int)Math.round((double)(starts[i][0] - x_shift) / (double)x_size * (double)num_x);
+    int y_vertex = (int)Math.round((double)(starts[i][1] - y_shift) / (double)y_size * (double)num_y);
+    Integer vertex = Integer.valueOf(x_vertex * 10 + y_vertex);
+    start_writer.println(vertex);
+  }
+  start_writer.flush();
+  start_writer.close();
+
+  // ADD GOAL LOCATIONS TO GOAL FILE
+  PrintWriter goal_writer = createWriter(plannerDirectory + goalFile);
+
+  for (int i = 0; i < num_agents; i++) {
+    int x_vertex = (int)Math.round((double)(targets[i][0] - x_shift) / (double)x_size * (double)num_x);
+    int y_vertex = (int)Math.round((double)(targets[i][1] - y_shift) / (double)y_size * (double)num_y);
+    Integer vertex = Integer.valueOf(x_vertex * 10 + y_vertex);
+
+    goal_writer.println(vertex);
+  }
+  goal_writer.flush();
+  goal_writer.close();
+
+  runPlanner();
+}
+
+
+// RUN PYTHON FILE
+void runPlanner() {
   Command cmd = new Command(command + plannerDirectory + plannerFile
     + " -a " + Integer.toString(num_x)
     + " -b " + Integer.toString(num_y)
@@ -63,7 +103,8 @@ void planPath(int targets[][]) {
     + " -e " + Integer.toString(x_shift)
     + " -f " + Integer.toString(y_shift)
     + " -g " + Integer.toString(num_agents)
-    + " -h " + Integer.toString(num_instances)); // Need to implement start and end locations too.
+    + " -h " + Integer.toString(num_instances)
+    + " -i " + plannerDirectory); // Need to implement start and end locations too.
 
   println("PLANNING PATH!");
   if (cmd.run() == true) {
@@ -79,8 +120,8 @@ void planPath(int targets[][]) {
   }
 
   for (int i = 0; i < num_agents; i++) {
-    /**/toio_locs[i] = new ArrayList<Integer[]>();
-    Integer prev_pos[] = new Integer[]{-1,-1,-1};
+    /**/    toio_locs[i] = new ArrayList<Integer[]>();
+    Integer prev_pos[] = new Integer[]{-1, -1, -1};
 
     for (int j = 0; j < x_y[i].length; j++) {
       String[] temp = x_y[i][j].split(",", 0);
@@ -89,22 +130,19 @@ void planPath(int targets[][]) {
         prev_pos = p;
         continue;
       }
-      
+
       if (p[0].intValue() < prev_pos[0].intValue()) {
         prev_pos[2] = 180;
-      }
-      else if (p[0].intValue() > prev_pos[0].intValue()) {
+      } else if (p[0].intValue() > prev_pos[0].intValue()) {
         prev_pos[2] = 0;
-      }
-      else if (p[1].intValue() < prev_pos[1].intValue()) {
+      } else if (p[1].intValue() < prev_pos[1].intValue()) {
         prev_pos[2] = 90;
-      }
-      else {
+      } else {
         prev_pos[2] = 270;
       }
       toio_locs[i].add(prev_pos.clone());
       prev_pos = p;
-      
+
       if (j == x_y[i].length - 1) {
         toio_locs[i].add(p);
         continue;
@@ -112,11 +150,11 @@ void planPath(int targets[][]) {
     }
     print("Toio " + i + " locations: ");
     for (Integer[] loc : toio_locs[i]) {
-        print(Arrays.toString(loc) + ", ");
+      print(Arrays.toString(loc) + ", ");
     }
     print("\n");
   }
-  
+
   // Add to Animation
   boolean done = false;
   DiscreteSequence seq = new DiscreteSequence();
@@ -129,8 +167,7 @@ void planPath(int targets[][]) {
       done &= toio_locs[i].size() == 1;
       if (toio_locs[i].size() == 1) {
         temp = toio_locs[i].get(0);
-      }
-      else {
+      } else {
         temp = toio_locs[i].remove(0);
       }
       planned_path[i] = Arrays.asList(temp).stream().mapToInt(Integer::intValue).toArray();
@@ -143,9 +180,9 @@ void planPath(int targets[][]) {
       seq.addFrame(new Frame(moveType.BOTTOM, planned_path));
     }
   }
-  
+
   //Movement move = new Movement((float t) -> toSmooth(t));
-  
+
   //SmoothSequence smooth = new SmoothSequence(move);
 
   println("adding seq to animator");

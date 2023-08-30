@@ -214,12 +214,14 @@ void draw() {
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
     if (animator.size() > 0) {
-      text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ animator.getCurrentSeq().status, debugUIx, 30 + debugUIy+60);
-      if (animator.getCurrentSeq() instanceof DiscreteSequence) {
-        DiscreteSequence discseq = (DiscreteSequence) animator.getCurrentSeq();
+      Sequence currSeq = animator.getCurrentSeq();
+      if (animator.untangling) currSeq = animator.untangleSeq;
+      text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, 30 + debugUIy+60);
+      if (currSeq instanceof DiscreteSequence) {
+        DiscreteSequence discseq = (DiscreteSequence) currSeq;
         text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
       } else {
-        SmoothSequence smoothseq = (SmoothSequence) animator.getCurrentSeq();
+        SmoothSequence smoothseq = (SmoothSequence) currSeq;
         text("Second "+ (smoothseq.currTime / 1000) + "/" + (smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
       textSize(24);

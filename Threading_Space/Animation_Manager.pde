@@ -8,6 +8,9 @@ class AnimManager {
   int iterator;
   boolean loop = false;
   boolean viz = false;
+  
+  boolean untangling = false;
+  Sequence untangleSeq;
  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
@@ -69,21 +72,30 @@ class AnimManager {
   }
   
   void update() {
-    if (sequences.size() > 0) {
-      boolean seqComplete = sequences.get(iterator).update();
-      if (seqComplete) {
-        if (iterator + 1 == sequences.size()) {
-          if (loop) {
-            restart();
-          } else {
-            status = moveStatus.COMPLETE;
-          }
-        } else {
-          iterator++;
-          sequences.get(iterator).start();
-        }
-      } 
+    boolean seqComplete = false;
+    if (untangling) {
+      seqComplete = untangleSeq.update();
+    } else if (sequences.size() > 0) {
+      seqComplete = sequences.get(iterator).update();
     }
+    
+    if (seqComplete) {
+      untangling = false;
+      if (getCurrentSeq().tangle) {
+        println("Begin Untangling!");
+        untangling = true;
+        untangleSeq = getCurrentSeq().genUntangle();
+      } else if (iterator + 1 == sequences.size()) {
+        if (loop) {
+          restart();
+        } else {
+          status = moveStatus.COMPLETE;
+        }
+      } else {
+        iterator++;
+        sequences.get(iterator).start();
+      }
+    } 
   }
   
   Sequence getCurrentSeq() {
@@ -106,7 +118,7 @@ class AnimManager {
 
 class Sequence {
   moveStatus status = moveStatus.NONE;
-  boolean tangleSafe = true;
+  boolean tangle = false;
   boolean viz = false;
   
   void start() {
@@ -121,8 +133,8 @@ class Sequence {
     status = moveStatus.NONE;
   }
   
-  void setTangle(boolean tangle) {
-    tangleSafe = tangle;
+  void setTangle(boolean newTangle) {
+    tangle = newTangle;
   }
   
   void setViz(boolean val) {
@@ -133,10 +145,12 @@ class Sequence {
     return false;
   }
   
-  boolean untangle() {
-    return tangleSafe;
+  Sequence genUntangle() {
+    return this;
   }
 }
+
+
 
 interface Movement  {
   int[][] get(float time);
@@ -145,8 +159,6 @@ interface Movement  {
 interface IndependentMovement {
   int[][][] get(float time);
 }
-
-
 
 class SmoothSequence extends Sequence {
   moveType type;
@@ -197,6 +209,20 @@ class SmoothSequence extends Sequence {
   
   void setPeriod(int newPeriod) {
     period = newPeriod;
+  }
+  
+  SmoothSequence genUntangle() {
+    SmoothSequence untangleSeq;
+    float time = (float) currTime/(period * 1000);
+    if (type == moveType.INDEPENDENT) {
+      untangleSeq = new SmoothSequence((float t) -> indieFunc.get(time - t));
+    } else {
+      untangleSeq = new SmoothSequence(type, (float t) -> func.get(time - t));
+    }
+    untangleSeq.setPeriod(period/2);
+    untangleSeq.setTimeLimit(timeLimit/2);
+    untangleSeq.setViz(viz);
+    return untangleSeq;
   }
   
   boolean update() {

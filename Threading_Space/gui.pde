@@ -2,6 +2,10 @@ enum GUI {
   CYLINDER, LINE
 }
 
+enum GUImode {
+  screensaver, interactive, select
+}
+
 GUI guiChoose = GUI.CYLINDER;
 
 import controlP5.*;

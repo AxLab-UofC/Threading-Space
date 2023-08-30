@@ -150,10 +150,9 @@ void draw() {
     cam.setActive(false);
   }
   
-  if (animator.status != moveStatus.NONE) {
+  if (animator.status == moveStatus.INPROGRESS) {
     animator.update();
-
-} 
+  } 
  
   
   if (guiOn) { 
@@ -213,26 +212,25 @@ void draw() {
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
-    if (animator.size() > 0) {
-      text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ animator.getCurrentSeq().status, debugUIx, 30 + debugUIy+60);
-      if (animator.getCurrentSeq() instanceof DiscreteSequence) {
-        DiscreteSequence discseq = (DiscreteSequence) animator.getCurrentSeq();
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+    if (animator.size() > 0 && animator.getCurrentSeq() != null) {
+      Sequence currSeq = animator.getCurrentSeq();
+      if (animator.untangling) {
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, 30 + debugUIy+60);
       } else {
-        SmoothSequence smoothseq = (SmoothSequence) animator.getCurrentSeq();
-        text("Second "+ (smoothseq.currTime / 1000) + "/" + (smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, 30 + debugUIy+60);
       }
-      textSize(24);
-      
-      for (int i = 0; i < animator.size(); i++) {
-        text("Sequence " + (i + 1) + ": "+ animator.getSeq(i).status, debugUIx, 30 * i + debugUIy+150);
+      if (currSeq instanceof DiscreteSequence) {
+        DiscreteSequence discseq = (DiscreteSequence) currSeq;
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+        textSize(24);
+        for (int i  = 0; i < pairs.length; i++) {
+          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
+        }
+      } else {
+        SmoothSequence smoothseq = (SmoothSequence) currSeq;
+        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
     }
-
-    textSize(24);
-    //for (int i  = 0; i < pairs.length; i++) {
-    //  text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
-    //}
   }
   cp5.draw();
   cam.endHUD();

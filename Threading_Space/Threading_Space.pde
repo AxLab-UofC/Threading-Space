@@ -154,29 +154,25 @@ void draw() {
   } 
  
   
-  //if (guiOn) { 
-  //    int[][][] targets;
-  //    switch (guiChoose) {
-  //      case CYLINDER:
-  //        targets = animCylinderTwist();
-  //        break;
+  if (mode == GUImode.SELECT || mode == GUImode.INTERACTIVE) { 
+      int[][][] targets;
+      switch (guiChoose) {
+        case CYLINDER:
+          targets = animCylinderTwist();
+          break;
         
-  //      case LINE:
-  //        targets = animRotateLine();
-  //        break;
+        case LINE:
+          targets = animRotateLine();
+          break;
+
+        default:
+          targets = animTwoCylinder();
+          break;
+      }
       
-  //    //  case WAVE:
-  //    //    targets = animWaveYCross();
-  //    //    break; 
-            
-  //      default:
-  //        targets = animTwoCylinder();
-  //        break;
-  //    }
-      
-  //    visualize(targets);
-  //    //movePairsVelocity(targets);
-  //}
+      visualize(targets);
+      //movePairsVelocity(targets);
+  }
   
 
 
@@ -193,11 +189,6 @@ void draw() {
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
   
-  //if (guiOn) {
-  //fill(50, 50, 105);
-  //textAlign(LEFT, TOP);
-  //text("\n\nGUI", 40, 40);
-  //}
 
   if (debugMode) {
 
@@ -238,63 +229,30 @@ void draw() {
 
   
 
-public void controlEvent(ControlEvent theEvent) {
-    println("got an event from"+theEvent.getController().getId());
-    
-   if (theEvent.isFrom(cp5.getController("LINEBUTTON"))) {
-    println("this event was triggered by Controller n1");
-    
-  }
-  
-    //guiChoose = GUI.LINE;
-    //setupGUI();
-    
+public void controlEvent(ControlEvent theEvent) { 
     switch (theEvent.getController().getId()) {
       case 0:
         mode = GUImode.SELECT;
         animator.setViz(false);
         setupGUI(); 
         break;
-    }
-    
-    
-  //  switch(theEvent.getController().getId()) {
-  //  case(1):
-  //  guiOn = !guiOn;
-  //  setupGUI(); 
-  //  animator.stop();
-  //  //if (guiOn == false) {
-  //  //  //stop();
-  //  //  animator.start();
-  //  //}
-  //  break;
-  //  case(2):
-  //  if (guiOn == true) {
-  //  guiChoose = GUI.LINE;
-  //  setupGUI(); 
-  //  break;
-  //  }
-  //  case(3):
-  //  if (guiOn == true) {
-  //  guiChoose = GUI.CYLINDER; 
-  //  setupGUI(); 
-  //  break;
-  //  }
-  //  //case(4):
-  //  //if (guiOn == true) {
-  //  //guiChoose = GUI.WAVE; 
-  //  //setupGUI(); 
-  //  //break;
-  //  //}
-  //  case(5): 
-  //  if (guiOn ==false) {
-  //   if (animator.status == moveStatus.NONE) {
-  //    animator.start();
-  //  } else {
-  //    stop();
-  //    animator.stop();
-  //  }
-  //  }
-  //}
-  
+      case(2):
+          guiChoose = GUI.LINE;
+          resetFunction();
+          setupGUI(); 
+        break;
+    case(3):
+        guiChoose = GUI.CYLINDER;
+        resetFunction();
+        setupGUI(); 
+        break;
+    case(6): 
+       mode = GUImode.INTERACTIVE;
+       resetFunction();
+       break;
+     case(7): 
+       mode = GUImode.INTERACTIVE;
+       resetFunction();
+       break;
+
   }

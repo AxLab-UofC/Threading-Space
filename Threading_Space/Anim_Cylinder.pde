@@ -32,6 +32,40 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
+
+
+void resetFunction() {
+    overallTimeMillis = 5 * 60 * 1000; // 5 mins
+    playSpeed = 1;
+
+    globalAngleOffset=0;
+    globalAngleOffsetSpeed = 0.5; //0.05;
+
+    t_offsetAngle = 0;
+    t_offsetAngleSpeed = 0.5; //=-0.05;
+
+    b_offsetAngle = 0;
+    b_offsetAngleSpeed =  0; //-0.05;
+
+    globalInnerAngleOffset=0;
+    globalInnerAngleOffsetSpeed = 0.2; //0.05;
+
+    globalt_radius = 300;
+    t_radiusSpeed = 0.7;
+
+    globalb_radius = 300;
+    b_radiusSpeed = -2;
+
+    t_inner_radius = 100;
+    t_outer_radius = 300;
+    b_inner_radius = 100;
+    b_outer_radius = 300; 
+
+    lastMillis = millis();
+        
+    globalLineOffsetSpeed = 0.25;
+}
+
 int[][][] animCylinderTwist() {
 
   elapsedTime = millis() - lastMillis;

@@ -29,22 +29,12 @@ int guiY = 200;
 int guiYadj = 213;
 int guioffset = 60; 
 
-//PFont labelfont;
-//labelfont = loadFont("Code-Light-80.vlw");
-//frameRate(30);
-
-
-
-//labelfont = createFont("helvetica", 13); 
-
 
 void setupGUI() {
 
   cp5 = new ControlP5(this);
   
-  //PFont labelfont;
-  //labelfont = createFont("Times",12);
-  
+
   switch (mode) {
     case SCREENSAVER:
     cp5.addButton("EXPLORE")
@@ -55,6 +45,42 @@ void setupGUI() {
     break;
     
     case SELECT:
+     cp5.addButton("LINE")
+     .setValue(100)
+     .setPosition(guiX,guiY+(2*guioffset))
+     .setSize(200,50)
+     .setId(2)
+     ;
+     
+     cp5.addButton("CYLINDER")
+     .setValue(100)
+     .setPosition(guiX,guiY +(3*guioffset))
+     .setSize(200,50)
+     .setId(3)
+     ;
+     
+     switch (guiChoose) {
+       case CYLINDER: 
+            cp5.addButton("GO")
+             .setValue(100)
+             .setPosition(guiX + 240,guiY +(3*guioffset))
+             .setSize(200,50)
+             .setId(6)
+             ;
+     
+       break;
+       
+       case LINE: 
+              cp5.addButton("GO")
+             .setValue(100)
+             .setPosition(guiX + 240,guiY +(2*guioffset))
+             .setSize(200,50)
+             .setId(7)
+             ;
+       break; 
+     }
+     
+     
     break;
     
     case INTERACTIVE:
@@ -62,20 +88,9 @@ void setupGUI() {
   }
 
   
-  //cp5.addNumberbox("n1")
-  //   .setValue(90)
-  //   .setPosition(500, 500)
-  //   .setSize(50, 50)
-  //   .setId(1);
- 
-  
-  //  cp5.addButton("STOP/START GUI")
-  //   .setValue(100)
-  //   .setPosition(guiX,guiY+guioffset)
-  //   .setSize(200,50)
-  //   .setId(1)
-  //   ;
-     
+
+
+
   //   if (guiOn == true) {
      
   

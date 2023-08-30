@@ -279,5 +279,5 @@ public void controlEvent(ControlEvent theEvent) {
        resetFunction();
        setupGUI(); 
     }
-  }
+  
 }

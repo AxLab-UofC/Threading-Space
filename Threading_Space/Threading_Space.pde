@@ -30,7 +30,6 @@ int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, 
 //For Visualizing Posistions and Debug mode in GUI
 boolean debugMode = false;
 boolean visualOn = true; 
-boolean guiOn = false;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
@@ -124,7 +123,7 @@ void setup() {
   //size(1400, 1100, P3D);
   
   cam = new PeasyCam(this, 400);
-  cam.setDistance(1400);
+  cam.setDistance(1600);
   cam.rotateX(-PI/2);
 
   //setup GUI
@@ -155,29 +154,29 @@ void draw() {
   } 
  
   
-  if (guiOn) { 
-      int[][][] targets;
-      switch (guiChoose) {
-        case CYLINDER:
-          targets = animCylinderTwist();
-          break;
+  //if (guiOn) { 
+  //    int[][][] targets;
+  //    switch (guiChoose) {
+  //      case CYLINDER:
+  //        targets = animCylinderTwist();
+  //        break;
         
-        case LINE:
-          targets = animRotateLine();
-          break;
+  //      case LINE:
+  //        targets = animRotateLine();
+  //        break;
       
-      //  case WAVE:
-      //    targets = animWaveYCross();
-      //    break; 
+  //    //  case WAVE:
+  //    //    targets = animWaveYCross();
+  //    //    break; 
             
-        default:
-          targets = animTwoCylinder();
-          break;
-      }
+  //      default:
+  //        targets = animTwoCylinder();
+  //        break;
+  //    }
       
-      visualize(targets);
-      //movePairsVelocity(targets);
-  }
+  //    visualize(targets);
+  //    //movePairsVelocity(targets);
+  //}
   
 
 
@@ -239,7 +238,7 @@ void draw() {
 
   
 
-  public void controlEvent(ControlEvent theEvent) {
+public void controlEvent(ControlEvent theEvent) {
     println("got an event from"+theEvent.getController().getId());
     
    if (theEvent.isFrom(cp5.getController("LINEBUTTON"))) {
@@ -250,44 +249,52 @@ void draw() {
     //guiChoose = GUI.LINE;
     //setupGUI();
     
+    switch (theEvent.getController().getId()) {
+      case 0:
+        mode = GUImode.SELECT;
+        animator.setViz(false);
+        setupGUI(); 
+        break;
+    }
     
-    switch(theEvent.getController().getId()) {
-    case(1):
-    guiOn = !guiOn;
-    setupGUI(); 
-    animator.stop();
-    //if (guiOn == false) {
-    //  //stop();
-    //  animator.start();
-    //}
-    break;
-    case(2):
-    if (guiOn == true) {
-    guiChoose = GUI.LINE;
-    setupGUI(); 
-    break;
-    }
-    case(3):
-    if (guiOn == true) {
-    guiChoose = GUI.CYLINDER; 
-    setupGUI(); 
-    break;
-    }
-    //case(4):
-    //if (guiOn == true) {
-    //guiChoose = GUI.WAVE; 
-    //setupGUI(); 
-    //break;
-    //}
-    case(5): 
-    if (guiOn ==false) {
-     if (animator.status == moveStatus.NONE) {
-      animator.start();
-    } else {
-      stop();
-      animator.stop();
-    }
-    }
-  }
+    
+  //  switch(theEvent.getController().getId()) {
+  //  case(1):
+  //  guiOn = !guiOn;
+  //  setupGUI(); 
+  //  animator.stop();
+  //  //if (guiOn == false) {
+  //  //  //stop();
+  //  //  animator.start();
+  //  //}
+  //  break;
+  //  case(2):
+  //  if (guiOn == true) {
+  //  guiChoose = GUI.LINE;
+  //  setupGUI(); 
+  //  break;
+  //  }
+  //  case(3):
+  //  if (guiOn == true) {
+  //  guiChoose = GUI.CYLINDER; 
+  //  setupGUI(); 
+  //  break;
+  //  }
+  //  //case(4):
+  //  //if (guiOn == true) {
+  //  //guiChoose = GUI.WAVE; 
+  //  //setupGUI(); 
+  //  //break;
+  //  //}
+  //  case(5): 
+  //  if (guiOn ==false) {
+  //   if (animator.status == moveStatus.NONE) {
+  //    animator.start();
+  //  } else {
+  //    stop();
+  //    animator.stop();
+  //  }
+  //  }
+  //}
   
   }

@@ -26,7 +26,7 @@ void keyPressed() {
   switch(key) {
     
   case 'u':
-    animator.untangle();
+    animator.untangleClear();
     break;
     
 
@@ -54,9 +54,9 @@ void keyPressed() {
     debugMode = !debugMode;
     break;
     
-    case 'g':
-    guiOn = !guiOn;
-    break;
+    //case 'g':
+    //guiOn = !guiOn;
+    //break;
     
     case 'k':
     ledAll();

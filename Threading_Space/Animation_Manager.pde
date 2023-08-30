@@ -2,12 +2,6 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
-float triangleWave(float x) {
-  float ret = (x % 4) - 1;
-  if (ret > 1) return (2 - ret);
-  else return ret;
-}
-
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
@@ -50,7 +44,6 @@ class AnimManager {
     }
   }
   
-  
   void start() {
     if (sequences.size() > 0) {
       sequences.get(iterator).start();
@@ -62,13 +55,26 @@ class AnimManager {
     status = moveStatus.NONE;
   }
   
+  void reset(){
+    status = moveStatus.NONE;
+    for (int i = 0; i < sequences.size(); i++) {
+      sequences.get(i).reset();
+    }
+    iterator = 0;
+  }
+  
+  void restart() {
+    reset();
+    start();
+  }
+  
   void update() {
     if (sequences.size() > 0) {
       boolean seqComplete = sequences.get(iterator).update();
       if (seqComplete) {
         if (iterator + 1 == sequences.size()) {
           if (loop) {
-            reset();
+            restart();
           } else {
             status = moveStatus.COMPLETE;
           }
@@ -80,19 +86,16 @@ class AnimManager {
     }
   }
   
-  void reset(){
-    iterator = 0;
-    for (int i = 0; i < sequences.size(); i++) {
-      sequences.get(i).reset();
-    }
-  }
-  
   Sequence getCurrentSeq() {
     if (size() > 0) {
       return sequences.get(iterator);
     }
     
     return null;
+  }
+  
+  Sequence getSeq(int i) {
+    return sequences.get(i);
   }
   
   int size() {
@@ -103,6 +106,7 @@ class AnimManager {
 
 class Sequence {
   moveStatus status = moveStatus.NONE;
+  boolean tangleSafe = true;
   boolean viz = false;
   
   void start() {
@@ -117,12 +121,20 @@ class Sequence {
     status = moveStatus.NONE;
   }
   
+  void setTangle(boolean tangle) {
+    tangleSafe = tangle;
+  }
+  
   void setViz(boolean val) {
     viz = val;
   }
   
   boolean update(){
     return false;
+  }
+  
+  boolean untangle() {
+    return tangleSafe;
   }
 }
 
@@ -157,6 +169,11 @@ class SmoothSequence extends Sequence {
   
   SmoothSequence(moveType tpe, Movement newFunc) {
     type = tpe;
+    func = newFunc;
+  }
+  
+  SmoothSequence(Movement newFunc) {
+    type = moveType.PAIR;
     func = newFunc;
   }
   
@@ -216,7 +233,11 @@ class SmoothSequence extends Sequence {
         if (viz) visualize(indieTargets);
       break;
     }
-    return (currTime > (timeLimit * 1000));
+    if (currTime > (timeLimit * 1000)){
+      status = moveStatus.COMPLETE;
+      return true;
+    }
+    return false;
   }
 }
 

@@ -10,22 +10,25 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 200;
-int nPairs = 6;
-int cubesPerHost = nCubes;
+int nCubes = 20;
+int nPairs = 10;
+int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
+//server ids
+String[] hosts = {"127.0.0.1","169.254.0.2"};
 
-//
-boolean debugMode = false;
-boolean testMode = true;
+
+//For testing on small mat
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
 boolean zorozoro = false;
 int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, {172, 148}};
 
-//For Visualizing Posistions in GUI
+//For Visualizing Posistions and Debug mode in GUI
+boolean debugMode = false;
 boolean visualOn = true; 
 boolean guiOn = true;
 PairVisual[] pairsViz;
@@ -37,10 +40,6 @@ int xmax = 949;
 int ymax = 898;
 int vert = 500;
 
-//int xmin = 45;
-//int ymin = 45;
-//int xmax = 455;
-//int ymax = 455;
 
 int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
@@ -77,10 +76,12 @@ import com.jogamp.opengl.GLProfile;
 }
 
 void setup() {
-  //launch OSC sercer
+  //create OSC servers
   oscP5 = new OscP5(this, 3333);
-  server = new NetAddress[1];
-  server[0] = new NetAddress("127.0.0.1", 3334);
+  server = new NetAddress[hosts.length];
+  for (int i = 0; i < hosts.length; i++) {
+    server[i] = new NetAddress(hosts[i], 3334);
+  }
 
   //create cubes
   cubes = new Cube[nCubes];
@@ -88,6 +89,7 @@ void setup() {
     cubes[i] = new Cube(i);
   }
 
+  //create pairs
   pairs = new Pair[nPairs];
   pairsViz = new PairVisual[nPairs];
   if (zorozoro) {
@@ -136,50 +138,9 @@ void setup() {
   frameRate(30);
   
   animator = new AnimManager();
-  //animator.add(new Frame(moveType.BOTTOM, getCircle(0)));
-  //animator.start();
-  /*SmoothSequence seq;
-  
-  //animator.add(new Frame(moveType.PAIR, getCircle(0)));
-  
-  seq = new SmoothSequence((float t) -> animCircle(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  //seq = new SmoothSequence((int t) -> animTwoCylinder());
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
-  //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  
-  seq = new SmoothSequence((float t) -> animRotateLine(t));
-  seq.setTimeLimit(15);
-  animator.add(seq);
-  
-  //animator.add(new Frame(moveType.PAIR, getLine(0)));
-  seq = new SmoothSequence((float t) -> animLine(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
-  seq.setPeriod(20);
-  seq.setTimeLimit(5);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animWaveY());
-  seq.setTimeLimit(16);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animWaveYCross());
-  seq.setTimeLimit(16);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animCircle(t));
-  seq.setTimeLimit(20);
-  animator.add(seq);
-  
-  animator.setLoop();
+  screensaver();
   animator.setViz();
-  animator.start();*/
+  //animator.start();
 }
 
 void draw() {
@@ -191,31 +152,33 @@ void draw() {
   
   if (animator.status != moveStatus.NONE) {
     animator.update();
-  } 
+
+} 
+ 
   
-  //if (guiOn) {
-  //    int[][][] targets;
-  //    switch (guiChoose) {
-  //      case CYLINDER:
-  //        targets = animCylinderTwist();
-  //        break;
+  if (guiOn) { 
+      int[][][] targets;
+      switch (guiChoose) {
+        case CYLINDER:
+          targets = animCylinderTwist();
+          break;
         
-  //      case LINE:
-  //        targets = animRotateLine();
-  //        break;
+        case LINE:
+          targets = animRotateLine();
+          break;
       
-  //      case TWOCIRCLE:
-  //        targets = animTwoCylinder();
-  //        break; 
+        case TWOCIRCLE:
+          targets = animTwoCylinder();
+          break; 
             
-  //      default:
-  //        targets = animCylinder();
-  //        break;
-  //    }
+        default:
+          targets = animTwoCylinder();
+          break;
+      }
       
-  //    visualize(targets);
-  //    movePairsVelocity(targets);
-  //}
+      visualize(targets);
+      //movePairsVelocity(targets);
+  }
   
 
 
@@ -231,6 +194,12 @@ void draw() {
   fill(50, 50, 105);
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
+  
+  if (guiOn) {
+  fill(50, 50, 105);
+  textAlign(LEFT, TOP);
+  text("\n\nGUI", 40, 40);
+  }
 
   if (debugMode) {
 
@@ -254,13 +223,74 @@ void draw() {
         text("Second "+ (smoothseq.currTime / 1000) + "/" + (smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
       textSize(24);
+      
+      for (int i = 0; i < animator.size(); i++) {
+        text("Sequence " + (i + 1) + ": "+ animator.getSeq(i).status, debugUIx, 30 * i + debugUIy+150);
+      }
     }
 
-    for (int i  = 0; i < pairs.length; i++) {
-      text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
-    }
+    textSize(24);
+    //for (int i  = 0; i < pairs.length; i++) {
+    //  text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
+    //}
   }
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
 }
+
+  
+
+  public void controlEvent(ControlEvent theEvent) {
+    println("got an event from"+theEvent.getController().getId());
+    
+   if (theEvent.isFrom(cp5.getController("LINEBUTTON"))) {
+    println("this event was triggered by Controller n1");
+    
+  }
+  
+    //guiChoose = GUI.LINE;
+    //setupGUI();
+    
+    
+    switch(theEvent.getController().getId()) {
+    case(1):
+    guiOn = !guiOn;
+    setupGUI(); 
+    break;
+    case(2):
+    if (guiOn == true) {
+    guiChoose = GUI.LINE;
+    setupGUI(); 
+    break;
+    }
+    case(3):
+    if (guiOn == true) {
+    guiChoose = GUI.CYLINDER; 
+    setupGUI(); 
+    break;
+    }
+    case(4):
+    if (guiOn == true) {
+    guiChoose = GUI.TWOCIRCLE; 
+    setupGUI(); 
+    break;
+    }
+  }
+  
+  }
+  
+  
+  //  public void LINEBUTTON(){
+  //  guiChoose = GUI.LINE;
+  //  setupGUI(); 
+  //  println("LINEBUTTON pressed");
+    
+  //}
+  
+  
+  //public void LINEBUTTON(int theValue) {
+  //println("a button event from colorA: "+theValue);
+  //guiChoose = GUI.LINE;
+  //setupGUI();
+  //}

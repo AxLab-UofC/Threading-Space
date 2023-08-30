@@ -77,11 +77,7 @@ void drawDisplay() {
         if (topActive) {
           if (cubes[i].isActive) {
             stroke(1);
-            if (cubes[i].onFloor){
-              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, pairs[i].t.y, vert - 5);
-            } else {
-              line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
-            }
+            line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
           }
           
           pushMatrix();

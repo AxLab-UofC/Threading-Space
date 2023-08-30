@@ -20,8 +20,8 @@ int xPos = 0;
 Slider2D s;
 
 int guiX = 40;
-int guiY = 220;
-int guiYadj = 230;
+int guiY = 200;
+int guiYadj = 213;
 int guioffset = 60; 
 
 //PFont labelfont;
@@ -112,8 +112,8 @@ void setupGUI() {
         cp5.addSlider("globalt_radius")
           .setPosition(guiX+230, guiYadj+(6*guioffset))
           .setSize(200, 30)
-          .setRange(80, 300)
-          .setValue(190)
+          .setRange(100, 300)
+          .setValue(200)
           .setCaptionLabel("Top Radius")
           .setValue(globalt_radius)
           ;
@@ -121,8 +121,8 @@ void setupGUI() {
          cp5.addSlider("globalb_radius")
           .setPosition(guiX+230, guiYadj+(7*guioffset))
           .setSize(200, 30)
-          .setRange(80, 300)
-          .setValue(190)
+          .setRange(100, 300)
+          .setValue(200)
           .setCaptionLabel("Bottom Radius")
           .setValue(globalb_radius)
           ;

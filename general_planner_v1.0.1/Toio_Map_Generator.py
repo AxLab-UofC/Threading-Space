@@ -323,6 +323,8 @@ if __name__ == "__main__":
             num_agents = int(arg)
         elif opt == '-h':
             num_instance_to_generate = int(arg)
+        elif opt == '-i':
+            planner_directory = arg
 
         
     first_starttime = time.time()

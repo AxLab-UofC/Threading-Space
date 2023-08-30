@@ -12,13 +12,9 @@ void screensaver() {
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animCircleTwist(t));
-  seq.setPeriod(20);
-  seq.setTimeLimit(40);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animCircleTwist(2-t));
   seq.setPeriod(10);
   seq.setTimeLimit(20);
+  seq.setTangle(true);
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animRotateLine(t));
@@ -27,13 +23,9 @@ void screensaver() {
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animRotateLineTwist(t));
-  seq.setPeriod(20);
-  seq.setTimeLimit(40);
-  animator.add(seq);
-
-  seq = new SmoothSequence((float t) -> animRotateLineTwist(1-t));
-  seq.setPeriod(10);
-  seq.setTimeLimit(20);
+  seq.setPeriod(30);
+  seq.setTimeLimit(30);
+  seq.setTangle(true);
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animRotateLine(t));
@@ -62,12 +54,8 @@ void screensaver() {
 
   seq = new SmoothSequence((float t) -> animFastTwist(t));
   seq.setPeriod(20);
-  seq.setTimeLimit(40);
-  animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animFastTwist(1-t));
-  seq.setPeriod(10);
   seq.setTimeLimit(20);
+  seq.setTangle(true);
   animator.add(seq);
   
   

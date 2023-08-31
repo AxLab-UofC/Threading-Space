@@ -247,12 +247,16 @@ public void controlEvent(ControlEvent theEvent) {
     case 2:
       guiChoose = GUI.LINE;
       resetFunction();
+      myLineColor = color(100,100,100);
+      myCylinderColor = color(150,150,150);
       setupGUI(); 
       break;
 
     case 3:
       guiChoose = GUI.CYLINDER;
       resetFunction();
+      myLineColor = color(150,150,150);
+      myCylinderColor = color(100,100,100);
       setupGUI(); 
       break;
 
@@ -260,6 +264,8 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose != GUI.LINE) {
         mode = GUImode.SELECT; 
         guiChoose = GUI.LINE;
+        myLineColor = color(100,100,100);
+        myCylinderColor = color(150,150,150);
         globalLoading = true;
         setupGUI(); 
       }
@@ -270,6 +276,8 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose != GUI.CYLINDER) {
         mode = GUImode.SELECT; 
         guiChoose = GUI.CYLINDER;
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(100,100,100);
         globalLoading = true;
         setupGUI(); 
       }
@@ -279,31 +287,18 @@ public void controlEvent(ControlEvent theEvent) {
     case 6: 
       globalLoading = true;
       mode = GUImode.INTERACTIVE;
+      if (guiChoose == GUI.CYLINDER) {
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(100,100,100);
+      } else {
+        myLineColor = color(100,100,100);
+        myCylinderColor = color(150,150,150);
+      }
       setupGUI();
       animator.startInteractive();
       lastpressed = millis();
+      
       break;
-
-    case 7: 
-      globalLoading = true;
-      mode = GUImode.INTERACTIVE;
-      setupGUI();
-      animator.startInteractive();
-      lastpressed = millis();
-      break;
-
-    //case 8: 
-    //  globalLoading = false;
-    //  resetFunction();
-    //  setupGUI(); 
-    //  lastpressed = millis();
-    //  break;
-
-    //case 9: 
-    //  globalLoading = false;
-    //  resetFunction();
-    //  lastpressed = millis();
-    //  setupGUI(); 
-    //  break;
+ //<>//
   }
 }

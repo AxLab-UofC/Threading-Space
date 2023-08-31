@@ -48,11 +48,12 @@ void keyPressed() {
     break;
     
     case 'p':
-    seq = new DiscreteSequence();
-    seq.frames = planPath(animCircle(0));
-    if (seq.frames.isEmpty()) {
-      break;
-    }
+    seq = new PathPlanSequence(animCircle(0));
+    //seq = new DiscreteSequence();
+    //seq.frames = planPath(animCircle(0));
+    //if (seq.frames.isEmpty()) {
+    //  break;
+    //}
     animator.stop();
     animator.clear();
     animator.add(seq);

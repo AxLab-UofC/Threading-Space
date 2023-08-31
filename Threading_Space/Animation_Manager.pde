@@ -90,18 +90,17 @@ class AnimManager {
     resetFunction();
     switch (guiChoose) {
       case CYLINDER:
-        animator.add(new Frame(animCylinderTwist()));
+        animator.add(new PathPlanSequence(animCylinderTwist()));
         break;
       
       case LINE:
-      animator.add(new Frame(animRotateLine()));
+        animator.add(new PathPlanSequence(animRotateLine()));
         break;
 
       //default:
       //  targets = animTwoCylinder();
       //  break;
     }
-    //animator.add(new Frame(animCylinderTwist()));
   }
   
   void stop() {
@@ -156,7 +155,6 @@ class AnimManager {
   void update() {
     boolean seqComplete = false;
     if (sequences.size() > 0) {
-      println(sequences.size());
       seqComplete = currSeq.update(); 
     }
     
@@ -174,6 +172,7 @@ class AnimManager {
           if (transitioning) {
             transitioning = false;
             interactive = true;
+            clear();
             resetFunction();
             setupGUI();
           }

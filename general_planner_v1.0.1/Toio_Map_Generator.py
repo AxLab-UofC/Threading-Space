@@ -327,6 +327,7 @@ if __name__ == "__main__":
             num_instance_to_generate = int(arg)
         elif opt == '-i':
             planner_directory = arg
+            folder_path = planner_directory + "toio_map_examples"
         elif opt == '-j':
             if arg == "True":
                 DEBUG = True

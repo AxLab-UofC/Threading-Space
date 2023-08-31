@@ -47,10 +47,10 @@ int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
 
 //For Path Planning
-int num_x = 33;
-int num_y = 33;
-int x_size = 990;
-int y_size = 990;
+int num_x = 10;
+int num_y = 10;
+int x_size = 1000;
+int y_size = 1000;
 int x_shift = xmin + 20;
 int y_shift = ymin + 20;
 int num_instances = 1;

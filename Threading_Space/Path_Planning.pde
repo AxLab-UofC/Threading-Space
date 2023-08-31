@@ -1,8 +1,8 @@
 // Inputs for python file
 String DEBUG = "False";
 
-String command = "/opt/homebrew/bin/python3 ";
-String plannerDirectory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
+String command = "/usr/local/opt/python@3.11/bin/python3.11 ";
+String plannerDirectory = "/Users/ramarko/Documents/coding/toio/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";
 String goalFile = "goal.txt";

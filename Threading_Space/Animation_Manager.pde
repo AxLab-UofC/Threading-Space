@@ -59,11 +59,49 @@ class AnimManager {
     status = moveStatus.INPROGRESS;
   }
   
+  void skip(){
+      untangling = false;
+      if (currSeq.tangle) {
+        untangling = true;
+        currSeq = currSeq.genUntangle();
+        stop(); start();
+      } else if (iterator + 1 >= sequences.size()) {
+        if (loop) {
+          restart();
+        } else {
+          status = moveStatus.COMPLETE;
+          if (transitioning) {
+            transitioning = false;
+            interactive = true;
+            resetFunction();
+            setupGUI();
+          }
+        }
+      } else {
+        iterator++;
+        currSeq = sequences.get(iterator);
+        currSeq.start();
+      }
+  }
+  
   void startInteractive() {
     transitioning = true;
     untangleClear();
     resetFunction();
-    animator.add(new Frame(animCylinderTwist()));
+    switch (guiChoose) {
+      case CYLINDER:
+        animator.add(new Frame(animCylinderTwist()));
+        break;
+      
+      case LINE:
+      animator.add(new Frame(animRotateLine()));
+        break;
+
+      //default:
+      //  targets = animTwoCylinder();
+      //  break;
+    }
+    //animator.add(new Frame(animCylinderTwist()));
   }
   
   void stop() {
@@ -103,12 +141,14 @@ class AnimManager {
   void untangleClear() {
     stop();
     setLoop(false);
-    clear();
     if (currSeq.tangle) {
       untangling = true;
-      currSeq = currSeq.genUntangle();
-      add(currSeq.genUntangle());
+      Sequence untangleSeq = currSeq.genUntangle();
+      clear();
+      add(untangleSeq);
       currSeq = sequences.get(0);
+    } else {
+      clear();
     }
     start();
   }
@@ -116,6 +156,7 @@ class AnimManager {
   void update() {
     boolean seqComplete = false;
     if (sequences.size() > 0) {
+      println(sequences.size());
       seqComplete = currSeq.update(); 
     }
     
@@ -134,6 +175,7 @@ class AnimManager {
             transitioning = false;
             interactive = true;
             resetFunction();
+            setupGUI();
           }
         }
       } else {
@@ -141,7 +183,6 @@ class AnimManager {
         currSeq = sequences.get(iterator);
         currSeq.start();
       }
-      println();
     }
   }
   

@@ -90,27 +90,10 @@ void setupGUI() {
         .setPosition(guiX,guiY +(3*guioffset))
         .setSize(200,50)
         .setId(5);
-     
-     if (globalLoading == true) {
-       switch (guiChoose) {
-        case CYLINDER: 
-              cp5.addButton("LOADING")
-              .setValue(100)
-              .setPosition(guiX + 240,guiY +(3*guioffset))
-              .setSize(200,50)
-              .setId(8);
-        break;
         
-        case LINE: 
-                cp5.addButton("LOADING")
-              .setValue(100)
-              .setPosition(guiX + 240,guiY +(2*guioffset))
-              .setSize(200,50)
-              .setId(9);
-        break; 
-       }
-     } else {
-      switch (guiChoose) {
+        
+     if (animator.interactive) {
+             switch (guiChoose) {
         case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")
             .setPosition(guiX+230, guiYadj+(3*guioffset))
@@ -173,6 +156,24 @@ void setupGUI() {
             .setValue(globalAngleOffsetSpeed);
           break;
       }
+     } else {
+       switch (guiChoose) {
+        case CYLINDER: 
+              cp5.addButton("LOADING")
+              .setValue(100)
+              .setPosition(guiX + 240,guiY +(3*guioffset))
+              .setSize(200,50)
+              .setId(8);
+        break;
+        
+        case LINE: 
+                cp5.addButton("LOADING")
+              .setValue(100)
+              .setPosition(guiX + 240,guiY +(2*guioffset))
+              .setSize(200,50)
+              .setId(9);
+        break; 
+     }
     }
     break;
   }

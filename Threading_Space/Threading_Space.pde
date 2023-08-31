@@ -15,6 +15,8 @@ int nPairs = 10;
 int cubesPerHost = 10;
 int maxMotorSpeed = 115;
 
+int lastpressed; 
+
 //server ids
 String[] hosts = {"127.0.0.1","169.254.0.2"};
 
@@ -225,6 +227,10 @@ void draw() {
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
+  if ((millis() - lastpressed) > 20000) {
+    mode = GUImode.SCREENSAVER;
+    setupGUI();
+  }
 }
 
   
@@ -253,6 +259,7 @@ public void controlEvent(ControlEvent theEvent) {
           globalLoading = true;
           setupGUI(); 
         }
+        lastpressed = millis(); 
         break; 
     case (5): 
         if (guiChoose != GUI.CYLINDER) {
@@ -261,22 +268,27 @@ public void controlEvent(ControlEvent theEvent) {
           globalLoading = true;
           setupGUI(); 
         }
+        lastpressed = millis();
         break;
     case(6): 
        mode = GUImode.INTERACTIVE;
        setupGUI();
+       lastpressed = millis();
        break;
      case(7): 
        mode = GUImode.INTERACTIVE;
        setupGUI();
+       lastpressed = millis();
        break;
      case (8): 
        globalLoading = false;
        resetFunction();
        setupGUI(); 
+       lastpressed = millis();
      case (9): 
        globalLoading = false;
        resetFunction();
+       lastpressed = millis();
        setupGUI(); 
     }
   

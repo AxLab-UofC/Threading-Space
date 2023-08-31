@@ -6,13 +6,10 @@ void screensaver() {
   seq.setTimeLimit(5);
   animator.add(seq);
   
-  //animator.add(new PathPlanSequence(animCircle(0)));
-  //animator.add(new Frame(moveType.BOTTOM, animCircle(0)));
-  
-  //seq = new SmoothSequence((float t) -> animCircle(t));
-  //seq.setPeriod(20);
-  //seq.setTimeLimit(20);
-  //animator.add(seq);
+  seq = new SmoothSequence((float t) -> animCircle(t));
+  seq.setPeriod(20);
+  seq.setTimeLimit(20);
+  animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animCircleTwist(t));
   seq.setPeriod(20);

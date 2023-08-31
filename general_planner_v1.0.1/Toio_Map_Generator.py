@@ -13,6 +13,8 @@ import seaborn as sns
 import subprocess
 import time
 
+DEBUG = False
+
 planner_directory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"
 folder_path = planner_directory + "toio_map_examples" ###############################
 
@@ -304,7 +306,7 @@ if __name__ == "__main__":
 
     argv = sys.argv
     argv.pop(0)
-    opts, args = getopt.getopt(argv, "a:b:c:d:e:f:g:h:")
+    opts, args = getopt.getopt(argv, "a:b:c:d:e:f:g:h:i:j:")
 
     for opt, arg in opts:
         if opt == '-a':
@@ -325,11 +327,15 @@ if __name__ == "__main__":
             num_instance_to_generate = int(arg)
         elif opt == '-i':
             planner_directory = arg
+            folder_path = planner_directory + "toio_map_examples"
+        elif opt == '-j':
+            if arg == "True":
+                DEBUG = True
 
         
-    first_starttime = time.time()
+    #first_starttime = time.time()
     vertices, map_file = grid_roadmap_generation()
-    map_time = str(time.time() - first_starttime)
+    #map_time = str(time.time() - first_starttime)
     
     # GENERATE AGENT FILE
     """ start_loc = range(0,30)
@@ -366,34 +372,35 @@ if __name__ == "__main__":
     #                                               y = v % num_y * (y_space / num_y) + y_shift
     # Converting coordinates to vertex numbers: v = ((x - x_shift) * (num_x / x_space) * num_y) + ((y - y_shift) * (num_y / y_space))
 
-    starttime = time.time()
-    #agent_file = generate_agent_random_starts_and_goals(vertices, num_instance_to_generate, num_agents)
+    #starttime = time.time()
+    agent_file = generate_agent_random_starts_and_goals(vertices, num_instance_to_generate, num_agents)
     agent_file = generate_custom_agent_file(vertices, num_instance_to_generate, num_agents, start_loc, goal_loc)
-    agent_time = str(time.time() - starttime)
+    #agent_time = str(time.time() - starttime)
 
 
     # EXECUTE PATH PLANNER
     # Enter the location of the compiled C++ executable.
-    starttime = time.time()
+    #starttime = time.time()
     program = planner_directory+"general_planner"
 
     # Enter where you want to output the path file.
     path_file = planner_directory+"output_path.txt"
     run_path_planner(program, map_file, agent_file, path_file)
-    plan_time = str(time.time() - starttime)
+    #plan_time = str(time.time() - starttime)
 
     # VISUALIZE
-    starttime = time.time()
-    #visualize_movements(map_file, agent_file, path_file, num_x, num_y)
-    #generate_gif()
-    viz_time = str(time.time() - starttime)
-    total_time = str(time.time() - first_starttime)
+    #starttime = time.time()
+    if DEBUG == True:
+        visualize_movements(map_file, agent_file, path_file, num_x, num_y)
+        generate_gif()
+    #viz_time = str(time.time() - starttime)
+    #total_time = str(time.time() - first_starttime)
 
-    print("Map Gen Time: " + map_time)
+    """print("Map Gen Time: " + map_time)
     print("Agent Gen Time: " + agent_time)
     print("Planner Run Time: " + plan_time)
     print("Viz Time: " + viz_time)
-    print("TOTAL TIME: " + total_time)
+    print("TOTAL TIME: " + total_time)"""
  
 
 

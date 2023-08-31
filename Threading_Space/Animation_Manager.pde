@@ -86,22 +86,28 @@ class AnimManager {
   
   void startInteractive() {
     transitioning = true;
-    untangleClear();
+    if (size() > 0) {
+      untangleClear();
+    }
+    stop();
     resetFunction();
     switch (guiChoose) {
       case CYLINDER:
-        animator.add(new Frame(animCylinderTwist()));
+        add(new PathPlanSequence(animCylinderTwist()));
         break;
       
       case LINE:
-      animator.add(new Frame(animRotateLine()));
+        add(new PathPlanSequence(animRotateLine()));
         break;
 
-      //default:
-      //  targets = animTwoCylinder();
-      //  break;
+      default:
+        add(new PathPlanSequence(animCylinderTwist()));
+        break;
     }
-    //animator.add(new Frame(animCylinderTwist()));
+    if (currSeq == null) {
+      currSeq = sequences.get(0);
+    }
+    start();
   }
   
   void stop() {
@@ -156,7 +162,6 @@ class AnimManager {
   void update() {
     boolean seqComplete = false;
     if (sequences.size() > 0) {
-      println(sequences.size());
       seqComplete = currSeq.update(); 
     }
     
@@ -557,6 +562,7 @@ class Frame {
     for (int i = 0; i < pairs.length; i++) {
       switch (type) {
         case PAIR:
+          if (viz) visualize(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
             tempStatus = moveStatus.INPROGRESS;
           } 
@@ -581,6 +587,7 @@ class Frame {
           break;
           
         case TOP:
+        if (viz) visualizeTop(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS) {
             tempStatus = moveStatus.INPROGRESS;
           } else if (pairs[i].t.status == moveStatus.ERROR) {
@@ -593,6 +600,7 @@ class Frame {
           }
           break;
         case BOTTOM:
+          if (viz) visualizeBottom(targets);
           if (pairs[i].b.status == moveStatus.INPROGRESS) {
             tempStatus = moveStatus.INPROGRESS;
           } else if (pairs[i].b.status == moveStatus.ERROR) {
@@ -605,6 +613,7 @@ class Frame {
           }
           break;
         case INDEPENDENT:
+        if (viz) visualize(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
             tempStatus = moveStatus.INPROGRESS;
           } 

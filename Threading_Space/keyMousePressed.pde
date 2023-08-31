@@ -36,6 +36,10 @@ void keyPressed() {
     midi(0, 1, notes);
     break;
     
+  case 'o':
+    animator.skip();
+    break;
+    
    case 'a':
     break;
 

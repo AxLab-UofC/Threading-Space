@@ -229,7 +229,7 @@ void draw() {
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
-  if ((millis() - lastpressed) > 20000) {
+  if ((millis() - lastpressed) > 20000000) {
     mode = GUImode.SCREENSAVER;
     setupGUI();
   }
@@ -278,29 +278,33 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 6: 
+      globalLoading = true;
       mode = GUImode.INTERACTIVE;
       setupGUI();
+      animator.startInteractive();
       lastpressed = millis();
       break;
 
     case 7: 
+      globalLoading = true;
       mode = GUImode.INTERACTIVE;
       setupGUI();
+      animator.startInteractive();
       lastpressed = millis();
       break;
 
-    case 8: 
-      globalLoading = false;
-      resetFunction();
-      setupGUI(); 
-      lastpressed = millis();
-      break;
+    //case 8: 
+    //  globalLoading = false;
+    //  resetFunction();
+    //  setupGUI(); 
+    //  lastpressed = millis();
+    //  break;
 
-    case 9: 
-      globalLoading = false;
-      resetFunction();
-      lastpressed = millis();
-      setupGUI(); 
-      break;
+    //case 9: 
+    //  globalLoading = false;
+    //  resetFunction();
+    //  lastpressed = millis();
+    //  setupGUI(); 
+    //  break;
   }
 }

@@ -66,6 +66,8 @@ void drawDisplay() {
 
       drawVelocityLine(pairsViz[i].t.vx, pairsViz[i].t.vy);
 
+
+
       rotate(pairsViz[i].t.theta * PI/180);
       //box(12, 12, 7);
       drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
@@ -79,7 +81,7 @@ void drawDisplay() {
             stroke(1);
             line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
           }
-          
+
           pushMatrix();
           translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
 
@@ -128,8 +130,23 @@ void drawDisplay() {
           pushMatrix();
           translate(pairs[i].b.x, pairs[i].b.y, -vert + 5);
 
+
+
+          pushMatrix();
+          translate(0, 10, 20);
+          rotateX(-PI/2);
+
+          fill(255, 0, 0);
+          textSize(30);
+          text("ID: " + i, 0, 0);
+
+          popMatrix();
+          
           rotate(pairs[i].b.theta * PI/180);
           //box(12, 12, 7);
+
+
+
           drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
           popMatrix();
         }

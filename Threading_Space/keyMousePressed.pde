@@ -26,7 +26,7 @@ void keyPressed() {
   switch(key) {
     
   case 'u':
-    animator.untangle();
+    animator.untangleClear();
     break;
     
 
@@ -44,7 +44,7 @@ void keyPressed() {
     break;
 
     case 'c':
-    movePairs(animCircle(0));
+    seq = new PathPlanSequence(animCircle(0));
     break;
     
     case 'p':
@@ -75,7 +75,7 @@ void keyPressed() {
     break;
    
     case 'l':
-    movePairs(animLine(0));
+    seq = new PathPlanSequence(animLine(0));
     break;
     
     case 's':

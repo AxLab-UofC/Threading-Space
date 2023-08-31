@@ -49,8 +49,8 @@ int ymid = (int) (ymax + ymin)/2;
 //For Path Planning
 int num_x = 10;
 int num_y = 10;
-int x_size = 1000;
-int y_size = 1000;
+int x_size = 450;
+int y_size = 450;
 int x_shift = xmin + 20;
 int y_shift = ymin + 20;
 int num_instances = 1;
@@ -101,10 +101,10 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    //xmin = 45;
-    //ymin = 45;
-    //xmax = 455;
-    //ymax = 455;
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
     
     xmid = (int) (xmax + xmin)/2;
     ymid = (int) (ymax + ymin)/2;
@@ -215,7 +215,7 @@ void draw() {
       }
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, debugUIy+150);
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.status, debugUIx, debugUIy+150);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
           text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);

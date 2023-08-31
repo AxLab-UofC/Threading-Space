@@ -9,6 +9,7 @@ enum GUImode {
 }
 
 GUI guiChoose = GUI.CYLINDER;
+GUI realChoose = GUI.CYLINDER;
 GUImode mode = GUImode.SCREENSAVER;
 
 import controlP5.*;

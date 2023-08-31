@@ -13,10 +13,10 @@ float b_offsetAngleSpeed =  0; //-0.05;
 float globalInnerAngleOffset=0;
 float globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-float globalt_radius = 300;
+float globalt_radius = xmax * ((float) 3/ 9);
 float t_radiusSpeed = 0.7;
 
-float globalb_radius = 330;
+float globalb_radius = xmax * ((float) 3/ 9);
 float b_radiusSpeed = -2;
 
 float t_inner_radius = 100;
@@ -48,10 +48,10 @@ void resetFunction() {
     globalInnerAngleOffset=0;
     globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-    globalt_radius = 300;
+    globalt_radius = xmax * ((float) 3/ 9);
     t_radiusSpeed = 0.7;
 
-    globalb_radius = 300;
+    globalb_radius = xmax * ((float) 3/ 9);
     b_radiusSpeed = -2;
 
     t_inner_radius = 100;

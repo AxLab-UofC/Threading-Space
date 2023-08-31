@@ -516,6 +516,7 @@ class Frame {
     for (int i = 0; i < pairs.length; i++) {
       switch (type) {
         case PAIR:
+          if (viz) visualize(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
             tempStatus = moveStatus.INPROGRESS;
           } 
@@ -540,6 +541,7 @@ class Frame {
           break;
           
         case TOP:
+        if (viz) visualizeTop(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS) {
             tempStatus = moveStatus.INPROGRESS;
           } else if (pairs[i].t.status == moveStatus.ERROR) {
@@ -552,6 +554,7 @@ class Frame {
           }
           break;
         case BOTTOM:
+          if (viz) visualizeBottom(targets);
           if (pairs[i].b.status == moveStatus.INPROGRESS) {
             tempStatus = moveStatus.INPROGRESS;
           } else if (pairs[i].b.status == moveStatus.ERROR) {
@@ -564,6 +567,7 @@ class Frame {
           }
           break;
         case INDEPENDENT:
+        if (viz) visualize(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
             tempStatus = moveStatus.INPROGRESS;
           } 

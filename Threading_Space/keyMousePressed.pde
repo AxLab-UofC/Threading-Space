@@ -46,9 +46,13 @@ void keyPressed() {
     case 'p':
     seq = new DiscreteSequence();
     seq.frames = planPath(animCircle(0));
+    if (seq.frames.isEmpty()) {
+      break;
+    }
     animator.stop();
     animator.clear();
     animator.add(seq);
+    //animator.add(new Frame(moveType.BOTTOM, animCircle(0)));
     animator.start();
     //movePairs(pairCheck());
     break;

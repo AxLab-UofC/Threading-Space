@@ -1,6 +1,5 @@
 import peasy.PeasyCam;
 PeasyCam cam;
-import deadpixel.command.*;
 
 
 import oscP5.*;
@@ -12,18 +11,16 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
-int nPairs = 6;
+int nPairs = 10;
 int cubesPerHost = 20;
 int maxMotorSpeed = 115;
-
-int lastpressed; 
 
 //server ids
 String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -47,12 +44,12 @@ int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
 
 //For Path Planning
-int num_x = 33;
-int num_y = 33;
-int x_size = 990;
-int y_size = 990;
-int x_shift = xmin + 20;
-int y_shift = ymin + 20;
+int num_x = 10;
+int num_y = 10;
+int x_size = 400;
+int y_size = 400;
+int x_shift = 70;
+int y_shift = 70;
 int num_instances = 1;
 
 
@@ -101,17 +98,17 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    //xmin = 45;
-    //ymin = 45;
-    //xmax = 455;
-    //ymax = 455;
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
     
     xmid = (int) (xmax + xmin)/2;
     ymid = (int) (ymax + ymin)/2;
     
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i + nPairs, i); //For Laptop-TOIO
+      pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
     }
   } else {
     for (int i = 0; i < nPairs; i++) {
@@ -157,25 +154,29 @@ void draw() {
   } 
  
   
-  if (mode == GUImode.SELECT || mode == GUImode.INTERACTIVE) { 
-      int[][][] targets;
-      switch (guiChoose) {
-        case CYLINDER:
-          targets = animCylinderTwist();
-          break;
+  //if (guiOn) { 
+  //    int[][][] targets;
+  //    switch (guiChoose) {
+  //      case CYLINDER:
+  //        targets = animCylinderTwist();
+  //        break;
         
-        case LINE:
-          targets = animRotateLine();
-          break;
-
-        default:
-          targets = animTwoCylinder();
-          break;
-      }
+  //      case LINE:
+  //        targets = animRotateLine();
+  //        break;
       
-      visualize(targets);
-      if (animator.interactive) movePairsVelocity(targets);
-  }
+  //    //  case WAVE:
+  //    //    targets = animWaveYCross();
+  //    //    break; 
+            
+  //      default:
+  //        targets = animTwoCylinder();
+  //        break;
+  //    }
+      
+  //    visualize(targets);
+  //    //movePairsVelocity(targets);
+  //}
   
 
 
@@ -192,6 +193,11 @@ void draw() {
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
   
+  //if (guiOn) {
+  //fill(50, 50, 105);
+  //textAlign(LEFT, TOP);
+  //text("\n\nGUI", 40, 40);
+  //}
 
   if (debugMode) {
 
@@ -205,102 +211,90 @@ void draw() {
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
-    text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
     if (animator.size() > 0 && animator.getCurrentSeq() != null) {
       Sequence currSeq = animator.getCurrentSeq();
       if (animator.untangling) {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, debugUIy+120);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, 30 + debugUIy+60);
       } else {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, debugUIy+120);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, 30 + debugUIy+60);
       }
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, debugUIy+150);
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
-          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
+          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
         }
       } else {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
-        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+150);
+        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
       }
     }
   }
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
-  if ((millis() - lastpressed) > 20000) {
-    mode = GUImode.SCREENSAVER;
-    setupGUI();
-  }
 }
 
   
 
-public void controlEvent(ControlEvent theEvent) { 
-  switch (theEvent.getController().getId()) {
-    case 0:
-      mode = GUImode.SELECT;
-      animator.setViz(false);
-      setupGUI(); 
-      break;
-
-    case 2:
-      guiChoose = GUI.LINE;
-      resetFunction();
-      setupGUI(); 
-      break;
-
-    case 3:
-      guiChoose = GUI.CYLINDER;
-      resetFunction();
-      setupGUI(); 
-      break;
-
-    case 4: 
-      if (guiChoose != GUI.LINE) {
-        mode = GUImode.SELECT; 
-        guiChoose = GUI.LINE;
-        globalLoading = true;
-        setupGUI(); 
-      }
-      lastpressed = millis(); 
-      break; 
-
-    case 5: 
-      if (guiChoose != GUI.CYLINDER) {
-        mode = GUImode.SELECT; 
-        guiChoose = GUI.CYLINDER;
-        globalLoading = true;
-        setupGUI(); 
-      }
-      lastpressed = millis();
-      break;
-
-    case 6: 
-      mode = GUImode.INTERACTIVE;
-      setupGUI();
-      lastpressed = millis();
-      break;
-
-    case 7: 
-      mode = GUImode.INTERACTIVE;
-      setupGUI();
-      lastpressed = millis();
-      break;
-
-    case 8: 
-      globalLoading = false;
-      resetFunction();
-      setupGUI(); 
-      lastpressed = millis();
-      break;
-
-    case 9: 
-      globalLoading = false;
-      resetFunction();
-      lastpressed = millis();
-      setupGUI(); 
-      break;
+public void controlEvent(ControlEvent theEvent) {
+    println("got an event from"+theEvent.getController().getId());
+    
+   if (theEvent.isFrom(cp5.getController("LINEBUTTON"))) {
+    println("this event was triggered by Controller n1");
+    
   }
-}
+  
+    //guiChoose = GUI.LINE;
+    //setupGUI();
+    
+    switch (theEvent.getController().getId()) {
+      case 0:
+        mode = GUImode.SELECT;
+        animator.setViz(false);
+        setupGUI(); 
+        break;
+    }
+    
+    
+  //  switch(theEvent.getController().getId()) {
+  //  case(1):
+  //  guiOn = !guiOn;
+  //  setupGUI(); 
+  //  animator.stop();
+  //  //if (guiOn == false) {
+  //  //  //stop();
+  //  //  animator.start();
+  //  //}
+  //  break;
+  //  case(2):
+  //  if (guiOn == true) {
+  //  guiChoose = GUI.LINE;
+  //  setupGUI(); 
+  //  break;
+  //  }
+  //  case(3):
+  //  if (guiOn == true) {
+  //  guiChoose = GUI.CYLINDER; 
+  //  setupGUI(); 
+  //  break;
+  //  }
+  //  //case(4):
+  //  //if (guiOn == true) {
+  //  //guiChoose = GUI.WAVE; 
+  //  //setupGUI(); 
+  //  //break;
+  //  //}
+  //  case(5): 
+  //  if (guiOn ==false) {
+  //   if (animator.status == moveStatus.NONE) {
+  //    animator.start();
+  //  } else {
+  //    stop();
+  //    animator.stop();
+  //  }
+  //  }
+  //}
+  
+  }

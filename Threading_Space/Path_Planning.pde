@@ -1,6 +1,6 @@
 // Inputs for python file
 String command = "/opt/homebrew/bin/python3 ";
-String plannerDirectory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
+String plannerDirectory = "/Users/ramarko/Documents/coding/toio/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";
 String goalFile = "goal.txt";
@@ -11,7 +11,7 @@ int y_min_plus_max = ymin + ymax; // Used to reverse the y-axis to align with pa
 
 
 // USES CURRENT TOIO LOCATIONS AS START POSITIONS
-void planPath(int targets[][]) {
+ArrayList<Frame> planPath(int targets[][]) {
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
   HashMap<Integer, Integer> takenVertices = new HashMap<Integer, Integer>(); // Keep track of which vertex is taken.
 
@@ -57,12 +57,12 @@ void planPath(int targets[][]) {
   goal_writer.flush();
   goal_writer.close();
 
-  runPlanner();
+  return runPlanner();
 }
 
 
 // FOR PREDETERMINED START POSITIONS
-void planPath(int starts[][], int targets[][]) {
+ArrayList<Frame> planPath(int starts[][], int targets[][]) {
 
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
 
@@ -89,12 +89,12 @@ void planPath(int starts[][], int targets[][]) {
   goal_writer.flush();
   goal_writer.close();
 
-  runPlanner();
+  return runPlanner();
 }
 
 
 // RUN PYTHON FILE
-void runPlanner() {
+ArrayList<Frame> runPlanner() {
   Command cmd = new Command(command + plannerDirectory + plannerFile
     + " -a " + Integer.toString(num_x)
     + " -b " + Integer.toString(num_y)
@@ -157,7 +157,7 @@ void runPlanner() {
 
   // Add to Animation
   boolean done = false;
-  DiscreteSequence seq = new DiscreteSequence();
+  ArrayList<Frame> frames = new ArrayList<Frame>();
   //seq.setSpeed(200);
   while (!done) {
     int planned_path[][] = new int[num_agents][];
@@ -177,16 +177,12 @@ void runPlanner() {
       for (int[] toio : planned_path) {
         println(Arrays.toString(toio));
       }
-      seq.addFrame(new Frame(moveType.BOTTOM, planned_path));
+      frames.add(new Frame(moveType.BOTTOM, planned_path));
     }
   }
 
-  //Movement move = new Movement((float t) -> toSmooth(t));
-
-  //SmoothSequence smooth = new SmoothSequence(move);
-
-  println("adding seq to animator");
-  animator.add(seq);
+  //println("adding seq to animator");
+  return frames;
 
 
   // FIRST LOCATION

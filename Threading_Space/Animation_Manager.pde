@@ -2,12 +2,6 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
-float triangleWave(float x) {
-  float ret = (x % 4) - 1;
-  if (ret > 1) return (2 - ret);
-  else return ret;
-}
-
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
@@ -16,6 +10,9 @@ class AnimManager {
   boolean loop = false;
   boolean viz = false;
   boolean untangling = false;
+  
+  boolean transitioning = false;
+  boolean interactive = false;
  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
@@ -62,6 +59,13 @@ class AnimManager {
     status = moveStatus.INPROGRESS;
   }
   
+  void startInteractive() {
+    transitioning = true;
+    untangleClear();
+    resetFunction();
+    animator.add(new Frame(animCylinderTwist()));
+  }
+  
   void stop() {
     status = moveStatus.NONE;
   }
@@ -83,6 +87,7 @@ class AnimManager {
   void clear() {
     sequences.clear();
     iterator = 0;
+    currSeq = null;
   }
   
   void untangle() {
@@ -125,6 +130,11 @@ class AnimManager {
           restart();
         } else {
           status = moveStatus.COMPLETE;
+          if (transitioning) {
+            transitioning = false;
+            interactive = true;
+            resetFunction();
+          }
         }
       } else {
         iterator++;
@@ -141,6 +151,16 @@ class AnimManager {
     }
     
     return null;
+  }
+  
+  String getStatus() {
+    if (transitioning) {
+      return "TRANSITIONING";
+    } else if (interactive) {
+      return "INTERACTIVE";
+    } else {
+      return "SCREENSAVER";
+    }
   }
   
   Sequence getSeq(int i) {
@@ -399,6 +419,31 @@ class DiscreteSequence extends Sequence {
   
   int size() {
     return frames.size();
+  }
+}
+
+class PathPlanSequence extends DiscreteSequence {
+  int[][] finalTargets;
+  PathPlanSequence(int[][] targets){
+    finalTargets = targets;
+    iterator = 0;
+  }
+  
+  PathPlanSequence(int[][][] targets) {
+    finalTargets = new int[nPairs][3];
+    for (int i = 0; i < nPairs; i++) {
+      finalTargets[i] = targets[i][1];
+    }
+    iterator = 0;
+  }
+  
+  void start() {
+    if (frames.size() == 0) {
+      frames = planPath(finalTargets);
+    } 
+    
+    frames.get(iterator).execute();
+    status = moveStatus.INPROGRESS;
   }
 }
 

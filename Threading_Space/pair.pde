@@ -141,13 +141,33 @@ void stop() {
   animator.status = moveStatus.NONE;
 }
 
-float[] smoothen(int start, int end, int numSteps) {
-  float[] steps = new float[numSteps];
-  float stepSize = ((float) (end - start))/numSteps;
+int[][][] pairCheck() {
+  int targets[][][] = new int[nPairs][2][3];
   
-  for (int i = 0; i < numSteps; i++) {
-    steps[i] = start + (stepSize * i);
+  int r = 3 * min(xmax, ymax) / 8;
+  float angle = 2 * PI/nPairs;
+  
+  for (int i = 0; i < nPairs; i++) {
+    float newAngle = angle * i;
+    targets[i][0][0] = (int)(xmid + r*cos(newAngle));
+    targets[i][0][1] = (int)(ymid - r*sin(newAngle));
+    targets[i][0][2] = (int)((360 * newAngle / (2 * PI)) + 90);
+    
+    targets[i][1][0] = (int)(xmid + r*cos(newAngle));
+    targets[i][1][1] = (int)(ymid + r*sin(newAngle));
+    targets[i][1][2] = (int)((360 * newAngle / (2 * PI)) + 90);
   }
   
-  return steps;
+  return targets;
+}
+
+void ledAll() {
+  for (int i = 0; i < cubes.length; i++) {
+    if (!cubes[i].onFloor) {
+      led(i, 0, 0, 0, 255);
+    }
+    else {
+      led(i, 0, 255, 0, 0);
+    }
+  }
 }

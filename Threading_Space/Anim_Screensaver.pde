@@ -6,14 +6,17 @@ void screensaver() {
   seq.setTimeLimit(20);
   animator.add(seq);
   
+  //animator.add(new PathPlanSequence(animCircle(0)));
+  //animator.add(new Frame(moveType.BOTTOM, animCircle(0)));
+  
   seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setPeriod(20);
   seq.setTimeLimit(20);
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animCircleTwist(t));
-  seq.setPeriod(10);
-  seq.setTimeLimit(20);
+  seq.setPeriod(20);
+  seq.setTimeLimit(40);
   seq.setTangle(true);
   animator.add(seq);
   
@@ -63,7 +66,7 @@ void screensaver() {
 }
 
 int[][]   animCircle(float t) {
-  float angleOffset = t * (2 *PI);
+  float angleOffset = t * (2 * PI);
   float angle = (2 * PI) / nPairs;
   float radius = (xmax * 3) / 9;
   

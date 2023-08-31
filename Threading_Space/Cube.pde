@@ -21,7 +21,6 @@ class Cube {
   int y;
   int theta;
 
-  
   // battery
   int battery;
   

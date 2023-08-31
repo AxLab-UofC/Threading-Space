@@ -31,23 +31,26 @@ void keyPressed() {
     
 
   case 'f':
-    int[][] notes = {{30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 64, 20}, {30, 63, 20}, {30, 59, 20}, {30, 62, 20}, {30, 60, 20}, {30, 57, 20}};
+    int[][] notes = {{30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, 
+                     {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 59, 20}, {30, 0, 20}, {30, 62, 20}, {30, 0, 20}, {30, 60, 20}, {30, 57, 20}};
     midi(0, 1, notes);
     break;
     
    case 'a':
     break;
-    
-   case 'b':
-    visualize(getCircle(0));
-    break;
-    
+
     case 'c':
-    movePairs(getCircle(0));
+    movePairs(animCircle(0));
     break;
     
     case 'p':
-    movePairs(pairCheck());
+    seq = new DiscreteSequence();
+    seq.frames = planPath(animCircle(0));
+    animator.stop();
+    animator.clear();
+    animator.add(seq);
+    animator.start();
+    //movePairs(pairCheck());
     break;
     
     case 'd':
@@ -63,7 +66,7 @@ void keyPressed() {
     break;
    
     case 'l':
-    movePairs(getLine(0));
+    movePairs(animLine(0));
     break;
     
     case 's':

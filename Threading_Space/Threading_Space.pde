@@ -11,8 +11,8 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
-int nPairs = 10;
-int cubesPerHost = 10;
+int nPairs = 6;
+int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
 int lastpressed; 
@@ -22,7 +22,7 @@ String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -110,7 +110,7 @@ void setup() {
     
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i + 12, i); //For Laptop-TOIO
+      pairs[i] = new Pair(i + nPairs, i); //For Laptop-TOIO
     }
   } else {
     for (int i = 0; i < nPairs; i++) {
@@ -173,7 +173,7 @@ void draw() {
       }
       
       visualize(targets);
-      //movePairsVelocity(targets);
+      if (animator.interactive) movePairsVelocity(targets);
   }
   
 
@@ -204,23 +204,24 @@ void draw() {
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
+    text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
     if (animator.size() > 0 && animator.getCurrentSeq() != null) {
       Sequence currSeq = animator.getCurrentSeq();
       if (animator.untangling) {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, 30 + debugUIy+60);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, debugUIy+120);
       } else {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, 30 + debugUIy+60);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, debugUIy+120);
       }
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, 30 + debugUIy+90);
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, debugUIy+150);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
-          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+150);
+          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
         }
       } else {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
-        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, 30 + debugUIy+90);
+        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+150);
       }
     }
   }
@@ -236,60 +237,69 @@ void draw() {
   
 
 public void controlEvent(ControlEvent theEvent) { 
-    switch (theEvent.getController().getId()) {
-      case 0:
-        mode = GUImode.SELECT;
-        animator.setViz(false);
+  switch (theEvent.getController().getId()) {
+    case 0:
+      mode = GUImode.SELECT;
+      animator.setViz(false);
+      setupGUI(); 
+      break;
+
+    case 2:
+      guiChoose = GUI.LINE;
+      resetFunction();
+      setupGUI(); 
+      break;
+
+    case 3:
+      guiChoose = GUI.CYLINDER;
+      resetFunction();
+      setupGUI(); 
+      break;
+
+    case 4: 
+      if (guiChoose != GUI.LINE) {
+        mode = GUImode.SELECT; 
+        guiChoose = GUI.LINE;
+        globalLoading = true;
         setupGUI(); 
-        break;
-      case(2):
-          guiChoose = GUI.LINE;
-          resetFunction();
-          setupGUI(); 
-        break;
-    case(3):
+      }
+      lastpressed = millis(); 
+      break; 
+
+    case 5: 
+      if (guiChoose != GUI.CYLINDER) {
+        mode = GUImode.SELECT; 
         guiChoose = GUI.CYLINDER;
-        resetFunction();
+        globalLoading = true;
         setupGUI(); 
-        break;
-    case (4): 
-        if (guiChoose != GUI.LINE) {
-          mode = GUImode.SELECT; 
-          guiChoose = GUI.LINE;
-          globalLoading = true;
-          setupGUI(); 
-        }
-        lastpressed = millis(); 
-        break; 
-    case (5): 
-        if (guiChoose != GUI.CYLINDER) {
-          mode = GUImode.SELECT; 
-          guiChoose = GUI.CYLINDER;
-          globalLoading = true;
-          setupGUI(); 
-        }
-        lastpressed = millis();
-        break;
-    case(6): 
-       mode = GUImode.INTERACTIVE;
-       setupGUI();
-       lastpressed = millis();
-       break;
-     case(7): 
-       mode = GUImode.INTERACTIVE;
-       setupGUI();
-       lastpressed = millis();
-       break;
-     case (8): 
-       globalLoading = false;
-       resetFunction();
-       setupGUI(); 
-       lastpressed = millis();
-     case (9): 
-       globalLoading = false;
-       resetFunction();
-       lastpressed = millis();
-       setupGUI(); 
-    }
-  
+      }
+      lastpressed = millis();
+      break;
+
+    case 6: 
+      mode = GUImode.INTERACTIVE;
+      setupGUI();
+      lastpressed = millis();
+      break;
+
+    case 7: 
+      mode = GUImode.INTERACTIVE;
+      setupGUI();
+      lastpressed = millis();
+      break;
+
+    case 8: 
+      globalLoading = false;
+      resetFunction();
+      setupGUI(); 
+      lastpressed = millis();
+      break;
+
+    case 9: 
+      globalLoading = false;
+      resetFunction();
+      lastpressed = millis();
+      setupGUI(); 
+      break;
+  }
 }

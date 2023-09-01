@@ -167,3 +167,74 @@ int[][][] animTwoCylinder() {
   
   return targets;
 }
+
+
+int[][][] untangleAnimation() {
+  boolean untangleDone = false;
+  int[][][] targets = new int[nPairs][2][3];
+  
+  switch (guiChoose) {
+    case CYLINDER:
+      boolean topDone = false;
+      boolean bottomDone = false;
+      elapsedTime = millis() - lastMillis;
+      lastMillis = millis();
+    
+      float timeScale = playSpeed * float(elapsedTime)/1000;
+    
+    
+      globalt_radius = xmax * 3/9;
+      globalb_radius = xmax * 3/9;
+      float avg_offsetAngle = (t_offsetAngle + b_offsetAngle) / 2;
+      
+      // TOP
+      if ((t_offsetAngle - avg_offsetAngle) < 0.5) {
+        topDone = true;
+      }
+      else if (t_offsetAngle - avg_offsetAngle > 0) {
+        t_offsetAngle -= t_offsetAngleSpeed * timeScale; 
+      }
+      else {
+        t_offsetAngle += t_offsetAngleSpeed * timeScale;
+      }
+      
+      // BOTTOM
+      if ((b_offsetAngle - avg_offsetAngle) < 0.5) {
+        bottomDone = true;
+      }
+      else if (b_offsetAngle - avg_offsetAngle > 0) {
+        b_offsetAngle -= b_offsetAngleSpeed * timeScale; 
+      }
+      else {
+        b_offsetAngle += b_offsetAngleSpeed * timeScale;
+      }
+      
+      float angle = 2 * PI/(nPairs);
+      
+      for (int i = 0; i < nPairs; i++) {
+        float newAngle = (angle * i) + globalAngleOffset;
+        targets[i][0][0] = int((xmax + xmin)/2 + globalt_radius*sin(newAngle + t_offsetAngle)); //x
+        targets[i][0][1] = int((ymax + ymin)/2 + globalt_radius*cos(newAngle + t_offsetAngle)); //y
+        targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
+    
+        targets[i][1][0] = int((xmax + xmin)/2 + globalb_radius*sin(newAngle + b_offsetAngle)); //x
+        targets[i][1][1] = int((ymax + ymin)/2 + globalb_radius*cos(newAngle + b_offsetAngle)); //y
+        targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
+      }
+      
+      if (topDone && bottomDone) {
+        untangleDone = true;
+      }
+      
+      break;
+      
+    case LINE:
+      break;
+    
+    //case CROSS:
+    //  break;
+  
+  }
+  
+  return targets;
+} 

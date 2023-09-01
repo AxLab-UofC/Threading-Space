@@ -16,7 +16,7 @@ int nPairs = 6;
 int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
-int lastpressed; 
+int lastpressed;
 
 //server ids
 String[] hosts = {"127.0.0.1","169.254.0.2"};
@@ -32,7 +32,7 @@ int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, 
 
 //For Visualizing Posistions and Debug mode in GUI
 boolean debugMode = false;
-boolean visualOn = true; 
+boolean visualOn = true;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
@@ -47,8 +47,9 @@ int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
 
 //For Path Planning
-int num_x = 33;
-int num_y = 33;
+
+int num_x = 15;
+int num_y = 15;
 int x_size = 990;
 int y_size = 990;
 int x_shift = xmin + 20;
@@ -70,6 +71,7 @@ Pair[] pairs;
 
 PFont titlefont;
 PFont debugfont;
+PFont buttonfont;
 
 //For new Mac silicon chip to render 3D correctly:
 import com.jogamp.opengl.GLProfile;
@@ -101,14 +103,19 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    //xmin = 45;
-    //ymin = 45;
-    //xmax = 455;
-    //ymax = 455;
-    
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
+
+    num_x = 10;
+    num_y = 10;
+    x_size = 450;
+    y_size = 450;
+
     xmid = (int) (xmax + xmin)/2;
     ymid = (int) (ymax + ymin)/2;
-    
+
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
       pairs[i] = new Pair(i + nPairs, i); //For Laptop-TOIO
@@ -124,7 +131,7 @@ void setup() {
   //we'll be updating the cubes every frame, so don't try to go too high
   fullScreen(P3D);
   //size(1400, 1100, P3D);
-  
+
   cam = new PeasyCam(this, 400);
   cam.setDistance(1600);
   cam.rotateX(-PI/2);
@@ -137,8 +144,9 @@ void setup() {
 
   titlefont = loadFont("Code-Light-80.vlw");
   debugfont = loadFont("Agenda-Light-48.vlw");
+  buttonfont = createFont("arial", 13);
   frameRate(30);
-  
+
   animator = new AnimManager();
   screensaver();
   animator.setViz();
@@ -151,32 +159,10 @@ void draw() {
   } else {
     cam.setActive(false);
   }
-  
+
   if (animator.status == moveStatus.INPROGRESS) {
     animator.update();
-  } 
- 
-  
-  if (mode == GUImode.SELECT || mode == GUImode.INTERACTIVE) { 
-      int[][][] targets;
-      switch (guiChoose) {
-        case CYLINDER:
-          targets = animCylinderTwist();
-          break;
-        
-        case LINE:
-          targets = animRotateLine();
-          break;
-
-        default:
-          targets = animTwoCylinder();
-          break;
-      }
-      
-      visualize(targets);
-      if (animator.interactive) movePairsVelocity(targets);
   }
-  
 
 
   //START DO NOT EDIT
@@ -191,7 +177,7 @@ void draw() {
   fill(50, 50, 105);
   textAlign(LEFT, TOP);
   text("Threading Space \nController", 40, 40);
-  
+
 
   if (debugMode) {
 
@@ -215,7 +201,7 @@ void draw() {
       }
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.getCurrentFrame().status, debugUIx, debugUIy+150);
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.status, debugUIx, debugUIy+150);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
           text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
@@ -230,81 +216,114 @@ void draw() {
   cam.endHUD();
   //END DO NOT EDIT
   if ((millis() - lastpressed) > 20000000) {
-    mode = GUImode.SCREENSAVER;
+    guiState = GUImode.SCREENSAVER;
     setupGUI();
   }
 }
 
-  
 
-public void controlEvent(ControlEvent theEvent) { 
+
+public void controlEvent(ControlEvent theEvent) {
   switch (theEvent.getController().getId()) {
     case 0:
-      mode = GUImode.SELECT;
+      guiState = GUImode.SELECT;
       animator.setViz(false);
-      setupGUI(); 
+      setupGUI();
+      break;
+
+    case 1:
+      guiChoose = animChoose.LINE;
+      myLineColor = color(100,100,100);
+      myCylinderColor = color(150,150,150);
+      myCrossColor = color(150,150,150);
+      setupGUI();
       break;
 
     case 2:
-      guiChoose = GUI.LINE;
-      resetFunction();
-      setupGUI(); 
+      guiChoose = animChoose.CYLINDER;
+      myLineColor = color(150,150,150);
+      myCylinderColor = color(100,100,100);
+      myCrossColor = color(150,150,150);
+      setupGUI();
       break;
 
     case 3:
-      guiChoose = GUI.CYLINDER;
-      resetFunction();
-      setupGUI(); 
+     guiChoose = animChoose.CROSS;
+      myLineColor = color(150,150,150);
+      myCylinderColor = color(150,150,150);
+      myCrossColor = color(100,100,100);
+      setupGUI();
       break;
 
-    case 4: 
-      if (guiChoose != GUI.LINE) {
-        mode = GUImode.SELECT; 
-        guiChoose = GUI.LINE;
-        globalLoading = true;
-        setupGUI(); 
-      }
-      lastpressed = millis(); 
-      break; 
-
-    case 5: 
-      if (guiChoose != GUI.CYLINDER) {
-        mode = GUImode.SELECT; 
-        guiChoose = GUI.CYLINDER;
-        globalLoading = true;
+    case 4:
+      if (guiChoose != animChoose.LINE) {
+        guiState = GUImode.SELECT;
+        guiChoose = animChoose.LINE;
+        myLineColor = color(100,100,100);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
+        setupGUI();
+      } 
+      if (realChoose == animChoose.LINE) {
+        guiState = GUImode.INTERACTIVE;
         setupGUI(); 
       }
       lastpressed = millis();
       break;
 
-    case 6: 
-      globalLoading = true;
-      mode = GUImode.INTERACTIVE;
+    case 5:
+      if (guiChoose != animChoose.CYLINDER) {
+        guiState = GUImode.SELECT;
+        guiChoose = animChoose.CYLINDER;
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(100,100,100);
+        myCrossColor = color(100,100,100);
+        setupGUI();
+      }
+      if (realChoose == animChoose.CYLINDER) {
+        guiState = GUImode.INTERACTIVE;
+        setupGUI(); 
+      }
+      lastpressed = millis();
+      break;
+
+    case 6:
+      if (guiChoose == animChoose.CYLINDER) {
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(100,100,100);
+        myCrossColor = color(150,150,150);
+      } else if (guiChoose == animChoose.LINE) {
+        myLineColor = color(100,100,100);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(150,150,150);
+      } else {
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
+      }
+      resetVariables();
+      realChoose = guiChoose;
       setupGUI();
       animator.startInteractive();
       lastpressed = millis();
+
       break;
 
-    case 7: 
-      globalLoading = true;
-      mode = GUImode.INTERACTIVE;
-      setupGUI();
-      animator.startInteractive();
+      case 7:
+       if (guiChoose != animChoose.CROSS) {
+        guiState = GUImode.SELECT;
+        guiChoose = animChoose.CROSS;
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
+        setupGUI();
+      }
+       if (realChoose == animChoose.CROSS) {
+        guiState = GUImode.INTERACTIVE;
+        setupGUI(); 
+      }
       lastpressed = millis();
-      break;
-
-    //case 8: 
-    //  globalLoading = false;
-    //  resetFunction();
-    //  setupGUI(); 
-    //  lastpressed = millis();
-    //  break;
-
-    //case 9: 
-    //  globalLoading = false;
-    //  resetFunction();
-    //  lastpressed = millis();
-    //  setupGUI(); 
-    //  break;
+      break; //<>//
+ //<>//
   }
 }

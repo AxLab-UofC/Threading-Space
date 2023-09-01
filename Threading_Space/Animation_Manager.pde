@@ -2,6 +2,10 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
+enum animatorMode {
+  SCREENSAVER, INTERACTIVE, TOSCREENSAVER, TOINTERACTIVE
+}
+
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
@@ -11,9 +15,8 @@ class AnimManager {
   boolean viz = false;
   boolean untangling = false;
   
-  boolean transitioning = false;
-  boolean interactive = false;
- 
+  animatorMode animState = animatorMode.SCREENSAVER;
+  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
     iterator = 0;
@@ -50,7 +53,9 @@ class AnimManager {
   }
   
   void start() {
-    if (sequences.size() > 0) {
+    if (animState == animatorMode.INTERACTIVE) {
+      lastMillis = millis();
+    } else if (sequences.size() > 0) {
       if (currSeq == null) {
         currSeq = sequences.get(0);
       }
@@ -59,49 +64,43 @@ class AnimManager {
     status = moveStatus.INPROGRESS;
   }
   
-  void skip(){
-      untangling = false;
-      if (currSeq.tangle) {
-        untangling = true;
-        currSeq = currSeq.genUntangle();
-        stop(); start();
-      } else if (iterator + 1 >= sequences.size()) {
-        if (loop) {
-          restart();
-        } else {
-          status = moveStatus.COMPLETE;
-          if (transitioning) {
-            transitioning = false;
-            interactive = true;
-            resetFunction();
-            setupGUI();
-          }
-        }
-      } else {
-        iterator++;
-        currSeq = sequences.get(iterator);
-        currSeq.start();
-      }
-  }
-  
   void startInteractive() {
-    transitioning = true;
-    untangleClear();
-    resetFunction();
-    switch (guiChoose) {
+    animState = animatorMode.TOINTERACTIVE;
+    if (size() > 0) {
+      untangleClear();
+    }
+    stop();
+    resetVariables();
+    switch (realChoose) {
       case CYLINDER:
-        animator.add(new Frame(animCylinderTwist()));
+        add(new PathPlanSequence(animCylinderTwist()));
         break;
       
       case LINE:
-      animator.add(new Frame(animRotateLine()));
+        add(new PathPlanSequence(animRotateLine()));
+        break;
+        
+      case CROSS:
+        add(new PathPlanSequence(animLine()));
         break;
 
-      //default:
-      //  targets = animTwoCylinder();
-      //  break;
+      default:
+        add(new PathPlanSequence(animCylinderTwist()));
+        break;
     }
-    //animator.add(new Frame(animCylinderTwist()));
+    if (currSeq == null) {
+      currSeq = sequences.get(0);
+    }
+    start();
+  }
+  
+  void startScreensaver() {
+    animState = animatorMode.TOSCREENSAVER;
+    stop();
+    clear();
+    add(new PathPlanSequence(animCircle(0)));
+    currSeq = sequences.get(0);
+    start();
   }
   
   void stop() {
@@ -126,6 +125,126 @@ class AnimManager {
     sequences.clear();
     iterator = 0;
     currSeq = null;
+  }
+  
+    void skip(){
+      untangling = false;
+      if (currSeq.tangle) {
+        untangling = true;
+        currSeq = currSeq.genUntangle();
+        stop(); start();
+      } else if (iterator + 1 >= sequences.size()) {
+        if (loop) {
+          restart();
+        } else {
+          status = moveStatus.COMPLETE;
+          if (animState == animatorMode.TOINTERACTIVE) {
+            animState = animatorMode.INTERACTIVE;
+            resetVariables();
+            setupGUI();
+            clear();
+            clear();
+          }
+        }
+      } else {
+        iterator++;
+        currSeq = sequences.get(iterator);
+        currSeq.start();
+      }
+  }
+  
+  void interactiveUpdate() {
+      if (guiState != GUImode.SCREENSAVER) { 
+        int[][][] targets;
+        switch (guiChoose) {
+          case CYLINDER:
+            targets = animCylinderTwist();
+            break;
+          
+          case LINE:
+            targets = animRotateLine();
+            break;
+  
+          case CROSS:
+             targets = animLine(); 
+             break; 
+          
+          default:
+            targets = animCylinderTwist();
+            break;
+        }
+        
+        visualize(targets);
+    }
+    
+      if (animator.animState == animatorMode.INTERACTIVE)  { 
+        int[][][] targets;
+        switch (realChoose) {
+          case CYLINDER:
+            targets = animCylinderTwist();
+            break;
+          
+          case LINE:
+            targets = animRotateLine();
+            break;
+  
+          case CROSS:
+             targets = animLine(); 
+             break; 
+          
+          default:
+            targets = animCylinderTwist();
+            break;
+        }
+        
+        movePairsVelocity(targets);
+    }
+  }
+  
+  void update() {
+    interactiveUpdate();
+    
+    boolean seqComplete = false;
+    if (sequences.size() > 0) {
+      seqComplete = currSeq.update(); 
+    }
+    
+    if (animState == animatorMode.INTERACTIVE) {
+      return;
+    }
+    
+    if (seqComplete) {
+      untangling = false;
+      if (currSeq.tangle) {
+        untangling = true;
+        currSeq = currSeq.genUntangle();
+        stop(); start();
+      } else if (iterator + 1 >= sequences.size()) {
+        if (loop) {
+          restart();
+        } else {
+          if (animState == animatorMode.TOSCREENSAVER) {
+            screensaver();
+            animState = animatorMode.SCREENSAVER;
+            guiState = GUImode.SCREENSAVER;
+            resetVariables();
+            setupGUI();
+          }
+          else if (animState == animatorMode.TOINTERACTIVE) {
+            animState = animatorMode.INTERACTIVE;
+            guiState = GUImode.INTERACTIVE;
+            resetVariables();
+            setupGUI();
+          } else {
+            status = moveStatus.COMPLETE;
+          }
+        }
+      } else {
+        iterator++;
+        currSeq = sequences.get(iterator);
+        currSeq.start();
+      }
+    }
   }
   
   void untangle() {
@@ -153,39 +272,6 @@ class AnimManager {
     start();
   }
   
-  void update() {
-    boolean seqComplete = false;
-    if (sequences.size() > 0) {
-      println(sequences.size());
-      seqComplete = currSeq.update(); 
-    }
-    
-    if (seqComplete) {
-      untangling = false;
-      if (currSeq.tangle) {
-        untangling = true;
-        currSeq = currSeq.genUntangle();
-        stop(); start();
-      } else if (iterator + 1 >= sequences.size()) {
-        if (loop) {
-          restart();
-        } else {
-          status = moveStatus.COMPLETE;
-          if (transitioning) {
-            transitioning = false;
-            interactive = true;
-            resetFunction();
-            setupGUI();
-          }
-        }
-      } else {
-        iterator++;
-        currSeq = sequences.get(iterator);
-        currSeq.start();
-      }
-    }
-  }
-  
   Sequence getCurrentSeq() {
     if (size() > 0) {
       return currSeq;
@@ -194,14 +280,8 @@ class AnimManager {
     return null;
   }
   
-  String getStatus() {
-    if (transitioning) {
-      return "TRANSITIONING";
-    } else if (interactive) {
-      return "INTERACTIVE";
-    } else {
-      return "SCREENSAVER";
-    }
+  animatorMode getStatus() {
+    return animState;
   }
   
   Sequence getSeq(int i) {

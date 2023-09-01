@@ -265,7 +265,7 @@ public void controlEvent(ControlEvent theEvent) {
         setupGUI();
       } 
       if (realChoose == animChoose.LINE) {
-        guiState = GUImode.SELECT;
+        guiState = GUImode.INTERACTIVE;
         setupGUI(); 
       }
       lastpressed = millis();

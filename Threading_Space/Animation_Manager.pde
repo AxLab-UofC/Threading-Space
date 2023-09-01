@@ -2,6 +2,10 @@ enum moveType {
   TOP, BOTTOM, PAIR, INDEPENDENT
 }
 
+enum animatorMode {
+  SCREENSAVER, INTERACTIVE, TOSCREENSAVER, TOINTERACTIVE
+}
+
 class AnimManager {
   moveStatus status = moveStatus.NONE;
   ArrayList<Sequence> sequences;
@@ -11,9 +15,8 @@ class AnimManager {
   boolean viz = false;
   boolean untangling = false;
   
-  boolean transitioning = false;
-  boolean interactive = false;
- 
+  animatorMode animState = animatorMode.SCREENSAVER;
+  
   AnimManager() {
     sequences = new ArrayList<Sequence>();
     iterator = 0;
@@ -50,7 +53,9 @@ class AnimManager {
   }
   
   void start() {
-    if (sequences.size() > 0) {
+    if (animState == animatorMode.INTERACTIVE) {
+      lastMillis = millis();
+    } else if (sequences.size() > 0) {
       if (currSeq == null) {
         currSeq = sequences.get(0);
       }
@@ -70,11 +75,11 @@ class AnimManager {
           restart();
         } else {
           status = moveStatus.COMPLETE;
-          if (transitioning) {
-            transitioning = false;
-            interactive = true;
+          if (animState == animatorMode.TOINTERACTIVE) {
+            animState = animatorMode.INTERACTIVE;
             resetVariables();
             setupGUI();
+            clear();
           }
         }
       } else {
@@ -85,7 +90,7 @@ class AnimManager {
   }
   
   void startInteractive() {
-    transitioning = true;
+    animState = animatorMode.TOINTERACTIVE;
     if (size() > 0) {
       untangleClear();
     }
@@ -98,6 +103,10 @@ class AnimManager {
       
       case LINE:
         add(new PathPlanSequence(animRotateLine()));
+        break;
+        
+      case CROSS:
+        add(new PathPlanSequence(animLine()));
         break;
 
       default:
@@ -159,7 +168,61 @@ class AnimManager {
     start();
   }
   
+  void interactiveUpdate() {
+      if (guiState != GUImode.SCREENSAVER) { 
+        int[][][] targets;
+        switch (guiChoose) {
+          case CYLINDER:
+            targets = animCylinderTwist();
+            break;
+          
+          case LINE:
+            targets = animRotateLine();
+            break;
+  
+          case CROSS:
+             targets = animLine(); 
+             break; 
+          
+          default:
+            targets = animCylinderTwist();
+            break;
+        }
+        
+        visualize(targets);
+    }
+    
+      if (animator.animState == animatorMode.INTERACTIVE)  { 
+        int[][][] targets;
+        switch (realChoose) {
+          case CYLINDER:
+            targets = animCylinderTwist();
+            break;
+          
+          case LINE:
+            targets = animRotateLine();
+            break;
+  
+          case CROSS:
+             targets = animLine(); 
+             break; 
+          
+          default:
+            targets = animCylinderTwist();
+            break;
+        }
+        
+        movePairsVelocity(targets);
+    }
+  }
+  
   void update() {
+    interactiveUpdate();
+    
+    if (animState == animatorMode.INTERACTIVE) {
+      return;
+    }
+    
     boolean seqComplete = false;
     if (sequences.size() > 0) {
       seqComplete = currSeq.update(); 
@@ -175,12 +238,13 @@ class AnimManager {
         if (loop) {
           restart();
         } else {
-          status = moveStatus.COMPLETE;
-          if (transitioning) {
-            transitioning = false;
-            interactive = true;
+          
+          if (animState == animatorMode.TOINTERACTIVE) {
+            animState = animatorMode.INTERACTIVE;
             resetVariables();
             setupGUI();
+          } else {
+            status = moveStatus.COMPLETE;
           }
         }
       } else {
@@ -199,14 +263,8 @@ class AnimManager {
     return null;
   }
   
-  String getStatus() {
-    if (transitioning) {
-      return "TRANSITIONING";
-    } else if (interactive) {
-      return "INTERACTIVE";
-    } else {
-      return "SCREENSAVER";
-    }
+  animatorMode getStatus() {
+    return animState;
   }
   
   Sequence getSeq(int i) {

@@ -17,7 +17,7 @@ color toioTrackedFillCol = color (255, 255, 255, 50);
 
 
 void drawDisplay() {
-  if (mode == GUImode.SELECT) {
+  if (guiState == GUImode.SELECT) {
     StringCol = color(0, 255, 255, 75);
   }
   
@@ -142,7 +142,7 @@ void drawDisplay() {
 
           fill(255, 0, 0);
           textSize(30);
-          text("ID: " + i, 0, 0);
+          text("ID: " + i, toioCylinderR /2, 0, 0);
 
           popMatrix();
           

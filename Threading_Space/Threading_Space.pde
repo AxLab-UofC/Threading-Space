@@ -12,7 +12,7 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
-int nPairs = 6;
+int nPairs = 5;
 int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
@@ -47,10 +47,11 @@ int xmid = (int) (xmax + xmin)/2;
 int ymid = (int) (ymax + ymin)/2;
 
 //For Path Planning
-int num_x = 10;
-int num_y = 10;
-int x_size = 450;
-int y_size = 450;
+
+int num_x = 15;
+int num_y = 15;
+int x_size = 990;
+int y_size = 990;
 int x_shift = xmin + 20;
 int y_shift = ymin + 20;
 int num_instances = 1;
@@ -106,6 +107,11 @@ void setup() {
     xmax = 455;
     ymax = 455;
     
+    num_x = 10;
+    num_y = 10;
+    x_size = 450;
+    y_size = 450;
+    
     xmid = (int) (xmax + xmin)/2;
     ymid = (int) (ymax + ymin)/2;
     
@@ -154,33 +160,7 @@ void draw() {
   
   if (animator.status == moveStatus.INPROGRESS) {
     animator.update();
-  } 
- 
-  
-  if (mode == GUImode.SELECT || mode == GUImode.INTERACTIVE) { 
-      int[][][] targets;
-      switch (guiChoose) {
-        case CYLINDER:
-          targets = animCylinderTwist();
-          break;
-        
-        case LINE:
-          targets = animRotateLine();
-          break;
-
-        case CROSS:
-           targets = animLine(); 
-           break; 
-        
-        default:
-          targets = animTwoCylinder();
-          break;
-      }
-      
-      visualize(targets);
-      if (animator.interactive) movePairsVelocity(targets);
-  }
-  
+  }  
 
 
   //START DO NOT EDIT
@@ -234,7 +214,7 @@ void draw() {
   cam.endHUD();
   //END DO NOT EDIT
   if ((millis() - lastpressed) > 20000000) {
-    mode = GUImode.SCREENSAVER;
+    guiState = GUImode.SCREENSAVER;
     setupGUI();
   }
 }
@@ -244,7 +224,7 @@ void draw() {
 public void controlEvent(ControlEvent theEvent) { 
   switch (theEvent.getController().getId()) {
     case 0:
-      mode = GUImode.SELECT;
+      guiState = GUImode.SELECT;
       animator.setViz(false);
       setupGUI(); 
       break;
@@ -275,12 +255,11 @@ public void controlEvent(ControlEvent theEvent) {
 
     case 4: 
       if (guiChoose != animChoose.LINE) {
-        mode = GUImode.SELECT; 
+        guiState = GUImode.SELECT; 
         guiChoose = animChoose.LINE;
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
         myCrossColor = color(100,100,100);
-        globalLoading = true;
         setupGUI(); 
       }
       lastpressed = millis(); 
@@ -288,20 +267,18 @@ public void controlEvent(ControlEvent theEvent) {
 
     case 5: 
       if (guiChoose != animChoose.CYLINDER) {
-        mode = GUImode.SELECT; 
+        guiState = GUImode.SELECT; 
         guiChoose = animChoose.CYLINDER;
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
         myCrossColor = color(100,100,100);
-        globalLoading = true;
         setupGUI(); 
       }
       lastpressed = millis();
       break;
 
     case 6: 
-      globalLoading = true;
-      mode = GUImode.INTERACTIVE;
+      guiState = GUImode.INTERACTIVE;
       if (guiChoose == animChoose.CYLINDER) {
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
@@ -319,12 +296,11 @@ public void controlEvent(ControlEvent theEvent) {
       
       case 7:
        if (guiChoose != animChoose.CROSS) {
-        mode = GUImode.SELECT; 
+        guiState = GUImode.SELECT; 
         guiChoose = animChoose.CROSS;
         myLineColor = color(150,150,150);
         myCylinderColor = color(150,150,150);
         myCrossColor = color(100,100,100);
-        globalLoading = true;
         setupGUI(); 
       }
       lastpressed = millis();

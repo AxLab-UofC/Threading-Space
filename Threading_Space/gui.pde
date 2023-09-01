@@ -15,7 +15,7 @@ enum GUImode {
 
 animChoose guiChoose = animChoose.CYLINDER;
 animChoose realChoose = animChoose.CYLINDER;
-GUImode mode = GUImode.SCREENSAVER;
+GUImode guiState = GUImode.SCREENSAVER;
 
 import controlP5.*;
 ControlP5 cp5;
@@ -44,7 +44,7 @@ void setupGUI() {
          
 
 
-  switch (mode) {
+  switch (guiState) {
     case SCREENSAVER:
       cp5.addButton("EXPLORE")
         .setValue(100)
@@ -118,7 +118,7 @@ void setupGUI() {
         .setId(7);
         
         
-     if (animator.interactive) {
+     if (animator.animState == animatorMode.INTERACTIVE) {
              switch (realChoose) {
         case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")

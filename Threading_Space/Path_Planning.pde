@@ -7,20 +7,20 @@ String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";
 String goalFile = "goal.txt";
 String outputFile = "output_path.txt";
-int num_agents = nPairs;
 
 int y_min_plus_max = ymin + ymax; // Used to reverse the y-axis to align with path planner (convert 4th quadrant to 1st quadrant).
 
 
 // USES CURRENT TOIO LOCATIONS AS START POSITIONS
 ArrayList<Frame> planPath(int targets[][]) {
+  int num_agents = nPairs;
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
   HashMap<Integer, Integer> takenVertices = new HashMap<Integer, Integer>(); // Keep track of which vertex is taken.
 
   // ADD CURRENT LOCATIONS TO START FILE
   for (int i = 0; i < num_agents; i++) {
-    int x = cubes[i].x;
-    int y = cubes[i].y;
+    int x = pairs[i].b.x;
+    int y = pairs[i].b.y;
     int x_vertex = (int)Math.round((double)(x - x_shift) / (double)x_size * (double)num_x);
     int y_vertex = (int)Math.round((double)(y - y_shift) / (double)y_size * (double)num_y);
     Integer vertex = Integer.valueOf(x_vertex * num_x + y_vertex);
@@ -65,6 +65,7 @@ ArrayList<Frame> planPath(int targets[][]) {
 
 // FOR PREDETERMINED START POSITIONS
 ArrayList<Frame> planPath(int starts[][], int targets[][]) {
+  int num_agents = nPairs;
 
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
 
@@ -97,6 +98,7 @@ ArrayList<Frame> planPath(int starts[][], int targets[][]) {
 
 // RUN PYTHON FILE
 ArrayList<Frame> runPlanner() {
+  int num_agents = nPairs;
   Command cmd = new Command(command + plannerDirectory + plannerFile
     + " -a " + Integer.toString(num_x)
     + " -b " + Integer.toString(num_y)

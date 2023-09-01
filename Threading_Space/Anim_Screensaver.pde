@@ -3,7 +3,7 @@ void screensaver() {
   
   seq = new SmoothSequence((float t) -> animJellyfish(t));
   seq.setPeriod(5);
-  seq.setTimeLimit(5);
+  seq.setTimeLimit(20);
   animator.add(seq);
   
   seq = new SmoothSequence((float t) -> animCircle(t));

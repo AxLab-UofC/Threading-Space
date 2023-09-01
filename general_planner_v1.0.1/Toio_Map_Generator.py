@@ -15,8 +15,8 @@ import time
 
 DEBUG = False
 
-planner_directory = "/Users/harrisondong/Desktop/axlab/Threading-Space/general_planner_v1.0.1/"
-folder_path = planner_directory + "toio_map_examples" ###############################
+planner_directory = ""
+folder_path = "" ###############################
 
 def grid_roadmap_generation():
     x_space = x_size + x_shift
@@ -328,6 +328,7 @@ if __name__ == "__main__":
         elif opt == '-i':
             planner_directory = arg
             folder_path = planner_directory + "toio_map_examples"
+            print(folder_path)
         elif opt == '-j':
             if arg == "True":
                 DEBUG = True

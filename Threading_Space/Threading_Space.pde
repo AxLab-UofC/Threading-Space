@@ -11,9 +11,9 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 20;
+int nCubes = 12;
 int nPairs = 6;
-int cubesPerHost = 20;
+int cubesPerHost = 6;
 int maxMotorSpeed = 115;
 
 int lastpressed;
@@ -23,7 +23,7 @@ String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -265,6 +265,7 @@ public void controlEvent(ControlEvent theEvent) {
         myCrossColor = color(100,100,100);
         setupGUI();
       } 
+      println(realChoose);
       if (realChoose == animChoose.LINE) {
         guiState = GUImode.INTERACTIVE;
         setupGUI(); 
@@ -281,6 +282,7 @@ public void controlEvent(ControlEvent theEvent) {
         myCrossColor = color(100,100,100);
         setupGUI();
       }
+      println(realChoose);
       if (realChoose == animChoose.CYLINDER) {
         guiState = GUImode.INTERACTIVE;
         setupGUI(); 
@@ -319,6 +321,7 @@ public void controlEvent(ControlEvent theEvent) {
         myCrossColor = color(100,100,100);
         setupGUI();
       }
+      println(realChoose);
        if (realChoose == animChoose.CROSS) {
         guiState = GUImode.INTERACTIVE;
         setupGUI(); 

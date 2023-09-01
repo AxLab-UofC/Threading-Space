@@ -12,7 +12,7 @@ int toioCylinderH = 10;
 color toioStrokeCol = 200;
 color toioFillCol = color (255, 255, 255, 200);
 
-color toioTrackedStrokeCol = color (0, 0, 255, 200);
+color[] toioTrackedStrokeCol = {color (0, 0, 255, 200), color (255, 0, 0, 200)};
 color toioTrackedFillCol = color (255, 255, 255, 50);
 
 
@@ -93,7 +93,7 @@ void drawDisplay() {
           translate(0, 10, -5);
           rotateX(-PI/2);
 
-          fill(toioTrackedStrokeCol);
+          fill(toioTrackedStrokeCol[pairs[i].t.id/cubesPerHost]);
           textSize(30);
           text("ID: " + pairs[i].t.id, -2 * toioCylinderR, 2 * toioCylinderH, 0);
           popMatrix();
@@ -102,18 +102,13 @@ void drawDisplay() {
 
           rotate(pairs[i].t.theta * PI/180);
           //box(12, 12, 7);
-          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
+          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol[pairs[i].t.id/cubesPerHost], toioTrackedFillCol);
           popMatrix();
         }
       }
     } else {
       if (topActive) {
         translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
-        
-        fill(toioTrackedStrokeCol);
-        textSize(30);
-        text("ID: " + i, -2 * toioCylinderR, 2 * toioCylinderH, 0);
-
 
         rotate(pairs[i].t.theta * PI/180);
         //box(12, 12, 7);
@@ -152,7 +147,7 @@ void drawDisplay() {
           translate(0, 10, 20);
           rotateX(-PI/2);
 
-          fill(toioTrackedStrokeCol);
+          fill(toioTrackedStrokeCol[pairs[i].b.id/cubesPerHost]);
           textSize(30);
           text("ID: " + pairs[i].b.id, -2 * toioCylinderR, -2 * toioCylinderH, 0);
 
@@ -160,7 +155,7 @@ void drawDisplay() {
           
           rotate(pairs[i].b.theta * PI/180);
 
-          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
+          drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol[pairs[i].b.id/cubesPerHost], toioTrackedFillCol);
           popMatrix();
         }
       }

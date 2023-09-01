@@ -17,6 +17,10 @@ color toioTrackedFillCol = color (255, 255, 255, 50);
 
 
 void drawDisplay() {
+  if (mode == GUImode.SELECT) {
+    StringCol = color(0, 255, 255, 75);
+  }
+  
   background (backgroundCol);
   noStroke();
   fill(200);

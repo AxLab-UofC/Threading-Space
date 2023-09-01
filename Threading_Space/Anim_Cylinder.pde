@@ -32,7 +32,7 @@ float velocity [][][] = new float[nPairs][2][2];
 
 int elapsedTime;
 
-void resetFunction() {
+void resetVariables() {
     overallTimeMillis = 5 * 60 * 1000; // 5 mins
     playSpeed = 1;
 

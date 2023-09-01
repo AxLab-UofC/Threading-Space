@@ -73,7 +73,7 @@ class AnimManager {
           if (transitioning) {
             transitioning = false;
             interactive = true;
-            resetFunction();
+            resetVariables();
             setupGUI();
           }
         }
@@ -90,7 +90,7 @@ class AnimManager {
       untangleClear();
     }
     stop();
-    resetFunction();
+    resetVariables();
     switch (realChoose) {
       case CYLINDER:
         add(new PathPlanSequence(animCylinderTwist()));
@@ -179,7 +179,7 @@ class AnimManager {
           if (transitioning) {
             transitioning = false;
             interactive = true;
-            resetFunction();
+            resetVariables();
             setupGUI();
           }
         }

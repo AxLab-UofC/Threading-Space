@@ -247,7 +247,6 @@ public void controlEvent(ControlEvent theEvent) {
 
     case 2:
       guiChoose = animChoose.LINE;
-      resetFunction();
       myLineColor = color(100,100,100);
       myCylinderColor = color(150,150,150);
       setupGUI(); 
@@ -255,7 +254,6 @@ public void controlEvent(ControlEvent theEvent) {
 
     case 3:
       guiChoose = animChoose.CYLINDER;
-      resetFunction();
       myLineColor = color(150,150,150);
       myCylinderColor = color(100,100,100);
       setupGUI(); 
@@ -295,6 +293,7 @@ public void controlEvent(ControlEvent theEvent) {
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
       }
+      resetVariables(); 
       realChoose = guiChoose; 
       setupGUI();
       animator.startInteractive();

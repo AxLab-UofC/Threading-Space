@@ -5,6 +5,7 @@ enum animChoose {
 boolean globalLoading = true; 
 
 
+
 int myLineColor = color(150,150,150);
 int myCylinderColor = color(150,150,150);
 int myCrossColor = color(150,150,150);
@@ -61,6 +62,7 @@ void setupGUI() {
         .setColorBackground(myLineColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
         .setId(1);
       
       cp5.addButton("CYLINDER")
@@ -70,6 +72,7 @@ void setupGUI() {
         .setColorBackground(myCylinderColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
         .setId(2);
         
        cp5.addButton("CROSS")
@@ -79,6 +82,7 @@ void setupGUI() {
         .setColorBackground(myCrossColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
         .setId(3);
 
        cp5.addButton("START")
@@ -87,6 +91,7 @@ void setupGUI() {
         .setSize(200,50)
        .setColorBackground(color(80,80,80))
        .setColorForeground(color(100,100,100))
+       .setFont(buttonfont)
        .setId(6);
 
       break;
@@ -98,6 +103,7 @@ void setupGUI() {
         .setColorBackground(myLineColor)
         .setColorForeground(color(100,100,100))
         .setSize(200,50)
+        .setFont(buttonfont)
         .setId(4);
       
       cp5.addButton("CYLINDER")
@@ -106,6 +112,7 @@ void setupGUI() {
         .setColorBackground(myCylinderColor)
         .setColorForeground(color(100,100,100))
         .setSize(200,50)
+        .setFont(buttonfont)
         .setId(5);
         
        cp5.addButton("CROSS")
@@ -115,6 +122,7 @@ void setupGUI() {
         .setColorBackground(myCrossColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
         .setId(7);
         
         
@@ -193,6 +201,7 @@ void setupGUI() {
               .setSize(200,50)
               .setColorBackground(color(80,80,80))
               .setColorForeground(color(100,100,100))
+              .setFont(buttonfont)
               .setId(9);
 
     }

@@ -173,7 +173,7 @@ int[][][] untangleAnimation() {
   boolean untangleDone = false;
   int[][][] targets = new int[nPairs][2][3];
   
-  switch (guiChoose) {
+  switch (realChoose) {
     case CYLINDER:
       boolean topDone = false;
       boolean bottomDone = false;
@@ -231,9 +231,8 @@ int[][][] untangleAnimation() {
     case LINE:
       break;
     
-    //case CROSS:
-    //  break;
-  
+    case CROSS:
+      break;
   }
   
   return targets;

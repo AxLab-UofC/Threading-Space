@@ -137,6 +137,7 @@ void setup() {
   cam.rotateX(-PI/2);
 
   //setup GUI
+  resetVariables();
   setupGUI();
 
   smooth();
@@ -304,7 +305,7 @@ public void controlEvent(ControlEvent theEvent) {
       resetVariables();
       realChoose = guiChoose;
       setupGUI();
-      animator.startInteractive();
+      animator.startInteractive(); //<>//
       lastpressed = millis();
 
       break;

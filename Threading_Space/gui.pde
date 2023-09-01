@@ -1,4 +1,4 @@
-enum GUI {
+enum animChoose {
   CYLINDER, LINE
 }
 
@@ -12,8 +12,8 @@ enum GUImode {
   SCREENSAVER, SELECT, INTERACTIVE
 }
 
-GUI guiChoose = GUI.CYLINDER;
-GUI realChoose = GUI.CYLINDER;
+animChoose guiChoose = animChoose.CYLINDER;
+animChoose realChoose = animChoose.CYLINDER;
 GUImode mode = GUImode.SCREENSAVER;
 
 import controlP5.*;
@@ -41,15 +41,7 @@ void setupGUI() {
 
   cp5 = new ControlP5(this);
          
-  
-  // create a toggle and change the default look to a (on/off) switch look
-    cp5.addToggle("toggle")
-     .setPosition(1200,800)
-     .setSize(90,20)
-     .setValue(true)
-     .setMode(ControlP5.SWITCH)
-     ;
-     
+
 
   switch (mode) {
     case SCREENSAVER:
@@ -67,6 +59,7 @@ void setupGUI() {
         .setSize(200,50)
         .setColorBackground(myLineColor)
         .setColorActive(color(100,100,100))
+        .setColorForeground(color(100,100,100))
         .setId(2);
       
       cp5.addButton("CYLINDER")
@@ -75,6 +68,7 @@ void setupGUI() {
         .setSize(200,50)
         .setColorBackground(myCylinderColor)
         .setColorActive(color(100,100,100))
+        .setColorForeground(color(100,100,100))
         .setId(3);
 
        cp5.addButton("START")
@@ -82,6 +76,7 @@ void setupGUI() {
        .setPosition(guiX,guiY +(9*guioffset))
         .setSize(200,50)
        .setColorBackground(color(80,80,80))
+       .setColorForeground(color(100,100,100))
        .setId(6);
 
       break;
@@ -91,6 +86,7 @@ void setupGUI() {
         .setValue(100)
         .setPosition(guiX,guiY+(3*guioffset))
         .setColorBackground(myLineColor)
+        .setColorForeground(color(100,100,100))
         .setSize(200,50)
         .setId(4);
       
@@ -98,6 +94,7 @@ void setupGUI() {
         .setValue(100)
         .setPosition(guiX,guiY +(2*guioffset))
         .setColorBackground(myCylinderColor)
+        .setColorForeground(color(100,100,100))
         .setSize(200,50)
         .setId(5);
         
@@ -164,6 +161,7 @@ void setupGUI() {
               .setPosition(guiX,guiY +(9*guioffset))
               .setSize(200,50)
               .setColorBackground(color(80,80,80))
+              .setColorForeground(color(100,100,100))
               .setId(9);
 
     }

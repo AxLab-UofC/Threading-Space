@@ -246,7 +246,7 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 2:
-      guiChoose = GUI.LINE;
+      guiChoose = animChoose.LINE;
       resetFunction();
       myLineColor = color(100,100,100);
       myCylinderColor = color(150,150,150);
@@ -254,7 +254,7 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 3:
-      guiChoose = GUI.CYLINDER;
+      guiChoose = animChoose.CYLINDER;
       resetFunction();
       myLineColor = color(150,150,150);
       myCylinderColor = color(100,100,100);
@@ -262,9 +262,9 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 4: 
-      if (guiChoose != GUI.LINE) {
+      if (guiChoose != animChoose.LINE) {
         mode = GUImode.SELECT; 
-        guiChoose = GUI.LINE;
+        guiChoose = animChoose.LINE;
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
         globalLoading = true;
@@ -274,9 +274,9 @@ public void controlEvent(ControlEvent theEvent) {
       break; 
 
     case 5: 
-      if (guiChoose != GUI.CYLINDER) {
+      if (guiChoose != animChoose.CYLINDER) {
         mode = GUImode.SELECT; 
-        guiChoose = GUI.CYLINDER;
+        guiChoose = animChoose.CYLINDER;
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
         globalLoading = true;
@@ -288,13 +288,14 @@ public void controlEvent(ControlEvent theEvent) {
     case 6: 
       globalLoading = true;
       mode = GUImode.INTERACTIVE;
-      if (guiChoose == GUI.CYLINDER) {
+      if (guiChoose == animChoose.CYLINDER) {
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
       } else {
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
       }
+      realChoose = guiChoose; 
       setupGUI();
       animator.startInteractive();
       lastpressed = millis();

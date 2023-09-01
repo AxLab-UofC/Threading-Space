@@ -91,7 +91,7 @@ class AnimManager {
     }
     stop();
     resetFunction();
-    switch (guiChoose) {
+    switch (realChoose) {
       case CYLINDER:
         add(new PathPlanSequence(animCylinderTwist()));
         break;

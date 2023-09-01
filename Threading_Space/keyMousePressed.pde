@@ -97,12 +97,12 @@ void keyPressed() {
      //break; 
      
      case 'y':
-     guiChoose = GUI.CYLINDER;
+     guiChoose = animChoose.CYLINDER;
      setupGUI(); 
      break; 
      
      case 'z':
-     guiChoose = GUI.LINE;
+     guiChoose = animChoose.LINE;
      setupGUI(); 
      break; 
   case 'm':

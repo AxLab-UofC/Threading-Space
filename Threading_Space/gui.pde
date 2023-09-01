@@ -100,7 +100,7 @@ void setupGUI() {
         
         
      if (animator.interactive) {
-             switch (guiChoose) {
+             switch (realChoose) {
         case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")
             .setPosition(guiX+230, guiYadj+(2*guioffset))

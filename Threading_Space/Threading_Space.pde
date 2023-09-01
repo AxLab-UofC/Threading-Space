@@ -281,7 +281,7 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.LINE;
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
-        myCrossColor = color(100,100,100);
+        myCrossColor = color(150,150,150);
         globalLoading = true;
         setupGUI(); 
       }
@@ -294,7 +294,7 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.CYLINDER;
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
-        myCrossColor = color(100,100,100);
+        myCrossColor = color(150,150,150);
         globalLoading = true;
         setupGUI(); 
       }
@@ -307,9 +307,15 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose == animChoose.CYLINDER) {
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
-      } else {
+        myCrossColor = color(150,150,150);
+      } else if (guiChoose == animChoose.LINE) {
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
+        myCrossColor = color(150,150,150);
+      } else {
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
       }
       resetVariables(); 
       realChoose = guiChoose; 

@@ -168,6 +168,10 @@ void draw() {
           targets = animRotateLine();
           break;
 
+        case CROSS:
+           targets = animLine(); 
+           break; 
+        
         default:
           targets = animTwoCylinder();
           break;
@@ -245,17 +249,27 @@ public void controlEvent(ControlEvent theEvent) {
       setupGUI(); 
       break;
 
-    case 2:
+    case 1:
       guiChoose = animChoose.LINE;
       myLineColor = color(100,100,100);
       myCylinderColor = color(150,150,150);
+      myCrossColor = color(150,150,150);
       setupGUI(); 
       break;
 
-    case 3:
+    case 2:
       guiChoose = animChoose.CYLINDER;
       myLineColor = color(150,150,150);
       myCylinderColor = color(100,100,100);
+      myCrossColor = color(150,150,150);
+      setupGUI(); 
+      break;
+      
+    case 3:
+     guiChoose = animChoose.CROSS;
+      myLineColor = color(150,150,150);
+      myCylinderColor = color(150,150,150);
+      myCrossColor = color(100,100,100);
       setupGUI(); 
       break;
 
@@ -265,6 +279,7 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.LINE;
         myLineColor = color(100,100,100);
         myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
         globalLoading = true;
         setupGUI(); 
       }
@@ -277,6 +292,7 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.CYLINDER;
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
+        myCrossColor = color(100,100,100);
         globalLoading = true;
         setupGUI(); 
       }
@@ -299,6 +315,19 @@ public void controlEvent(ControlEvent theEvent) {
       animator.startInteractive();
       lastpressed = millis();
       
+      break;
+      
+      case 7:
+       if (guiChoose != animChoose.CROSS) {
+        mode = GUImode.SELECT; 
+        guiChoose = animChoose.CROSS;
+        myLineColor = color(150,150,150);
+        myCylinderColor = color(150,150,150);
+        myCrossColor = color(100,100,100);
+        globalLoading = true;
+        setupGUI(); 
+      }
+      lastpressed = millis();
       break;
  //<>//
   }

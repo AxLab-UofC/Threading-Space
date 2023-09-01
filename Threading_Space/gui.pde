@@ -1,5 +1,5 @@
 enum animChoose {
-  CYLINDER, LINE
+  CYLINDER, LINE, CROSS
 }
 
 boolean globalLoading = true; 
@@ -7,6 +7,7 @@ boolean globalLoading = true;
 
 int myLineColor = color(150,150,150);
 int myCylinderColor = color(150,150,150);
+int myCrossColor = color(150,150,150);
 
 enum GUImode {
   SCREENSAVER, SELECT, INTERACTIVE
@@ -60,13 +61,22 @@ void setupGUI() {
         .setColorBackground(myLineColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
-        .setId(2);
+        .setId(1);
       
       cp5.addButton("CYLINDER")
         .setValue(100)
         .setPosition(guiX,guiY +(2*guioffset))
         .setSize(200,50)
         .setColorBackground(myCylinderColor)
+        .setColorActive(color(100,100,100))
+        .setColorForeground(color(100,100,100))
+        .setId(2);
+        
+       cp5.addButton("CROSS")
+        .setValue(100)
+        .setPosition(guiX,guiY +(4*guioffset))
+        .setSize(200,50)
+        .setColorBackground(myCrossColor)
         .setColorActive(color(100,100,100))
         .setColorForeground(color(100,100,100))
         .setId(3);
@@ -97,6 +107,15 @@ void setupGUI() {
         .setColorForeground(color(100,100,100))
         .setSize(200,50)
         .setId(5);
+        
+       cp5.addButton("CROSS")
+        .setValue(100)
+        .setPosition(guiX,guiY +(4*guioffset))
+        .setSize(200,50)
+        .setColorBackground(myCrossColor)
+        .setColorActive(color(100,100,100))
+        .setColorForeground(color(100,100,100))
+        .setId(7);
         
         
      if (animator.interactive) {
@@ -153,6 +172,18 @@ void setupGUI() {
             .setCaptionLabel("Speed")
             .setValue(globalAngleOffsetSpeed);
           break;
+          
+          case CROSS: 
+           cp5.addSlider("globalLineOffset")
+            .setPosition(guiX+230, guiYadj+(4*guioffset))
+            .setSize(200, 30)
+            .setRange(0, 100)
+            .setValue(50)
+            .setCaptionLabel("Speed")
+            .setValue(globalLineOffset);
+          break;
+         
+
       }
      } else {
      

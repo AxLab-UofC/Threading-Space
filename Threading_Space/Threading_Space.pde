@@ -70,6 +70,7 @@ Pair[] pairs;
 
 PFont titlefont;
 PFont debugfont;
+PFont buttonfont;
 
 //For new Mac silicon chip to render 3D correctly:
 import com.jogamp.opengl.GLProfile;
@@ -137,6 +138,7 @@ void setup() {
 
   titlefont = loadFont("Code-Light-80.vlw");
   debugfont = loadFont("Agenda-Light-48.vlw");
+  buttonfont = createFont("arial", 13); 
   frameRate(30);
   
   animator = new AnimManager();

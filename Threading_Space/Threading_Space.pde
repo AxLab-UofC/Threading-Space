@@ -280,6 +280,10 @@ public void controlEvent(ControlEvent theEvent) {
         myCrossColor = color(100,100,100);
         setupGUI();
       }
+      if (realChoose == animChoose.CYLINDER) {
+        guiState = GUImode.INTERACTIVE;
+        setupGUI(); 
+      }
       lastpressed = millis();
       break;
 
@@ -313,6 +317,10 @@ public void controlEvent(ControlEvent theEvent) {
         myCylinderColor = color(150,150,150);
         myCrossColor = color(100,100,100);
         setupGUI();
+      }
+       if (realChoose == animChoose.CROSS) {
+        guiState = GUImode.INTERACTIVE;
+        setupGUI(); 
       }
       lastpressed = millis();
       break; //<>//

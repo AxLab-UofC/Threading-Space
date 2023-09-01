@@ -24,114 +24,60 @@ void keyPressed() {
   }
   
   switch(key) {
-    
-  case 'u':
-    animator.untangleClear();
-    break;
-    
-
-  case 'f':
-    int[][] notes = {{30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, 
-                     {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 59, 20}, {30, 0, 20}, {30, 62, 20}, {30, 0, 20}, {30, 60, 20}, {30, 57, 20}};
-    midi(0, 1, notes);
-    break;
-    
-  case 'o':
-    animator.skip();
-    break;
+    case 'u':
+      animator.untangle();
+      break;
+      
+  
+    case 'f':
+      int[][] notes = {{30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, 
+                       {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 59, 20}, {30, 0, 20}, {30, 62, 20}, {30, 0, 20}, {30, 60, 20}, {30, 57, 20}};
+      midi(0, 1, notes);
+      break;
+      
+    case 'o':
+      animator.skip();
+      break;
     
    case 'a':
+     animator.startScreensaver();
     break;
 
     case 'c':
-    seq = new PathPlanSequence(animCircle(0));
-    break;
+      moveTargets(animCircle(0));
+      break;
     
     case 'p':
-    seq = new PathPlanSequence(animCircle(0));
-    //seq = new DiscreteSequence();
-    //seq.frames = planPath(animCircle(0));
-    //if (seq.frames.isEmpty()) {
-    //  break;
-    //}
-    animator.stop();
-    animator.clear();
-    animator.add(seq);
-    //animator.add(new Frame(moveType.BOTTOM, animCircle(0)));
-    animator.start();
-    //movePairs(pairCheck());
-    break;
+      movePairs(pairCheck());
+      break;
     
     case 'd':
-    debugMode = !debugMode;
-    break;
-    
-    //case 'g':
-    //guiOn = !guiOn;
-    //break;
+      debugMode = !debugMode;
+      break;
     
     case 'k':
-    ledAll();
-    break;
+      ledAll();
+      break;
    
     case 'l':
-    seq = new PathPlanSequence(animLine(0));
-    break;
+      moveTargets(animCircle(0));
+      break;
     
     case 's':
-    if (animator.status == moveStatus.NONE) {
-      animator.start();
-    } else {
-      stop();
-      animator.stop();
-    }
-    break;
+      if (animator.status == moveStatus.NONE) {
+        animator.start();
+      } else {
+        stop();
+        animator.stop();
+      }
+      break;
    
     case 'v':
-    visualOn = !visualOn;
-    break;
-  
-     //case 'x':
-     //guiChoose = GUI.WAVE;
-     //setupGUI(); 
-     //break; 
-     
-     case 'y':
-     guiChoose = animChoose.CYLINDER;
-     setupGUI(); 
-     break; 
-     
-     case 'z':
-     guiChoose = animChoose.LINE;
-     setupGUI(); 
-     break; 
-  case 'm':
-    int targets[][] = new int[nPairs][2];
-    targets[0][0] = 190;
-    targets[0][1] = 270;
-    targets[1][0] = 110;
-    targets[1][1] = 390;
-    targets[2][0] = 270;
-    targets[2][1] = 190;
-    targets[3][0] = 310;
-    targets[3][1] = 350;
-    targets[4][0] = 190;
-    targets[4][1] = 430;
-    targets[5][0] = 390;
-    targets[5][1] = 430;
-    planPath(targets);
-    if (animator.status == moveStatus.NONE) {
-      animator.start();
-    } else {
-      println("moveStatus not NONE");
-      stop();
-      animator.stop();
-    }
-    break;
+      visualOn = !visualOn;
+      break;
     
-    
-  default:
-    break;
+    default:
+      break;
     
   }
 }

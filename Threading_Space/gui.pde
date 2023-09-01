@@ -2,10 +2,6 @@ enum animChoose {
   CYLINDER, LINE, CROSS
 }
 
-boolean globalLoading = true; 
-
-
-
 int myLineColor = color(150,150,150);
 int myCylinderColor = color(150,150,150);
 int myCrossColor = color(150,150,150);
@@ -16,7 +12,7 @@ enum GUImode {
 
 animChoose guiChoose = animChoose.CYLINDER;
 animChoose realChoose = animChoose.CYLINDER;
-GUImode mode = GUImode.SCREENSAVER;
+GUImode guiState = GUImode.SCREENSAVER;
 
 import controlP5.*;
 ControlP5 cp5;
@@ -45,7 +41,7 @@ void setupGUI() {
          
 
 
-  switch (mode) {
+  switch (guiState) {
     case SCREENSAVER:
       cp5.addButton("EXPLORE")
         .setValue(100)
@@ -126,8 +122,8 @@ void setupGUI() {
         .setId(7);
         
         
-     if (animator.interactive) {
-             switch (realChoose) {
+     if (animator.animState == animatorMode.INTERACTIVE) {
+       switch (realChoose) {
         case CYLINDER:
           cp5.addSlider("globalAngleOffsetSpeed")
             .setPosition(guiX+230, guiYadj+(2*guioffset))
@@ -170,7 +166,6 @@ void setupGUI() {
             .setValue(globalb_radius);
           break;
         
-            
         case LINE:
           cp5.addSlider("globalAngleOffsetSpeed")
             .setPosition(guiX+230, guiYadj+(3*guioffset))
@@ -190,20 +185,16 @@ void setupGUI() {
             .setCaptionLabel("Speed")
             .setValue(globalLineOffset);
           break;
-         
-
       }
      } else {
-     
-              cp5.addButton("LOADING")
-              .setValue(100)
-              .setPosition(guiX,guiY +(9*guioffset))
-              .setSize(200,50)
-              .setColorBackground(color(80,80,80))
-              .setColorForeground(color(100,100,100))
-              .setFont(buttonfont)
-              .setId(9);
-
+      cp5.addButton("LOADING")
+        .setValue(100)
+        .setPosition(guiX,guiY +(9*guioffset))
+        .setSize(200,50)
+        .setColorBackground(color(80,80,80))
+        .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
+        .setId(9);
     }
     break;
   }

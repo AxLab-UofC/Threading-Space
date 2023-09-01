@@ -187,7 +187,11 @@ ArrayList<Frame> runPlanner() {
       for (int[] toio : planned_path) {
         println(Arrays.toString(toio));
       }
-      frames.add(new Frame(moveType.BOTTOM, planned_path));
+      if (testMode) {
+        frames.add(new Frame(moveType.BOTTOM, planned_path));
+      } else {
+        frames.add(new Frame(moveType.PAIR, planned_path));
+      }
     }
   }
 

@@ -88,6 +88,16 @@ void drawDisplay() {
 
           pushMatrix();
           translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+          
+          pushMatrix();
+          translate(0, 10, -5);
+          rotateX(-PI/2);
+
+          fill(toioTrackedStrokeCol);
+          textSize(30);
+          text("ID: " + pairs[i].t.id, -2 * toioCylinderR, 2 * toioCylinderH, 0);
+          popMatrix();
+          
 
 
           rotate(pairs[i].t.theta * PI/180);
@@ -99,6 +109,10 @@ void drawDisplay() {
     } else {
       if (topActive) {
         translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+        
+        fill(toioTrackedStrokeCol);
+        textSize(30);
+        text("ID: " + i, -2 * toioCylinderR, 2 * toioCylinderH, 0);
 
 
         rotate(pairs[i].t.theta * PI/180);
@@ -134,22 +148,17 @@ void drawDisplay() {
           pushMatrix();
           translate(pairs[i].b.x, pairs[i].b.y, -vert + 5);
 
-
-
           pushMatrix();
           translate(0, 10, 20);
           rotateX(-PI/2);
 
-          fill(255, 0, 0);
+          fill(toioTrackedStrokeCol);
           textSize(30);
-          text("ID: " + i, toioCylinderR /2, 0, 0);
+          text("ID: " + pairs[i].b.id, -2 * toioCylinderR, -2 * toioCylinderH, 0);
 
           popMatrix();
           
           rotate(pairs[i].b.theta * PI/180);
-          //box(12, 12, 7);
-
-
 
           drawCylinder(10, toioCylinderR, toioCylinderH, toioTrackedStrokeCol, toioTrackedFillCol);
           popMatrix();

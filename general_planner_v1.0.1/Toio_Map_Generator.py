@@ -328,7 +328,6 @@ if __name__ == "__main__":
         elif opt == '-i':
             planner_directory = arg
             folder_path = planner_directory + "toio_map_examples"
-            print(folder_path)
         elif opt == '-j':
             if arg == "True":
                 DEBUG = True

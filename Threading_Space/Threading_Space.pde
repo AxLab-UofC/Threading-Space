@@ -12,7 +12,7 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 int nCubes = 20;
-int nPairs = 5;
+int nPairs = 6;
 int cubesPerHost = 20;
 int maxMotorSpeed = 115;
 
@@ -280,7 +280,6 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 6: 
-      guiState = GUImode.INTERACTIVE;
       if (guiChoose == animChoose.CYLINDER) {
         myLineColor = color(150,150,150);
         myCylinderColor = color(100,100,100);
@@ -306,7 +305,7 @@ public void controlEvent(ControlEvent theEvent) {
         setupGUI(); 
       }
       lastpressed = millis();
-      break;
+      break; //<>//
  //<>//
   }
 }

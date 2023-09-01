@@ -64,31 +64,6 @@ class AnimManager {
     status = moveStatus.INPROGRESS;
   }
   
-  void skip(){
-      untangling = false;
-      if (currSeq.tangle) {
-        untangling = true;
-        currSeq = currSeq.genUntangle();
-        stop(); start();
-      } else if (iterator + 1 >= sequences.size()) {
-        if (loop) {
-          restart();
-        } else {
-          status = moveStatus.COMPLETE;
-          if (animState == animatorMode.TOINTERACTIVE) {
-            animState = animatorMode.INTERACTIVE;
-            resetVariables();
-            setupGUI();
-            clear();
-          }
-        }
-      } else {
-        iterator++;
-        currSeq = sequences.get(iterator);
-        currSeq.start();
-      }
-  }
-  
   void startInteractive() {
     animState = animatorMode.TOINTERACTIVE;
     if (size() > 0) {
@@ -119,6 +94,15 @@ class AnimManager {
     start();
   }
   
+  void startScreensaver() {
+    animState = animatorMode.TOSCREENSAVER;
+    stop();
+    clear();
+    add(new PathPlanSequence(animCircle(0)));
+    currSeq = sequences.get(0);
+    start();
+  }
+  
   void stop() {
     status = moveStatus.NONE;
   }
@@ -143,29 +127,30 @@ class AnimManager {
     currSeq = null;
   }
   
-  void untangle() {
-    stop();
-    setLoop(false);
-    if (currSeq.tangle) {
-      untangling = true;
-      currSeq = currSeq.genUntangle();
-    }
-    start();
-  }
-  
-  void untangleClear() {
-    stop();
-    setLoop(false);
-    if (currSeq.tangle) {
-      untangling = true;
-      Sequence untangleSeq = currSeq.genUntangle();
-      clear();
-      add(untangleSeq);
-      currSeq = sequences.get(0);
-    } else {
-      clear();
-    }
-    start();
+    void skip(){
+      untangling = false;
+      if (currSeq.tangle) {
+        untangling = true;
+        currSeq = currSeq.genUntangle();
+        stop(); start();
+      } else if (iterator + 1 >= sequences.size()) {
+        if (loop) {
+          restart();
+        } else {
+          status = moveStatus.COMPLETE;
+          if (animState == animatorMode.TOINTERACTIVE) {
+            animState = animatorMode.INTERACTIVE;
+            resetVariables();
+            setupGUI();
+            clear();
+            clear();
+          }
+        }
+      } else {
+        iterator++;
+        currSeq = sequences.get(iterator);
+        currSeq.start();
+      }
   }
   
   void interactiveUpdate() {
@@ -219,13 +204,13 @@ class AnimManager {
   void update() {
     interactiveUpdate();
     
-    if (animState == animatorMode.INTERACTIVE) {
-      return;
-    }
-    
     boolean seqComplete = false;
     if (sequences.size() > 0) {
       seqComplete = currSeq.update(); 
+    }
+    
+    if (animState == animatorMode.INTERACTIVE) {
+      return;
     }
     
     if (seqComplete) {
@@ -238,9 +223,16 @@ class AnimManager {
         if (loop) {
           restart();
         } else {
-          
-          if (animState == animatorMode.TOINTERACTIVE) {
+          if (animState == animatorMode.TOSCREENSAVER) {
+            screensaver();
+            animState = animatorMode.SCREENSAVER;
+            guiState = GUImode.SCREENSAVER;
+            resetVariables();
+            setupGUI();
+          }
+          else if (animState == animatorMode.TOINTERACTIVE) {
             animState = animatorMode.INTERACTIVE;
+            guiState = GUImode.INTERACTIVE;
             resetVariables();
             setupGUI();
           } else {
@@ -253,6 +245,31 @@ class AnimManager {
         currSeq.start();
       }
     }
+  }
+  
+  void untangle() {
+    stop();
+    setLoop(false);
+    if (currSeq.tangle) {
+      untangling = true;
+      currSeq = currSeq.genUntangle();
+    }
+    start();
+  }
+  
+  void untangleClear() {
+    stop();
+    setLoop(false);
+    if (currSeq.tangle) {
+      untangling = true;
+      Sequence untangleSeq = currSeq.genUntangle();
+      clear();
+      add(untangleSeq);
+      currSeq = sequences.get(0);
+    } else {
+      clear();
+    }
+    start();
   }
   
   Sequence getCurrentSeq() {

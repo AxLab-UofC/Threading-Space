@@ -142,20 +142,20 @@ void stopAll() {
 }
 
 int[][][] pairCheck() {
-  int targets[][][] = new int[nPairs][2][3];
+  float angle = (2 * PI) / nPairs;
+  float radius = (xmax * 3) / 9;
   
-  int r = 3 * min(xmax, ymax) / 8;
-  float angle = 2 * PI/nPairs;
+  int[][][] targets = new int[nPairs][2][3];
   
   for (int i = 0; i < nPairs; i++) {
-    float newAngle = angle * i;
-    targets[i][0][0] = (int)(xmid + r*cos(newAngle));
-    targets[i][0][1] = ymax - (int)(ymid + r*sin(newAngle));
-    targets[i][0][2] = (int)((360 * newAngle / (2 * PI)) + 90);
+    float theta = (i * angle);
+    targets[i][0][0] = (int) (xmid + (radius * sin(theta)));
+    targets[i][0][1] = (int) (ymid - (radius * cos(theta)));
+    targets[i][0][2] = (int) ((180 / PI) * (theta + PI/2));
     
-    targets[i][1][0] = (int)(xmid + r*cos(newAngle));
-    targets[i][1][1] = (int)(ymid + r*sin(newAngle));
-    targets[i][1][2] = (int)((360 * newAngle / (2 * PI)) + 90);
+    targets[i][1][0] = (int) (xmid + (radius * sin(theta)));
+    targets[i][1][1] = (int) (ymid + (radius * cos(theta)));
+    targets[i][1][2] = (int) ((180 / PI) * (theta + PI/2));
   }
   
   return targets;
@@ -172,16 +172,56 @@ int[][][] translate(int[][] twod) {
   return targets;
 }
 
+void led(int id) {
+  if (cubes[id].onFloor) {
+    led(id, 0, 255, 0, 0);
+  }
+  else {
+    led(id, 0, 0, 0, 255);
+  }
+}
+
 void ledAll() {
   for (int i = 0; i < cubes.length; i++) {
-    //if (!cubes[i].isActive) {
-    //  led(i, 0, 255, 255, 255);
-    //} else 
-    if (cubes[i].onFloor) {
-      led(i, 0, 255, 0, 0);
+    led(i);
+  }
+}
+
+void ledOff() {
+  for (int i = 0; i < cubes.length; i++) {
+    led(i, 0, 0, 0, 0);
+  }
+}
+
+void ledToggle() {
+  if (ledOn) {
+    ledOn = false;
+    ledOff();
+  } else {
+    ledOn = true;
+    ledAll();
+  }
+}
+
+void swap(int id1, int id2) {
+  boolean floor1 = (cubes[id1].onFloor);
+  boolean floor2 = (cubes[id2].onFloor);
+  
+  for (int i = 0; i < nPairs; i++) {
+    if (pairs[i].b.id == id1 || pairs[i].t.id == id1) {
+      if (floor1) {
+        pairs[i].b.id = id2;
+      } else {
+        pairs[i].t.id = id2;
+      }
     }
-    else {
-      led(i, 0, 0, 0, 255);
+  
+    if (pairs[i].b.id == id2 || pairs[i].t.id == id2) {
+      if (floor2) {
+        pairs[i].b.id = id1;
+      } else {
+        pairs[i].t.id = id1;
+      }
     }
   }
 }

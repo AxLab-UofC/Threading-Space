@@ -63,7 +63,11 @@ void keyPressed() {
       break;
     
     case 'k':
-      ledAll();
+      ledToggle();
+      break;
+      
+    case 'j':
+      swap(3, 4);
       break;
    
     case 'l':

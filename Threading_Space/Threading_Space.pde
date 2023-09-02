@@ -23,7 +23,7 @@ String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -33,6 +33,7 @@ int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, 
 //For Visualizing Posistions and Debug mode in GUI
 boolean debugMode = false;
 boolean visualOn = true;
+boolean ledOn = true;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization

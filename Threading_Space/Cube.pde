@@ -128,11 +128,10 @@ class Cube {
     
     if(!isActive) {
       isActive = true;
-      if (onFloor) {
-        led(id, 0, 255, 0, 0);
-      }
-      else {
-        led(id, 0, 0, 0, 255);
+      if (ledOn) {
+        led(id);
+      } else {
+        led(id, 0, 0, 0, 0);
       }
     }
   }

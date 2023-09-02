@@ -209,7 +209,7 @@ void setupGUI() {
     
         cp5.addButton("LED ON/OFF")
         .setValue(100)
-        .setPosition(900,guiY +(5*guioffset))
+        .setPosition(width - 300,guiY +(5*guioffset))
         .setSize(200,50)
         .setColorBackground(light)
         .setColorForeground(light)
@@ -217,7 +217,7 @@ void setupGUI() {
         .setId(10);
         
         cp5.addTextfield("LED input")
-          .setPosition(900,guiY +(6.5*guioffset))
+          .setPosition(width - 290,guiY +(6.5*guioffset))
          .setSize(80, 40)
          .setFont(buttonfont)
          .setColor(dark)
@@ -226,14 +226,14 @@ void setupGUI() {
          
          
           cp5.addBang("Submit1")
-          .setPosition(1000,guiY +(6.5*guioffset))
+          .setPosition(width - 190,guiY +(6.5*guioffset))
           .setSize(80, 40)
           .setColorForeground(dark)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
              
              
            cp5.addTextfield("swap 1")
-            .setPosition(900,guiY +(8*guioffset))
+            .setPosition(width - 390,guiY +(8*guioffset))
            .setSize(80, 40)
            .setFont(buttonfont)
            .setColorValue(color(255,255,255))
@@ -242,7 +242,7 @@ void setupGUI() {
            .setId(12);
          
            cp5.addTextfield("swap 2")
-          .setPosition(1000,guiY +(8*guioffset))
+          .setPosition(width - 290,guiY +(8*guioffset))
          .setSize(80, 40)
          .setFont(buttonfont)
          .setColor(dark)
@@ -250,7 +250,7 @@ void setupGUI() {
          .setId(13);
          
            cp5.addBang("Submit2")
-          .setPosition(1125,guiY +(8*guioffset))
+          .setPosition(width - 190,guiY +(8*guioffset))
           .setSize(80, 40)
           .setColorForeground(dark)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);

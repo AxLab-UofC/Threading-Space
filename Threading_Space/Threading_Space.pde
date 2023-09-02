@@ -33,7 +33,7 @@ int[][] zoropairs = {{185, 137}, {105, 171}, {118, 92}, {190, 145}, {127, 144}, 
 //For Visualizing Posistions and Debug mode in GUI
 boolean debugMode = false;
 boolean visualOn = true;
-boolean ledOn = true;
+boolean ledOn = false;
 PairVisual[] pairsViz;
 
 //for Threading Space Visualization
@@ -309,8 +309,8 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
       case 7:
-       if (guiChoose != animChoose.WAVE) {
-       guiState = GUImode.SELECT;
+       if (guiChoose != animChoose.WAVE) { //<>//
+       guiState = GUImode.SELECT; //<>//
         guiChoose = animChoose.WAVE;    
         myLineColor = light;
         myCylinderColor = light;
@@ -330,13 +330,13 @@ public void controlEvent(ControlEvent theEvent) {
       break; 
       
       case 12: 
-      //swap 1
+      //swap 1 //<>//
       break;
       
       case 13:
       //swap 2
       break; 
-     
+      //<>//
       
   } //<>//
 }

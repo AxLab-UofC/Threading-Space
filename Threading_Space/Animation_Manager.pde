@@ -230,6 +230,8 @@ class AnimManager {
             guiState = GUImode.SCREENSAVER;
             resetVariables();
             setupGUI();
+            setViz(true);
+            setLoop(true);
           }
           else if (animState == animatorMode.TOINTERACTIVE) {
             animState = animatorMode.INTERACTIVE;
@@ -467,10 +469,38 @@ class SmoothSequence extends Sequence {
 }
 
 class UntangleSequence extends Sequence {
+  boolean started = false;
   boolean update() {
-    return untangleAnimation();
-    //return false;
-  }
+    switch (realChoose) {
+      case CYLINDER:
+        if (abs(t_offsetAngle - b_offsetAngle) < 0.25) {
+          return true;
+        } else if (!started) {
+          if (t_offsetAngle > b_offsetAngle) {
+              globalAngleOffsetSpeed = 0; //0.05;
+              t_offsetAngleSpeed = 0; //=-0.05;
+              b_offsetAngleSpeed =  0.75; //-0.05;
+          } else {
+              globalAngleOffsetSpeed = 0; //0.05;
+              t_offsetAngleSpeed = 0; //=-0.05;
+              b_offsetAngleSpeed = -0.75; //-0.05;
+          }
+        }
+        
+        int[][][] targets = animCylinderTwist();
+        visualize(targets);
+        movePairsVelocity(targets);
+        return false;
+        
+      case LINE:
+        return true;
+      
+      case WAVE:
+        return true;
+    }
+    
+    return false;
+  } 
 }
 
 
@@ -659,7 +689,6 @@ class Frame {
     for (int i = 0; i < pairs.length; i++) {
       switch (type) {
         case PAIR:
-          if (viz) visualize(targets);
           if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
             tempStatus = moveStatus.INPROGRESS;
           } 
@@ -670,7 +699,8 @@ class Frame {
             pairs[i].t.status = moveStatus.NONE;
           } else if (pairs[i].t.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           
           if (pairs[i].b.status == moveStatus.ERROR) {
@@ -679,7 +709,8 @@ class Frame {
             pairs[i].b.status = moveStatus.NONE;
           } else if (pairs[i].b.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           break;
           
@@ -693,7 +724,8 @@ class Frame {
             pairs[i].t.status = moveStatus.NONE;
           } else if (pairs[i].t.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           break;
         case BOTTOM:
@@ -706,7 +738,8 @@ class Frame {
             pairs[i].b.status = moveStatus.NONE;
           } else if (pairs[i].b.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           break;
         case INDEPENDENT:
@@ -721,7 +754,8 @@ class Frame {
             pairs[i].t.status = moveStatus.NONE;
           } else if (pairs[i].t.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           
           if (pairs[i].b.status == moveStatus.ERROR) {
@@ -730,7 +764,8 @@ class Frame {
             pairs[i].b.status = moveStatus.NONE;
           } else if (pairs[i].b.status == moveStatus.NONE) {
             tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+            if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           break;
       }

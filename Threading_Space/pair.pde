@@ -161,6 +161,17 @@ int[][][] pairCheck() {
   return targets;
 }
 
+int[][][] translate(int[][] twod) {
+  int[][][] targets = new int[nPairs][2][3];
+  
+  for (int i = 0; i < nPairs; i++) {
+    targets[i][0] = twod[i];
+    targets[i][1] = twod[i];
+  }
+  
+  return targets;
+}
+
 void ledAll() {
   for (int i = 0; i < cubes.length; i++) {
     //if (!cubes[i].isActive) {

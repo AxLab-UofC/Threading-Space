@@ -59,6 +59,7 @@ void keyPressed() {
     
     case 'd':
       debugMode = !debugMode;
+      setupGUI(); 
       break;
     
     case 'k':

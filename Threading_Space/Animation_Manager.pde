@@ -78,7 +78,7 @@ class AnimManager {
         break;
         
       case CROSS:
-        add(new PathPlanSequence(animLine()));
+        add(new PathPlanSequence(animWaveY()));
         break;
 
       default:
@@ -90,6 +90,7 @@ class AnimManager {
     }
     animState = animatorMode.TOINTERACTIVE;
     start();
+    globalLoading = false; 
   }
   
   void startScreensaver() {
@@ -165,7 +166,7 @@ class AnimManager {
             break;
   
           case CROSS:
-             targets = animLine(); 
+             targets = translate(animWaveY()); 
              break; 
           
           default:
@@ -189,7 +190,7 @@ class AnimManager {
             break;
   
           case CROSS:
-             targets = animLine(); 
+             targets = translate(animWaveY()); 
              break; 
           
           default:

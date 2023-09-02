@@ -56,8 +56,8 @@ void setupGUI() {
         .setPosition(guiX,guiY+(3*guioffset))
         .setSize(200,50)
         .setColorBackground(myLineColor)
-        .setColorActive(color(100,100,100))
-        .setColorForeground(color(100,100,100))
+        .setColorActive(dark)
+        .setColorForeground(dark)
         .setFont(buttonfont)
         .setId(1);
       
@@ -66,8 +66,8 @@ void setupGUI() {
         .setPosition(guiX,guiY +(2*guioffset))
         .setSize(200,50)
         .setColorBackground(myCylinderColor)
-        .setColorActive(color(100,100,100))
-        .setColorForeground(color(100,100,100))
+        .setColorActive(dark)
+        .setColorForeground(dark)
         .setFont(buttonfont)
         .setId(2);
         
@@ -76,28 +76,41 @@ void setupGUI() {
         .setPosition(guiX,guiY +(4*guioffset))
         .setSize(200,50)
         .setColorBackground(myCrossColor)
-        .setColorActive(color(100,100,100))
-        .setColorForeground(color(100,100,100))
+        .setColorActive(dark)
+        .setColorForeground(dark)
         .setFont(buttonfont)
         .setId(3);
 
-       cp5.addButton("START")
+       cp5.addButton("CHOOSE")
        .setValue(100)
        .setPosition(guiX,guiY +(9*guioffset))
         .setSize(200,50)
-       .setColorBackground(color(80,80,80))
-       .setColorForeground(color(100,100,100))
+       .setColorBackground(color(0,120,120))
+       .setColorForeground(color(0,150,150))
        .setFont(buttonfont)
        .setId(6);
+       
+    if (animator.animState == animatorMode.TOINTERACTIVE){
+      cp5.addButton("LOADING")
+        .setValue(100)
+        .setPosition(guiX,guiY +(9*guioffset))
+        .setSize(200,50)
+        .setColorBackground(color(80,80,80))
+        .setColorForeground(color(100,100,100))
+        .setFont(buttonfont)
+        .setId(9);
+    }
+    
 
       break;
     
     case INTERACTIVE:
+   
       cp5.addButton("LINE")
         .setValue(100)
         .setPosition(guiX,guiY+(3*guioffset))
         .setColorBackground(myLineColor)
-        .setColorForeground(color(100,100,100))
+        .setColorForeground(dark)
         .setSize(200,50)
         .setFont(buttonfont)
         .setId(4);
@@ -106,7 +119,7 @@ void setupGUI() {
         .setValue(100)
         .setPosition(guiX,guiY +(2*guioffset))
         .setColorBackground(myCylinderColor)
-        .setColorForeground(color(100,100,100))
+        .setColorForeground(dark)
         .setSize(200,50)
         .setFont(buttonfont)
         .setId(5);
@@ -116,8 +129,8 @@ void setupGUI() {
         .setPosition(guiX,guiY +(4*guioffset))
         .setSize(200,50)
         .setColorBackground(myCrossColor)
-        .setColorActive(color(100,100,100))
-        .setColorForeground(color(100,100,100))
+        .setColorActive(dark)
+        .setColorForeground(dark)
         .setFont(buttonfont)
         .setId(7);
         
@@ -186,17 +199,41 @@ void setupGUI() {
             .setValue(globalLineOffset);
           break;
       }
-     } else {
-      cp5.addButton("LOADING")
-        .setValue(100)
-        .setPosition(guiX,guiY +(9*guioffset))
-        .setSize(200,50)
-        .setColorBackground(color(80,80,80))
-        .setColorForeground(color(100,100,100))
-        .setFont(buttonfont)
-        .setId(9);
-    }
+     }
+    
     break;
   }
+  
+  if (debugMode) {
+    
+        cp5.addButton("LED ON/OFF")
+        .setValue(100)
+        .setPosition(1200,guiY +(8*guioffset))
+        .setSize(200,50)
+        .setColorBackground(color(80,80,80))
+        .setColorForeground(dark)
+        .setFont(buttonfont)
+        .setId(10);
+        
+        cp5.addButton("ONE LED")
+        .setValue(100)
+        .setPosition(1200,guiY +(9*guioffset))
+        .setSize(200,50)
+        .setColorBackground(color(80,80,80))
+        .setColorForeground(dark)
+        .setFont(buttonfont)
+        .setId(11);
+        
+        cp5.addButton("SWAP")
+        .setValue(100)
+        .setPosition(1200,guiY +(10*guioffset))
+        .setSize(200,50)
+        .setColorBackground(color(80,80,80))
+        .setColorForeground(dark)
+        .setFont(buttonfont)
+        .setId(12);
+    
+  }
+    
   cp5.setAutoDraw(false);
 }

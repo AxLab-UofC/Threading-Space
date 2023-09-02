@@ -1,10 +1,10 @@
 enum animChoose {
-  CYLINDER, LINE, CROSS
+  CYLINDER, LINE, WAVE
 }
 
 int myLineColor = color(150,150,150);
 int myCylinderColor = color(150,150,150);
-int myCrossColor = color(150,150,150);
+int myWaveColor = color(150,150,150);
 
 enum GUImode {
   SCREENSAVER, SELECT, INTERACTIVE
@@ -47,6 +47,7 @@ void setupGUI() {
         .setValue(100)
         .setPosition(width/2 - 100,height * 9/10)
         .setSize(200,50)
+        .setFont(buttonfont)
         .setId(0);
       break;
     
@@ -71,37 +72,37 @@ void setupGUI() {
         .setFont(buttonfont)
         .setId(2);
         
-       cp5.addButton("CROSS")
+       cp5.addButton("WAVE")
         .setValue(100)
         .setPosition(guiX,guiY +(4*guioffset))
         .setSize(200,50)
-        .setColorBackground(myCrossColor)
+        .setColorBackground(myWaveColor)
         .setColorActive(dark)
         .setColorForeground(dark)
         .setFont(buttonfont)
         .setId(3);
 
-       cp5.addButton("CHOOSE")
-       .setValue(100)
-       .setPosition(guiX,guiY +(9*guioffset))
-        .setSize(200,50)
-       .setColorBackground(color(0,120,120))
-       .setColorForeground(color(0,150,150))
-       .setFont(buttonfont)
-       .setId(6);
-       
     if (animator.animState == animatorMode.TOINTERACTIVE){
       cp5.addButton("LOADING")
         .setValue(100)
-        .setPosition(guiX,guiY +(9*guioffset))
-        .setSize(200,50)
+        .setPosition(guiX + 25,guiY +(5.5*guioffset))
+        .setSize(150,40)
         .setColorBackground(color(80,80,80))
         .setColorForeground(color(100,100,100))
         .setFont(buttonfont)
+        .setView(new CircularButton())
         .setId(9);
+    } else {
+       cp5.addButton("CHOOSE")
+       .setValue(100)
+       .setPosition(guiX + 25,guiY +(5.5*guioffset))
+        .setSize(150,40)
+       .setColorBackground(color(0,150,150))
+       .setColorForeground(color(0,180,180))
+       .setFont(buttonfont)
+       .setView(new CircularButton())
+       .setId(6);
     }
-    
-
       break;
     
     case INTERACTIVE:
@@ -124,11 +125,11 @@ void setupGUI() {
         .setFont(buttonfont)
         .setId(5);
         
-       cp5.addButton("CROSS")
+       cp5.addButton("WAVE")
         .setValue(100)
         .setPosition(guiX,guiY +(4*guioffset))
         .setSize(200,50)
-        .setColorBackground(myCrossColor)
+        .setColorBackground(myWaveColor)
         .setColorActive(dark)
         .setColorForeground(dark)
         .setFont(buttonfont)
@@ -189,7 +190,7 @@ void setupGUI() {
             .setValue(globalAngleOffsetSpeed);
           break;
           
-          case CROSS: 
+          case WAVE: 
            cp5.addSlider("globalLineOffset")
             .setPosition(guiX+230, guiYadj+(4*guioffset))
             .setSize(200, 30)
@@ -208,31 +209,61 @@ void setupGUI() {
     
         cp5.addButton("LED ON/OFF")
         .setValue(100)
-        .setPosition(1200,guiY +(8*guioffset))
+        .setPosition(900,guiY +(5*guioffset))
         .setSize(200,50)
-        .setColorBackground(color(80,80,80))
-        .setColorForeground(dark)
+        .setColorBackground(light)
+        .setColorForeground(light)
         .setFont(buttonfont)
         .setId(10);
         
-        cp5.addButton("ONE LED")
-        .setValue(100)
-        .setPosition(1200,guiY +(9*guioffset))
-        .setSize(200,50)
-        .setColorBackground(color(80,80,80))
-        .setColorForeground(dark)
-        .setFont(buttonfont)
-        .setId(11);
-        
-        cp5.addButton("SWAP")
-        .setValue(100)
-        .setPosition(1200,guiY +(10*guioffset))
-        .setSize(200,50)
-        .setColorBackground(color(80,80,80))
-        .setColorForeground(dark)
-        .setFont(buttonfont)
-        .setId(12);
-    
+        cp5.addTextfield("LED input")
+          .setPosition(900,guiY +(6.5*guioffset))
+         .setSize(80, 40)
+         .setFont(buttonfont)
+         .setColor(dark)
+         .setAutoClear(true)
+         .setId(11);
+         
+         
+          cp5.addBang("Submit1")
+          .setPosition(1000,guiY +(6.5*guioffset))
+          .setSize(80, 40)
+          .setColorForeground(dark)
+          .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+             
+             
+           cp5.addTextfield("swap 1")
+            .setPosition(900,guiY +(8*guioffset))
+           .setSize(80, 40)
+           .setFont(buttonfont)
+           .setColorValue(color(255,255,255))
+           .setColor(dark)
+           .setAutoClear(true)
+           .setId(12);
+         
+           cp5.addTextfield("swap 2")
+          .setPosition(1000,guiY +(8*guioffset))
+         .setSize(80, 40)
+         .setFont(buttonfont)
+         .setColor(dark)
+         .setAutoClear(true)
+         .setId(13);
+         
+           cp5.addBang("Submit2")
+          .setPosition(1125,guiY +(8*guioffset))
+          .setSize(80, 40)
+          .setColorForeground(dark)
+          .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+              
+          text(cp5.get(Textfield.class, "LED input").getText(), 360, 130);
+          text(" ", 360, 180);
+          
+          //text(cp5.get(Textfield.class, "swap 1").getText(), 360, 130);
+          //text(" ", 360, 180);
+          
+          //text(cp5.get(Textfield.class, "swap2").getText(), 360, 130);
+          //text(" ", 360, 180);
+              
   }
     
   cp5.setAutoDraw(false);

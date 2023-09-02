@@ -77,7 +77,7 @@ class AnimManager {
         add(new PathPlanSequence(animRotateLine()));
         break;
         
-      case CROSS:
+      case WAVE:
         add(new PathPlanSequence(animWaveY()));
         break;
 
@@ -165,7 +165,7 @@ class AnimManager {
             targets = animRotateLine();
             break;
   
-          case CROSS:
+          case WAVE:
              targets = translate(animWaveY()); 
              break; 
           
@@ -189,7 +189,7 @@ class AnimManager {
             targets = animRotateLine();
             break;
   
-          case CROSS:
+          case WAVE:
              targets = translate(animWaveY()); 
              break; 
           

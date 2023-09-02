@@ -141,17 +141,17 @@ void setup() {
   cam.setDistance(1600);
   cam.rotateX(-PI/2);
 
+  titlefont = loadFont("Code-Light-80.vlw");
+  debugfont = loadFont("Agenda-Light-48.vlw");
+  buttonfont = loadFont("SukhumvitSet-Thin-20.vlw");
+  frameRate(30);
+  
   //setup GUI
   resetVariables();
   setupGUI();
 
   smooth();
   blendMode(BLEND);
-
-  titlefont = loadFont("Code-Light-80.vlw");
-  debugfont = loadFont("Agenda-Light-48.vlw");
-  buttonfont = createFont("arial", 13);
-  frameRate(30);
 
   animator = new AnimManager();
   screensaver();
@@ -240,7 +240,7 @@ public void controlEvent(ControlEvent theEvent) {
       guiChoose = animChoose.LINE;
       myLineColor = dark;
       myCylinderColor = light;
-      myCrossColor = light;
+      myWaveColor = light;
       setupGUI();
       break;
 
@@ -248,15 +248,15 @@ public void controlEvent(ControlEvent theEvent) {
       guiChoose = animChoose.CYLINDER;
       myLineColor = light;
       myCylinderColor = dark;
-      myCrossColor = light;
+      myWaveColor = light;
       setupGUI();
       break;
 
     case 3:
-     guiChoose = animChoose.CROSS;
-      myLineColor = light;
+     guiChoose = animChoose.WAVE;      
+     myLineColor = light;
       myCylinderColor = light;
-      myCrossColor = dark;
+      myWaveColor = dark;
       setupGUI();
       break;
 
@@ -266,13 +266,9 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.LINE;
         myLineColor = dark;
         myCylinderColor = light;
-        myCrossColor = light;
+        myWaveColor = light;
         setupGUI();
       } 
-      //if (realChoose == animChoose.LINE) {
-      //  guiState = GUImode.INTERACTIVE;
-      //  setupGUI(); 
-      //}
       lastpressed = millis();
       break;
 
@@ -282,13 +278,9 @@ public void controlEvent(ControlEvent theEvent) {
         guiChoose = animChoose.CYLINDER;
         myLineColor = light;
         myCylinderColor = dark;
-        myCrossColor = light;
+        myWaveColor = light;
         setupGUI();
       }
-      //if (realChoose == animChoose.CYLINDER) {
-      //  guiState = GUImode.INTERACTIVE;
-      //  setupGUI(); 
-      //}
       lastpressed = millis();
       break;
 
@@ -296,15 +288,15 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose == animChoose.CYLINDER) {
         myLineColor = light;
         myCylinderColor = dark;
-        myCrossColor = light;
+        myWaveColor = light;
       } else if (guiChoose == animChoose.LINE) {
         myLineColor = dark;
         myCylinderColor = light;
-        myCrossColor = light;
+        myWaveColor = light;
       } else {
         myLineColor = light;
         myCylinderColor = light;
-        myCrossColor = dark;
+        myWaveColor = dark;
       }
       realChoose = guiChoose;
       globalLoading = true; 
@@ -316,18 +308,14 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
       case 7:
-       if (guiChoose != animChoose.CROSS) {
-        guiState = GUImode.SELECT;
-        guiChoose = animChoose.CROSS;
+       if (guiChoose != animChoose.WAVE) {
+       guiState = GUImode.SELECT;
+        guiChoose = animChoose.WAVE;    
         myLineColor = light;
         myCylinderColor = light;
-        myCrossColor = dark;
+        myWaveColor = dark;
         setupGUI();
       }
-      // if (realChoose == animChoose.CROSS) {
-      //  guiState = GUImode.INTERACTIVE;
-      //  setupGUI(); 
-      //}
       lastpressed = millis();
       break; //<>//
       
@@ -335,6 +323,54 @@ public void controlEvent(ControlEvent theEvent) {
       // add code here for LED on and off
       break;
       
- //<>//
+      case 11:
+      //LED 
+      //println("controlEvent: accessing a string from controller '"+theEvent.getName()+"': "+theEvent.getStringValue());
+      break; 
+      
+      case 12: 
+      //swap 1
+      break;
+      
+      case 13:
+      //swap 2
+      break; 
+     
+      
+  } //<>//
+}
+
+class CircularButton implements ControllerView<Button> {
+
+  public void display(PGraphics theApplet, Button theButton) {
+    theApplet.pushMatrix();
+    theApplet.noFill();
+    theApplet.strokeWeight(3);
+    if (theButton.isInside()) {
+      if (theButton.isPressed()) { // button is pressed
+        theApplet.stroke(color(0, 0, 0, 100));
+      }  else { // mouse hovers the button
+        theApplet.stroke(color(0, 0, 0, 100));
+      }
+    } else { // the mouse is located outside the button area
+      theApplet.stroke(color(250,250, 250, 100));
+    }
+    
+    theApplet.ellipse(0, 0, theButton.getWidth(), theButton.getHeight());
+    
+    // center the caption label 
+    int x = 40;
+    int y = 10;
+    
+    translate(x, y);
+    theButton.getCaptionLabel().draw(theApplet);
+    
+    theApplet.popMatrix();
   }
+}
+
+
+public void input(String theText) {
+  // automatically receives results from controller input
+  println("a textfield event for controller 'input' : "+theText);
 }

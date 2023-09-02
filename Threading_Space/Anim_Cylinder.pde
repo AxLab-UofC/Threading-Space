@@ -231,7 +231,7 @@ boolean untangleAnimation() {
       untangleDone = true;
       break;
     
-    case CROSS:
+    case WAVE:
       untangleDone = true;
       break;
   }

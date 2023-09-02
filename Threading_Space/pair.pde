@@ -150,7 +150,7 @@ int[][][] pairCheck() {
   for (int i = 0; i < nPairs; i++) {
     float newAngle = angle * i;
     targets[i][0][0] = (int)(xmid + r*cos(newAngle));
-    targets[i][0][1] = (int)(ymid - r*sin(newAngle));
+    targets[i][0][1] = ymax - (int)(ymid + r*sin(newAngle));
     targets[i][0][2] = (int)((360 * newAngle / (2 * PI)) + 90);
     
     targets[i][1][0] = (int)(xmid + r*cos(newAngle));
@@ -163,11 +163,14 @@ int[][][] pairCheck() {
 
 void ledAll() {
   for (int i = 0; i < cubes.length; i++) {
-    if (!cubes[i].onFloor) {
-      led(i, 0, 0, 0, 255);
+    //if (!cubes[i].isActive) {
+    //  led(i, 0, 255, 255, 255);
+    //} else 
+    if (cubes[i].onFloor) {
+      led(i, 0, 255, 0, 0);
     }
     else {
-      led(i, 0, 255, 0, 0);
+      led(i, 0, 0, 0, 255);
     }
   }
 }

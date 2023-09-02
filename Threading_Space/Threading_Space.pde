@@ -2,7 +2,6 @@ import peasy.PeasyCam;
 PeasyCam cam;
 import deadpixel.command.*;
 
-
 import oscP5.*;
 import netP5.*;
 
@@ -207,7 +206,7 @@ void draw() {
         for (int i  = 0; i < pairs.length; i++) {
           text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
         }
-      } else {
+      } else if (currSeq instanceof SmoothSequence) {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
         text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+150);
       }

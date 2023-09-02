@@ -1,8 +1,8 @@
 // Inputs for python file
 String DEBUG = "False";
 
-String command = "/usr/local/opt/python@3.11/bin/python3.11 ";
-String plannerDirectory = "/Users/ramarko/Documents/coding/toio/Threading-Space/general_planner_v1.0.1/"; //Enter path to general_planner directory.
+String command = "/Library/Developer/CommandLineTools/usr/bin/python3 ";
+String plannerDirectory = ""; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";
 String goalFile = "goal.txt";
@@ -13,6 +13,7 @@ int y_min_plus_max = ymin + ymax; // Used to reverse the y-axis to align with pa
 
 // USES CURRENT TOIO LOCATIONS AS START POSITIONS
 ArrayList<Frame> planPath(int targets[][]) {
+  plannerDirectory = sketchPath() + "/../general_planner_v1.0.1/";
   int num_agents = nPairs;
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
   HashMap<Integer, Integer> takenVertices = new HashMap<Integer, Integer>(); // Keep track of which vertex is taken.
@@ -65,6 +66,8 @@ ArrayList<Frame> planPath(int targets[][]) {
 
 // FOR PREDETERMINED START POSITIONS
 ArrayList<Frame> planPath(int starts[][], int targets[][]) {
+  plannerDirectory = sketchPath() + "/../general_planner_v1.0.1/";
+  
   int num_agents = nPairs;
 
   PrintWriter start_writer = createWriter(plannerDirectory + startFile);
@@ -158,11 +161,11 @@ ArrayList<Frame> runPlanner() {
       toio_locs[i].add(prev_pos.clone());
       prev_pos = p;
     }
-    print("Toio " + i + " locations: ");
-    for (Integer[] loc : toio_locs[i]) {
-      print(Arrays.toString(loc) + ", ");
-    }
-    print("\n");
+    //print("Toio " + i + " locations: ");
+    //for (Integer[] loc : toio_locs[i]) {
+    //  print(Arrays.toString(loc) + ", ");
+    //}
+    //print("\n");
   }
 
   // Add to Animation
@@ -183,10 +186,6 @@ ArrayList<Frame> runPlanner() {
       planned_path[i] = Arrays.asList(temp).stream().mapToInt(Integer::intValue).toArray();
     }
     if (!done) {
-      println("adding frame to seq");
-      for (int[] toio : planned_path) {
-        println(Arrays.toString(toio));
-      }
       if (testMode) {
         frames.add(new Frame(moveType.BOTTOM, planned_path));
       } else {
@@ -194,48 +193,6 @@ ArrayList<Frame> runPlanner() {
       }
     }
   }
-
-  //println("adding seq to animator");
   return frames;
 
-
-  // FIRST LOCATION
-  /*for (int i = 0; i < num_agents; i++) {
-   motorTarget(cubes[i].id, 2, toio_locs[i].get(0)[0], toio_locs[i].get(0)[1], toio_locs[i].get(0)[2]);
-   delay(2000);
-   }
-   delay(1500);
-   
-   // REST OF LOCATIONS
-   int startTime = millis();
-   while(true) {
-   boolean done = toio_locs[0].isEmpty();
-   
-   for (int i = 0; i < num_agents; i++) {
-   done &= toio_locs[i].isEmpty();
-   if (toio_locs[i].isEmpty()) {
-   //println("Toio " + i + " empty.");
-   continue;
-   }
-   
-   if (Math.abs(cubes[i].x - toio_locs[i].get(0)[0]) < 10 && Math.abs(cubes[i].y - toio_locs[i].get(0)[1]) < 10) {
-   toio_locs[i].remove(0);
-   if (toio_locs[i].isEmpty()) {
-   continue;
-   }
-   println("Moving " + i + " to " + toio_locs[i].get(0)[0] + ", " + toio_locs[i].get(0)[1] + " at " + toio_locs[i].get(0)[2] + " degrees.");
-   motorTarget(cubes[i].id, 2, toio_locs[i].get(0)[0], toio_locs[i].get(0)[1], toio_locs[i].get(0)[2]);
-   
-   }
-   }
-   
-   if (done) {
-   println("Stopping path execution. DONE!");
-   break;
-   }
-   if (millis() - startTime > 15000) {
-   println("Stopping path execution. TIMEOUT!");
-   break;
-   }
-   }*/
 }

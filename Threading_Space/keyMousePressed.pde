@@ -27,7 +27,6 @@ void keyPressed() {
     case 'u':
       animator.untangle();
       break;
-      
   
     case 'f':
       int[][] notes = {{30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, 
@@ -40,11 +39,12 @@ void keyPressed() {
       break;
     
    case 'a':
+     if (animator.animState == animatorMode.INTERACTIVE);
      animator.startScreensaver();
     break;
 
     case 'c':
-      moveTargets(animCircle(0));
+      movePairs(animCircle(0));
       break;
     
     case 'p':
@@ -60,7 +60,7 @@ void keyPressed() {
       break;
    
     case 'l':
-      moveTargets(animCircle(0));
+      movePairs(animCircle(0));
       break;
     
     case 's':

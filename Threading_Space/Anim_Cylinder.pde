@@ -169,7 +169,8 @@ int[][][] animTwoCylinder() {
 }
 
 
-int[][][] untangleAnimation() {
+boolean untangleAnimation() {
+  println("Untangling!");
   boolean untangleDone = false;
   int[][][] targets = new int[nPairs][2][3];
   
@@ -188,7 +189,7 @@ int[][][] untangleAnimation() {
       float avg_offsetAngle = (t_offsetAngle + b_offsetAngle) / 2;
       
       // TOP
-      if ((t_offsetAngle - avg_offsetAngle) < 0.5) {
+      if ((t_offsetAngle - avg_offsetAngle) < 0.1) {
         topDone = true;
       }
       else if (t_offsetAngle - avg_offsetAngle > 0) {
@@ -199,7 +200,7 @@ int[][][] untangleAnimation() {
       }
       
       // BOTTOM
-      if ((b_offsetAngle - avg_offsetAngle) < 0.5) {
+      if ((b_offsetAngle - avg_offsetAngle) < 0.1) {
         bottomDone = true;
       }
       else if (b_offsetAngle - avg_offsetAngle > 0) {
@@ -222,6 +223,7 @@ int[][][] untangleAnimation() {
         targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
       }
       
+      movePairs(targets);
       if (topDone && bottomDone) {
         untangleDone = true;
       }
@@ -229,11 +231,13 @@ int[][][] untangleAnimation() {
       break;
       
     case LINE:
+      untangleDone = true;
       break;
     
     case CROSS:
+      untangleDone = true;
       break;
   }
   
-  return targets;
+  return untangleDone;
 } 

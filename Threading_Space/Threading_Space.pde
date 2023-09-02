@@ -16,13 +16,14 @@ int cubesPerHost = 6;
 int maxMotorSpeed = 115;
 
 int lastpressed;
+boolean globalLoading; 
 
 //server ids
 String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -71,6 +72,11 @@ Pair[] pairs;
 PFont titlefont;
 PFont debugfont;
 PFont buttonfont;
+
+color dark = color(100,100,100);
+color light = color(150,150,150); 
+
+boolean debugtoggle = false; 
 
 //For new Mac silicon chip to render 3D correctly:
 import com.jogamp.opengl.GLProfile;
@@ -180,7 +186,6 @@ void draw() {
 
 
   if (debugMode) {
-
     int debugUIx = width -350;
     int debugUIy = 50;
     textFont(debugfont, 24);
@@ -233,25 +238,25 @@ public void controlEvent(ControlEvent theEvent) {
 
     case 1:
       guiChoose = animChoose.LINE;
-      myLineColor = color(100,100,100);
-      myCylinderColor = color(150,150,150);
-      myCrossColor = color(150,150,150);
+      myLineColor = dark;
+      myCylinderColor = light;
+      myCrossColor = light;
       setupGUI();
       break;
 
     case 2:
       guiChoose = animChoose.CYLINDER;
-      myLineColor = color(150,150,150);
-      myCylinderColor = color(100,100,100);
-      myCrossColor = color(150,150,150);
+      myLineColor = light;
+      myCylinderColor = dark;
+      myCrossColor = light;
       setupGUI();
       break;
 
     case 3:
      guiChoose = animChoose.CROSS;
-      myLineColor = color(150,150,150);
-      myCylinderColor = color(150,150,150);
-      myCrossColor = color(100,100,100);
+      myLineColor = light;
+      myCylinderColor = light;
+      myCrossColor = dark;
       setupGUI();
       break;
 
@@ -259,16 +264,15 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose != animChoose.LINE) {
         guiState = GUImode.SELECT;
         guiChoose = animChoose.LINE;
-        myLineColor = color(100,100,100);
-        myCylinderColor = color(150,150,150);
-        myCrossColor = color(100,100,100);
+        myLineColor = dark;
+        myCylinderColor = light;
+        myCrossColor = light;
         setupGUI();
       } 
-      println(realChoose);
-      if (realChoose == animChoose.LINE) {
-        guiState = GUImode.INTERACTIVE;
-        setupGUI(); 
-      }
+      //if (realChoose == animChoose.LINE) {
+      //  guiState = GUImode.INTERACTIVE;
+      //  setupGUI(); 
+      //}
       lastpressed = millis();
       break;
 
@@ -276,37 +280,37 @@ public void controlEvent(ControlEvent theEvent) {
       if (guiChoose != animChoose.CYLINDER) {
         guiState = GUImode.SELECT;
         guiChoose = animChoose.CYLINDER;
-        myLineColor = color(150,150,150);
-        myCylinderColor = color(100,100,100);
-        myCrossColor = color(100,100,100);
+        myLineColor = light;
+        myCylinderColor = dark;
+        myCrossColor = light;
         setupGUI();
       }
-      println(realChoose);
-      if (realChoose == animChoose.CYLINDER) {
-        guiState = GUImode.INTERACTIVE;
-        setupGUI(); 
-      }
+      //if (realChoose == animChoose.CYLINDER) {
+      //  guiState = GUImode.INTERACTIVE;
+      //  setupGUI(); 
+      //}
       lastpressed = millis();
       break;
 
     case 6:
       if (guiChoose == animChoose.CYLINDER) {
-        myLineColor = color(150,150,150);
-        myCylinderColor = color(100,100,100);
-        myCrossColor = color(150,150,150);
+        myLineColor = light;
+        myCylinderColor = dark;
+        myCrossColor = light;
       } else if (guiChoose == animChoose.LINE) {
-        myLineColor = color(100,100,100);
-        myCylinderColor = color(150,150,150);
-        myCrossColor = color(150,150,150);
+        myLineColor = dark;
+        myCylinderColor = light;
+        myCrossColor = light;
       } else {
-        myLineColor = color(150,150,150);
-        myCylinderColor = color(150,150,150);
-        myCrossColor = color(100,100,100);
+        myLineColor = light;
+        myCylinderColor = light;
+        myCrossColor = dark;
       }
-      resetVariables();
       realChoose = guiChoose;
-      setupGUI();
+      globalLoading = true; 
+      setupGUI(); //<>//
       animator.startInteractive(); //<>//
+      setupGUI(); 
       lastpressed = millis();
 
       break;
@@ -315,18 +319,22 @@ public void controlEvent(ControlEvent theEvent) {
        if (guiChoose != animChoose.CROSS) {
         guiState = GUImode.SELECT;
         guiChoose = animChoose.CROSS;
-        myLineColor = color(150,150,150);
-        myCylinderColor = color(150,150,150);
-        myCrossColor = color(100,100,100);
+        myLineColor = light;
+        myCylinderColor = light;
+        myCrossColor = dark;
         setupGUI();
       }
-      println(realChoose);
-       if (realChoose == animChoose.CROSS) {
-        guiState = GUImode.INTERACTIVE;
-        setupGUI(); 
-      }
+      // if (realChoose == animChoose.CROSS) {
+      //  guiState = GUImode.INTERACTIVE;
+      //  setupGUI(); 
+      //}
       lastpressed = millis();
       break; //<>//
+      
+      case 10:
+      // add code here for LED on and off
+      break;
+      
  //<>//
   }
 }

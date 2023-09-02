@@ -56,7 +56,7 @@ void screensaver() {
   
   animator.add(new PathPlanSequence(animCircle(0)));
   
-  seq = new SmoothSequence((float t) -> animCircle(0));
+  seq = new SmoothSequence((float t) -> animCircle(t));
   seq.setPeriod(20);
   seq.setTimeLimit(20);
   animator.add(seq);

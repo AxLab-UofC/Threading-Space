@@ -19,7 +19,13 @@ void keyPressed() {
       case DOWN:
         playSpeed -= 0.5;  
         break;
-      
+      case 11: 
+        if (animator.status == moveStatus.NONE) {
+          animator.start();
+        } else {
+          animator.stop();
+        }
+        break;
     }
   }
   
@@ -67,7 +73,6 @@ void keyPressed() {
       if (animator.status == moveStatus.NONE) {
         animator.start();
       } else {
-        stop();
         animator.stop();
       }
       break;

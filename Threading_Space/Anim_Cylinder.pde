@@ -49,10 +49,10 @@ void resetVariables() {
     globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
     globalt_radius = xmax * ((float) 3/ 9);
-    t_radiusSpeed = 0.7;
+    t_radiusSpeed = 0;
 
     globalb_radius = xmax * ((float) 3/ 9);
-    b_radiusSpeed = -2;
+    b_radiusSpeed = 0;
 
     t_inner_radius = 100;
     t_outer_radius = 300;
@@ -168,66 +168,63 @@ int[][][] animTwoCylinder() {
   return targets;
 }
 
+int lastMillisUntangle = 0;
 
 boolean untangleAnimation() {
-  println("Untangling!");
   boolean untangleDone = false;
-  int[][][] targets = new int[nPairs][2][3];
+  //int[][][] targets = new int[nPairs][2][3];
   
   switch (realChoose) {
     case CYLINDER:
-      boolean topDone = false;
-      boolean bottomDone = false;
-      elapsedTime = millis() - lastMillis;
-      lastMillis = millis();
+      elapsedTime = millis() - lastMillisUntangle;
+      lastMillisUntangle = millis();
     
       float timeScale = playSpeed * float(elapsedTime)/1000;
     
-    
-      globalt_radius = xmax * 3/9;
-      globalb_radius = xmax * 3/9;
-      float avg_offsetAngle = (t_offsetAngle + b_offsetAngle) / 2;
+      //float avg_offsetAngle = (t_offsetAngle + b_offsetAngle) / 2;
       
-      // TOP
-      if ((t_offsetAngle - avg_offsetAngle) < 0.1) {
-        topDone = true;
-      }
-      else if (t_offsetAngle - avg_offsetAngle > 0) {
-        t_offsetAngle -= t_offsetAngleSpeed * timeScale; 
-      }
-      else {
-        t_offsetAngle += t_offsetAngleSpeed * timeScale;
-      }
+      //// TOP
+      //if ((t_offsetAngle - avg_offsetAngle) < 0.1) {
+      //  topDone = true;
+      //}
+      //else if (t_offsetAngle - avg_offsetAngle > 0) {
+      //  t_offsetAngle -= t_offsetAngleSpeed * timeScale; 
+      //}
+      //else {
+      //  t_offsetAngle += t_offsetAngleSpeed * timeScale;
+      //}
       
       // BOTTOM
-      if ((b_offsetAngle - avg_offsetAngle) < 0.1) {
-        bottomDone = true;
+      
+      if (abs(b_offsetAngle - t_offsetAngle) < 0.1) {
+        untangleDone = true;
       }
-      else if (b_offsetAngle - avg_offsetAngle > 0) {
-        b_offsetAngle -= b_offsetAngleSpeed * timeScale; 
+      else if (t_offsetAngle < b_offsetAngle) {
+        b_offsetAngle -= .01;
+        print("subbing! ");
       }
       else {
-        b_offsetAngle += b_offsetAngleSpeed * timeScale;
+        b_offsetAngle += .01;
+        print("adding! ");
       }
+      println(t_offsetAngle, b_offsetAngle, b_offsetAngleSpeed, abs(b_offsetAngle - t_offsetAngle));
       
+      int[][] targets = new int[nPairs][3];
       float angle = 2 * PI/(nPairs);
       
       for (int i = 0; i < nPairs; i++) {
         float newAngle = (angle * i) + globalAngleOffset;
-        targets[i][0][0] = int((xmax + xmin)/2 + globalt_radius*sin(newAngle + t_offsetAngle)); //x
-        targets[i][0][1] = int((ymax + ymin)/2 + globalt_radius*cos(newAngle + t_offsetAngle)); //y
-        targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
+      //  targets[i][0][0] = int((xmax + xmin)/2 + globalt_radius*sin(newAngle + t_offsetAngle)); //x
+      //  targets[i][0][1] = int((ymax + ymin)/2 + globalt_radius*cos(newAngle + t_offsetAngle)); //y
+      //  targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
     
-        targets[i][1][0] = int((xmax + xmin)/2 + globalb_radius*sin(newAngle + b_offsetAngle)); //x
-        targets[i][1][1] = int((ymax + ymin)/2 + globalb_radius*cos(newAngle + b_offsetAngle)); //y
-        targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
+        targets[i][0] = int((xmax + xmin)/2 + globalb_radius*sin(newAngle + b_offsetAngle)); //x
+        targets[i][1] = int((ymax + ymin)/2 + globalb_radius*cos(newAngle + b_offsetAngle)); //y
+        targets[i][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
       }
       
-      movePairs(targets);
-      if (topDone && bottomDone) {
-        untangleDone = true;
-      }
-      
+      moveBottom(targets);
+      visualizeBottom(targets);
       break;
       
     case LINE:

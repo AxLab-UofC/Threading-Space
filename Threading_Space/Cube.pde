@@ -128,7 +128,12 @@ class Cube {
     
     if(!isActive) {
       isActive = true;
-      ledAll();
+      if (onFloor) {
+        led(id, 0, 255, 0, 0);
+      }
+      else {
+        led(id, 0, 0, 0, 255);
+      }
     }
   }
   

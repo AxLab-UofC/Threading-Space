@@ -97,11 +97,13 @@ class AnimManager {
     stop();
     add(new PathPlanSequence(animCircle(0)));
     currSeq = sequences.get(0);
+    guiState = GUImode.SCREENSAVER;
     animState = animatorMode.TOSCREENSAVER;
     start();
   }
   
   void stop() {
+    stopAll();
     status = moveStatus.NONE;
   }
   
@@ -141,7 +143,6 @@ class AnimManager {
             resetVariables();
             setupGUI();
             clear();
-            clear();
           }
         }
       } else {
@@ -175,7 +176,8 @@ class AnimManager {
         visualize(targets);
     }
     
-      if (animator.animState == animatorMode.INTERACTIVE)  { 
+      if (animator.animState == animatorMode.INTERACTIVE)  {
+        println("Interactive!");
         int[][][] targets;
         switch (realChoose) {
           case CYLINDER:
@@ -466,6 +468,7 @@ class SmoothSequence extends Sequence {
 class UntangleSequence extends Sequence {
   boolean update() {
     return untangleAnimation();
+    //return false;
   }
 }
 

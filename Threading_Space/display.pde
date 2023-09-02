@@ -95,7 +95,7 @@ void drawDisplay() {
 
           fill(toioTrackedStrokeCol[pairs[i].t.id/cubesPerHost]);
           textSize(30);
-          text("ID: " + pairs[i].t.id, -2 * toioCylinderR, 2 * toioCylinderH, 0);
+          text(pairs[i].t.id + ": " + pairs[i].t.battery + "%", -2 * toioCylinderR, 2 * toioCylinderH, 0);
           popMatrix();
           
 
@@ -149,7 +149,7 @@ void drawDisplay() {
 
           fill(toioTrackedStrokeCol[pairs[i].b.id/cubesPerHost]);
           textSize(30);
-          text("ID: " + pairs[i].b.id, -2 * toioCylinderR, -2 * toioCylinderH, 0);
+          text(pairs[i].b.id + ": " + pairs[i].b.battery + "%", -2 * toioCylinderR, -2 * toioCylinderH, 0);
 
           popMatrix();
           

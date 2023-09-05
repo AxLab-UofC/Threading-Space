@@ -83,11 +83,11 @@ void drawDisplay() {
         if (topActive) {
           if (cubes[i].isActive) {
             stroke(1);
-            line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+            line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, xmax - pairs[i].t.x, pairs[i].t.y, vert - 5);
           }
 
           pushMatrix();
-          translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+          translate(xmax - pairs[i].t.x, pairs[i].t.y, vert - 5);
           
           pushMatrix();
           translate(0, 10, -5);
@@ -108,7 +108,7 @@ void drawDisplay() {
       }
     } else {
       if (topActive) {
-        translate(pairs[i].t.x, ymax - pairs[i].t.y, vert - 5);
+        translate(xmax - pairs[i].t.x, pairs[i].t.y, vert - 5);
 
         rotate(pairs[i].t.theta * PI/180);
         //box(12, 12, 7);
@@ -186,7 +186,7 @@ void drawDisplay() {
         if (debugMode) {
           stroke(color(191+sin(i), 191+sin(i + (PI/4)), 191+sin(i + (PI/4))));
         }
-        line(pairs[i].t.x, ymax - pairs[i].t.y, vert - toioCylinderH/2, pairs[i].b.x, pairs[i].b.y, -vert+ toioCylinderH/2);
+        line(xmax - pairs[i].t.x, pairs[i].t.y, vert - toioCylinderH/2, pairs[i].b.x, pairs[i].b.y, -vert+ toioCylinderH/2);
       }
     }
 

@@ -91,7 +91,7 @@ int[][][] animWaveYCross() {
     int yOffsetInt = int(yOffset);
 
     int startX = (xmin/2) + (int)((xmax - xmin) * (((.8 * i)/pairs.length) + .2));
-    int startY = (ymax + ymin)/2; // Centered along y-axis
+    int startY = ymid; // Centered along y-axis
 
     targets[i][0][0] = startX;
     targets[i][0][1] = startY + yOffsetInt;

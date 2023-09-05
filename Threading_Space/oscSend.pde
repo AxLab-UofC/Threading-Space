@@ -134,7 +134,7 @@ void motorTarget(int cubeId, int mode, int x, int y, int theta){
   int actualcubeid = cubeId % cubesPerHost;
 
    if (!cubes[actualcubeid].onFloor) {
-    y = ymax - y;
+    x = xmax - x;
     theta = 360 - theta;
   }
 
@@ -154,7 +154,7 @@ void motorTarget(int cubeId, int control, int timeout, int mode, int maxspeed, i
   int actualcubeid = cubeId % cubesPerHost;
 
   if (!cubes[actualcubeid].onFloor) {
-    y = ymax - y;
+    x = xmax - x;
     theta = 360 - theta;
   }
 
@@ -182,8 +182,8 @@ void motorMultiTarget(int cubeId, int mode, int[][] targets) {
   msg.add(mode);
   for (int i = 0; i < targets.length; i++) {
     for (int j = 0; j < targets[i].length; j++) {
-      if (j == 1 && !cubes[actualcubeid].onFloor) { 
-        msg.add(ymax - targets[i][j]);
+      if (j == 0 && !cubes[actualcubeid].onFloor) { 
+        msg.add(xmax - targets[i][j]);
       } else {
         msg.add(targets[i][j]);
       }
@@ -212,8 +212,8 @@ void motorMultiTarget(int cubeId, int control, int timeout, int mode, int maxspe
   
   for (int i = 0; i < targets.length; i++) {
     for (int j = 0; j < targets[i].length; j++) {
-      if (j == 1 && !cubes[actualcubeid].onFloor) { 
-        msg.add(ymax - targets[i][j]);
+      if (j == 0 && !cubes[actualcubeid].onFloor) { 
+        msg.add(xmax - targets[i][j]);
       } else {
         msg.add(targets[i][j]);
       }

@@ -13,10 +13,10 @@ float b_offsetAngleSpeed =  0; //-0.05;
 float globalInnerAngleOffset=0;
 float globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-float globalt_radius = xmax * ((float) 3/9);
+float globalt_radius = max * ((float) 3/9);
 float t_radiusSpeed = 0.7;
 
-float globalb_radius = xmax * ((float) 3/9);
+float globalb_radius = max * ((float) 3/9);
 float b_radiusSpeed = -2;
 
 float t_inner_radius = 100;
@@ -48,10 +48,10 @@ void resetVariables() {
     globalInnerAngleOffset=0;
     globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-    globalt_radius = xmax * ((float) 3/ 9);
+    globalt_radius = max * ((float) 3/ 9);
     t_radiusSpeed = 0;
 
-    globalb_radius = xmax * ((float) 3/ 9);
+    globalb_radius = max * ((float) 3/ 9);
     b_radiusSpeed = 0;
 
     t_inner_radius = 100;
@@ -116,12 +116,12 @@ int[][][] animCylinderTwist() {
 
   for (int i = 0; i < nPairs; i++) {
     float newAngle = (angle * i) + globalAngleOffset;
-    targets[i][0][0] = int((xmax + xmin)/2 + globalt_radius*sin(newAngle + t_offsetAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + globalt_radius*cos(newAngle + t_offsetAngle)); //y
+    targets[i][0][0] = int(ymid + globalt_radius*sin(newAngle + t_offsetAngle)); //x
+    targets[i][0][1] = int(ymid + globalt_radius*cos(newAngle + t_offsetAngle)); //y
     targets[i][0][2] = int((360 * (newAngle + t_offsetAngle) / (2 * PI)) + 90); //theta
 
-    targets[i][1][0] = int((xmax + xmin)/2 + globalb_radius*sin(newAngle + b_offsetAngle)); //x
-    targets[i][1][1] = int((ymax + ymin)/2 + globalb_radius*cos(newAngle + b_offsetAngle)); //y
+    targets[i][1][0] = int(xmid+ globalb_radius*sin(newAngle + b_offsetAngle)); //x
+    targets[i][1][1] = int(ymid + globalb_radius*cos(newAngle + b_offsetAngle)); //y
     targets[i][1][2] = int((360 * (newAngle + b_offsetAngle) / (2 * PI)) + 90); //theta
   }
 
@@ -140,8 +140,8 @@ int[][][] animTwoCylinder() {
   globalAngleOffset += globalAngleOffsetSpeed * timeScale;
   globalInnerAngleOffset += globalInnerAngleOffsetSpeed * timeScale;
 
-  float outer_radius = (xmax * 3/9);
-  float inner_radius = (xmax * 2/9);
+  float outer_radius = (max * 3/9);
+  float inner_radius = (max * 2/9);
 
   int[][][] targets = new int[nPairs][2][3];
 
@@ -156,12 +156,12 @@ int[][][] animTwoCylinder() {
       newAngle = (angle * i) + globalAngleOffset + globalAngleOffset;
     }
 
-    targets[i][0][0] = int((xmax + xmin)/2 + r*sin(newAngle)); //x
-    targets[i][0][1] = int((ymax + ymin)/2 + r*cos(newAngle)); //y
+    targets[i][0][0] = int(xmid + r*sin(newAngle)); //x
+    targets[i][0][1] = int(ymid + r*cos(newAngle)); //y
     targets[i][0][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
 
-    targets[i][1][0] = int((xmax + xmin)/2 + r*sin(newAngle)); //x
-    targets[i][1][1] = int((ymax + ymin)/2 + r*cos(newAngle)); //y
+    targets[i][1][0] = int(xmid + r*sin(newAngle)); //x
+    targets[i][1][1] = int(ymid + r*cos(newAngle)); //y
     targets[i][1][2] = int((360 * (newAngle) / (2 * PI)) + 90); //theta
   }
 

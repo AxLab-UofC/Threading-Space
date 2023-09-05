@@ -10,20 +10,20 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 12;
-int nPairs = 6;
-int cubesPerHost = 6;
+int nCubes = 16;
+int nPairs = 8;
+int cubesPerHost = 8;
 int maxMotorSpeed = 115;
 
 int lastpressed;
 boolean globalLoading; 
 
 //server ids
-String[] hosts = {"127.0.0.1","169.254.0.2"};
+String[] hosts = {"127.0.0.1","169.254.117.235"};
 
 
 //For testing on small mat
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -40,7 +40,10 @@ PairVisual[] pairsViz;
 int xmin = 34;
 int ymin = 35;
 int xmax = 949;
-int ymax = 898;
+int ymax = 467;
+int max = min(ymax,xmax);
+
+float yxScale = (float)(ymax - ymin) / (xmax - xmin);
 int vert = 500;
 
 
@@ -110,18 +113,20 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    xmin = 45;
-    ymin = 45;
-    xmax = 455;
-    ymax = 455;
+    //xmin = 45;
+    //ymin = 45;
+    //xmax = 455;
+    //ymax = 455;
+    //max = min(ymax,xmax);
+    //yxScale = (ymax - ymin) / (xmax - xmin);
 
-    num_x = 10;
-    num_y = 10;
-    x_size = 450;
-    y_size = 450;
+    //num_x = 10;
+    //num_y = 10;
+    //x_size = 450;
+    //y_size = 450;
 
-    xmid = (int) (xmax + xmin)/2;
-    ymid = (int) (ymax + ymin)/2;
+    //xmid = (int) (xmax + xmin)/2;
+    //ymid = (int) (ymax + ymin)/2;
 
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
@@ -157,7 +162,7 @@ void setup() {
 
   animator = new AnimManager();
   screensaver();
-  animator.setViz();
+  //animator.setViz();
   //animator.start();
 }
 
@@ -188,7 +193,7 @@ void draw() {
 
 
   if (debugMode) {
-    int debugUIx = width -350;
+    int debugUIx = width - 350;
     int debugUIy = 50;
     textFont(debugfont, 24);
     textSize(24);
@@ -198,24 +203,25 @@ void draw() {
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
 
-    text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+    text("TIME LAST PRESSED: " + (int)((millis() - lastpressed) / 1000), debugUIx, debugUIy+90);
+    text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+120);
     if (animator.size() > 0 && animator.getCurrentSeq() != null) {
       Sequence currSeq = animator.getCurrentSeq();
       if (animator.untangling) {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, debugUIy+120);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": UNTANGLING", debugUIx, debugUIy+150);
       } else {
-        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, debugUIy+120);
+        text("Sequence " + (animator.iterator + 1) + "/" + animator.size() + ": "+ currSeq.status, debugUIx, debugUIy+150);
       }
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
-        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.status, debugUIx, debugUIy+150);
+        text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.status, debugUIx, debugUIy+180);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
-          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
+          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+120);
         }
       } else if (currSeq instanceof SmoothSequence) {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
-        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+150);
+        text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+180);
       }
     }
   }
@@ -223,9 +229,9 @@ void draw() {
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
-  if ((millis() - lastpressed) > 20000000) {
-    guiState = GUImode.SCREENSAVER;
-    setupGUI();
+  if ((millis() - lastpressed) > 150000) {
+    lastpressed = millis();
+    animator.startScreensaver();
   }
 }
 
@@ -234,12 +240,14 @@ void draw() {
 public void controlEvent(ControlEvent theEvent) {
   switch (theEvent.getController().getId()) {
     case 0:
+      lastpressed = millis();
       guiState = GUImode.SELECT;
       animator.setViz(false);
       setupGUI();
       break;
 
     case 1:
+      lastpressed = millis();
       guiChoose = animChoose.LINE;
       myLineColor = dark;
       myCylinderColor = light;
@@ -248,6 +256,7 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 2:
+      lastpressed = millis();
       guiChoose = animChoose.CYLINDER;
       myLineColor = light;
       myCylinderColor = dark;
@@ -256,14 +265,16 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 3:
-     guiChoose = animChoose.WAVE;      
-     myLineColor = light;
+      lastpressed = millis();
+      guiChoose = animChoose.WAVE;      
+      myLineColor = light;
       myCylinderColor = light;
       myWaveColor = dark;
       setupGUI();
       break;
 
     case 4:
+      lastpressed = millis();
       if (guiChoose != animChoose.LINE) {
         guiState = GUImode.SELECT;
         guiChoose = animChoose.LINE;
@@ -276,6 +287,7 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 5:
+      lastpressed = millis();
       if (guiChoose != animChoose.CYLINDER) {
         guiState = GUImode.SELECT;
         guiChoose = animChoose.CYLINDER;
@@ -284,10 +296,10 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = light;
         setupGUI();
       }
-      lastpressed = millis();
       break;
 
     case 6:
+      lastpressed = millis();
       if (guiChoose == animChoose.CYLINDER) {
         myLineColor = light;
         myCylinderColor = dark;
@@ -305,12 +317,11 @@ public void controlEvent(ControlEvent theEvent) {
       globalLoading = true; 
       setupGUI(); //<>//
       animator.startInteractive(); //<>//
-      setupGUI(); 
-      lastpressed = millis();
-
+      setupGUI();
       break;
 
       case 7:
+      lastpressed = millis();
        if (guiChoose != animChoose.WAVE) { //<>//
        guiState = GUImode.SELECT; //<>//
         guiChoose = animChoose.WAVE;    
@@ -319,7 +330,6 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = dark;
         setupGUI();
       }
-      lastpressed = millis();
       break; //<>//
       
       case 10:

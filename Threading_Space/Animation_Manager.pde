@@ -230,8 +230,8 @@ class AnimManager {
             guiState = GUImode.SCREENSAVER;
             resetVariables();
             setupGUI();
-            //setViz(true);
-            //setLoop(true);
+            setViz(true);
+            setLoop(true);
           }
           else if (animState == animatorMode.TOINTERACTIVE) {
             animState = animatorMode.INTERACTIVE;
@@ -573,7 +573,6 @@ class DiscreteSequence extends Sequence {
   }
   
   boolean update(){
-    if (frames.size() == 0) return true;
     boolean frameComplete = frames.get(iterator).update();
       if (frameComplete) {
         if (iterator + 1 == frames.size()) {
@@ -614,10 +613,7 @@ class PathPlanSequence extends DiscreteSequence {
   void start() {
     if (frames.size() == 0) {
       frames = planPath(finalTargets);
-    }
-    if (frames.size() == 0) {
-      return;
-    }
+    } 
     
     frames.get(iterator).execute();
     status = moveStatus.INPROGRESS;

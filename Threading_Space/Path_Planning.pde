@@ -128,7 +128,6 @@ ArrayList<Frame> runPlanner() {
   String[][] x_y = new String[num_agents][];
   /**/  ArrayList<Integer[]>[] toio_locs = new ArrayList[num_agents]; // Array of Arraylists (one for each toio) of 1x3 Integer Arrays encoding positions (x, y, theta).
   for (int i = 0; i < paths.length; i++) {
-    x_y[i] = null;
     x_y[i] = paths[i].split(",0 ", 0);
   }
 
@@ -136,11 +135,6 @@ ArrayList<Frame> runPlanner() {
     /**/    toio_locs[i] = new ArrayList<Integer[]>();
     Integer prev_pos[] = new Integer[]{-1, -1, -1};
 
-    if (x_y[i] == null) {
-      ArrayList<Frame> frames = new ArrayList<Frame>();
-      return frames;
-    };
-    
     for (int j = 0; j < x_y[i].length + 1; j++) {
       if (j == x_y[i].length) {
         toio_locs[i].add(prev_pos.clone());

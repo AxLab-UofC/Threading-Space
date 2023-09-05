@@ -143,7 +143,7 @@ void stopAll() {
 
 int[][][] pairCheck() {
   float angle = (2 * PI) / nPairs;
-  float radius = (max * 3) / 9;
+  float radius = (xmax * 3) / 9;
   
   int[][][] targets = new int[nPairs][2][3];
   

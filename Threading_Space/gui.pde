@@ -2,6 +2,8 @@ enum animChoose {
   CYLINDER, LINE, WAVE
 }
 
+Textfield LED; 
+
 int myLineColor = color(150,150,150);
 int myCylinderColor = color(150,150,150);
 int myWaveColor = color(150,150,150);
@@ -48,6 +50,9 @@ void setupGUI() {
         .setPosition(width/2 - 100,height * 9/10)
         .setSize(200,50)
         .setFont(buttonfont)
+        .setColorBackground(color(100,100,100))
+        .setColorActive(dark)
+        .setColorForeground(dark)
         .setId(0);
       break;
     
@@ -206,63 +211,55 @@ void setupGUI() {
   }
   
   if (debugMode) {
+   
     
         cp5.addButton("LED ON/OFF")
         .setValue(100)
         .setPosition(width - 300,guiY +(5*guioffset))
         .setSize(200,50)
-        .setColorBackground(light)
-        .setColorForeground(light)
+        .setColorBackground(toggle_)
+        .setColorForeground(toggle_)
         .setFont(buttonfont)
-        .setId(10);
+        .setId(10); 
         
-        cp5.addTextfield("LED input")
+        LED = cp5.addTextfield("LED")
           .setPosition(width - 290,guiY +(6.5*guioffset))
          .setSize(80, 40)
          .setFont(buttonfont)
-         .setColor(dark)
+         .setColor(light)
          .setAutoClear(true)
          .setId(11);
-         
-         
-          cp5.addBang("Submit1")
+          
+          cp5.addBang("Enter1")
           .setPosition(width - 190,guiY +(6.5*guioffset))
           .setSize(80, 40)
           .setColorForeground(dark)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
              
              
-           cp5.addTextfield("swap 1")
+           cp5.addTextfield("swap1")
             .setPosition(width - 390,guiY +(8*guioffset))
            .setSize(80, 40)
            .setFont(buttonfont)
            .setColorValue(color(255,255,255))
-           .setColor(dark)
+           .setColor(light)
            .setAutoClear(true)
            .setId(12);
          
-           cp5.addTextfield("swap 2")
+           cp5.addTextfield("swap2")
           .setPosition(width - 290,guiY +(8*guioffset))
          .setSize(80, 40)
          .setFont(buttonfont)
-         .setColor(dark)
+         .setColor(light)
          .setAutoClear(true)
          .setId(13);
          
-           cp5.addBang("Submit2")
+           cp5.addBang("Enter2")
           .setPosition(width - 190,guiY +(8*guioffset))
           .setSize(80, 40)
           .setColorForeground(dark)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
-              
-          text(cp5.get(Textfield.class, "LED input").getText(), 360, 130);
-          text(" ", 360, 180);
-          
-          //text(cp5.get(Textfield.class, "swap 1").getText(), 360, 130);
-          //text(" ", 360, 180);
-          
-          //text(cp5.get(Textfield.class, "swap2").getText(), 360, 130);
-          //text(" ", 360, 180);
+             
               
   }
     

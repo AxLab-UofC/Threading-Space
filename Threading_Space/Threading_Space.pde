@@ -76,6 +76,7 @@ PFont buttonfont;
 
 color dark = color(100,100,100);
 color light = color(150,150,150); 
+color toggle_ = color(150,150,150);
 
 boolean debugtoggle = false; 
 
@@ -218,6 +219,7 @@ void draw() {
       }
     }
   }
+      
   cp5.draw();
   cam.endHUD();
   //END DO NOT EDIT
@@ -321,15 +323,21 @@ public void controlEvent(ControlEvent theEvent) {
       break; //<>//
       
       case 10:
-      // add code here for LED on and off
+      ledToggle(); 
+      if (ledOn) {
+        toggle_ = color(100,100,100);
+      } else {
+        toggle_ = color(150,150,150); 
+      }
+      setupGUI(); 
       break;
       
       case 11:
-      //LED 
+      //led(int); 
       //println("controlEvent: accessing a string from controller '"+theEvent.getName()+"': "+theEvent.getStringValue());
       break; 
       
-      case 12: 
+      case 12:  //<>//
       //swap 1 //<>//
       break;
       
@@ -365,13 +373,20 @@ class CircularButton implements ControllerView<Button> {
     
     translate(x, y);
     theButton.getCaptionLabel().draw(theApplet);
-    
     theApplet.popMatrix();
   }
 }
 
-
-public void input(String theText) {
-  // automatically receives results from controller input
-  println("a textfield event for controller 'input' : "+theText);
-}
+    public void Enter1(){   
+      String tempAns = cp5.get(Textfield.class,"LED").getText();
+      println("led"+tempAns);
+      led(Integer.parseInt(tempAns)); 
+    } 
+    
+    public void Enter2() {
+      String tempAns1 = cp5.get(Textfield.class,"swap1").getText();
+      String tempAns2 = cp5.get(Textfield.class,"swap2").getText();  
+      println("swap"+tempAns1+ " "+ tempAns2);
+      swap(Integer.parseInt(tempAns1),Integer.parseInt(tempAns2)); 
+    } 
+    

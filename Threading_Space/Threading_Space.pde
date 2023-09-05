@@ -353,16 +353,16 @@ class CircularButton implements ControllerView<Button> {
 
   public void display(PGraphics theApplet, Button theButton) {
     theApplet.pushMatrix();
-    theApplet.noFill();
+    //theApplet.setValueColor(color(0,0,0));
     theApplet.strokeWeight(3);
     if (theButton.isInside()) {
       if (theButton.isPressed()) { // button is pressed
         theApplet.stroke(color(0, 0, 0, 100));
       }  else { // mouse hovers the button
-        theApplet.stroke(color(0, 0, 0, 100));
+        theApplet.stroke(color(0, 0,0, 100));
       }
     } else { // the mouse is located outside the button area
-      theApplet.stroke(color(250,250, 250, 100));
+      theApplet.stroke(color(50,50,50, 100));
     }
     
     theApplet.ellipse(0, 0, theButton.getWidth(), theButton.getHeight());
@@ -372,6 +372,7 @@ class CircularButton implements ControllerView<Button> {
     int y = 10;
     
     translate(x, y);
+     theButton.getCaptionLabel().setColor(color(0,0,0));
     theButton.getCaptionLabel().draw(theApplet);
     theApplet.popMatrix();
   }

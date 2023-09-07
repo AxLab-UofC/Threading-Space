@@ -419,8 +419,8 @@ class SmoothSequence extends Sequence {
       untangleSeq = new SmoothSequence(type, (float t) -> func.get(timeElapsed - t));
     }
     
-    untangleSeq.setPeriod(period/2);
-    untangleSeq.setTimeLimit((float) currTime/2000);
+    untangleSeq.setPeriod(period);
+    untangleSeq.setTimeLimit((float) currTime/1000);
     untangleSeq.setViz(viz);
     
     return untangleSeq;
@@ -429,7 +429,6 @@ class SmoothSequence extends Sequence {
   boolean update() {
     currTime = millis() - startTime;
     switch (type) {
-      
       case TOP:
         targets = func.get((float) currTime/(period * 1000));
         for (int i = 0; i < targets.length; i++) {
@@ -648,35 +647,32 @@ class Frame {
   
   void execute() {
     status = moveStatus.INPROGRESS;
-    switch(type) {
-      case PAIR:
-        for (int i = 0; i < targets.length; i++) {
-          pairs[i].target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
-          if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
-        }
-        break;
-      
+    switch (type) {
       case TOP:
         for (int i = 0; i < targets.length; i++) {
-          pairs[i].t.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+          pairs[i].t.velocityTarget(targets[i][0], targets[i][1]);
           if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
         }
         break;
-      
+        
       case BOTTOM:
         for (int i = 0; i < targets.length; i++) {
-          pairs[i].b.target(0, 5, 0, speed, 0, targets[i][0], targets[i][1], targets[i][2]);
+          pairs[i].b.velocityTarget(targets[i][0], targets[i][1]);
           if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
         }
-        break;
+      break;
+      
+      case PAIR:
+        for (int i = 0; i < targets.length; i++) {
+          pairs[i].velocityTarget(targets[i][0], targets[i][1]);
+          if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
+        }
+      break;
       
       case INDEPENDENT:
-        for (int i = 0; i < indieTargets.length; i++) {
-          pairs[i].t.target(0, 5, 0, speed, 0, indieTargets[i][0][0], indieTargets[i][0][1], indieTargets[i][0][2]);
-          pairs[i].b.target(0, 5, 0, speed, 0, indieTargets[i][1][0], indieTargets[i][1][1], indieTargets[i][1][2]);
-        }
-        visualize(indieTargets);
-        break;
+        movePairsVelocity(indieTargets);
+        if (viz) visualize(indieTargets);
+      break;
     }
   }
   
@@ -685,92 +681,34 @@ class Frame {
   }
   
   boolean update() {
-    moveStatus tempStatus = moveStatus.COMPLETE;
-    for (int i = 0; i < pairs.length; i++) {
+    boolean complete = false;
       switch (type) {
-        case PAIR:
-          if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
-            tempStatus = moveStatus.INPROGRESS;
-          } 
-          
-          if (pairs[i].t.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].t.id, 255, 5);
-            pairs[i].t.status = moveStatus.NONE;
-          } else if (pairs[i].t.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
-            if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
-          }
-          
-          if (pairs[i].b.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].b.id, 255, 5);
-            pairs[i].b.status = moveStatus.NONE;
-          } else if (pairs[i].b.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
-            if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
-          }
-          break;
-          
         case TOP:
-        if (viz) visualizeTop(targets);
-          if (pairs[i].t.status == moveStatus.INPROGRESS) {
-            tempStatus = moveStatus.INPROGRESS;
-          } else if (pairs[i].t.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].t.id, 255, 5);
-            pairs[i].t.status = moveStatus.NONE;
-          } else if (pairs[i].t.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+          for (int i = 0; i < targets.length; i++) {
+            pairs[i].t.velocityTarget(targets[i][0], targets[i][1]);
             if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
           }
           break;
+          
         case BOTTOM:
-          if (viz) visualizeBottom(targets);
-          if (pairs[i].b.status == moveStatus.INPROGRESS) {
-            tempStatus = moveStatus.INPROGRESS;
-          } else if (pairs[i].b.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].b.id, 255, 5);
-            pairs[i].b.status = moveStatus.NONE;
-          } else if (pairs[i].b.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
+          for (int i = 0; i < targets.length; i++) {
+            pairs[i].b.velocityTarget(targets[i][0], targets[i][1]);
             if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
           }
-          break;
+        break;
+        
+        case PAIR:
+          for (int i = 0; i < targets.length; i++) {
+            pairs[i].velocityTarget(targets[i][0], targets[i][1]);
+            if (viz) pairsViz[i].target(targets[i][0], targets[i][1], targets[i][2]);
+          }
+        break;
+        
         case INDEPENDENT:
-        if (viz) visualize(targets);
-          if (pairs[i].t.status == moveStatus.INPROGRESS || pairs[i].b.status == moveStatus.INPROGRESS)  {
-            tempStatus = moveStatus.INPROGRESS;
-          } 
-          
-          if (pairs[i].t.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].t.id, 255, 5);
-            pairs[i].t.status = moveStatus.NONE;
-          } else if (pairs[i].t.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].t.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
-            if (viz) pairsViz[i].t.target(targets[i][0], targets[i][1], targets[i][2]);
-          }
-          
-          if (pairs[i].b.status == moveStatus.ERROR) {
-            tempStatus = moveStatus.INPROGRESS;
-            motorDuration(pairs[i].b.id, 255, 5);
-            pairs[i].b.status = moveStatus.NONE;
-          } else if (pairs[i].b.status == moveStatus.NONE) {
-            tempStatus = moveStatus.INPROGRESS;
-            pairs[i].b.target(0, 5, 0, speed, 2, targets[i][0], targets[i][1], targets[i][2]);
-            if (viz) pairsViz[i].b.target(targets[i][0], targets[i][1], targets[i][2]);
-          }
-          break;
+          movePairsVelocity(indieTargets);
+          if (viz) visualize(indieTargets);
+        break;
       }
-    }
-    status = tempStatus;
-    return (status == moveStatus.COMPLETE);
+    return complete;
   }
 }

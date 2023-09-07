@@ -1,7 +1,7 @@
 // Inputs for python file
 String DEBUG = "False";
 
-String command = "/Library/Developer/CommandLineTools/usr/bin/python3 ";
+String command = "/usr/local/opt/python@3.11/bin/python3.11 ";
 String plannerDirectory = ""; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";
@@ -128,12 +128,22 @@ ArrayList<Frame> runPlanner() {
   String[][] x_y = new String[num_agents][];
   /**/  ArrayList<Integer[]>[] toio_locs = new ArrayList[num_agents]; // Array of Arraylists (one for each toio) of 1x3 Integer Arrays encoding positions (x, y, theta).
   for (int i = 0; i < paths.length; i++) {
+    x_y[i] = null;
     x_y[i] = paths[i].split(",0 ", 0);
+  }
+  
+  if (x_y[0] == null) {
+    ArrayList<Frame> frames = new ArrayList<Frame>();
+    return frames;
   }
 
   for (int i = 0; i < num_agents; i++) {
     /**/    toio_locs[i] = new ArrayList<Integer[]>();
     Integer prev_pos[] = new Integer[]{-1, -1, -1};
+    
+    if (x_y[i] == null) {
+      continue;
+    }
 
     for (int j = 0; j < x_y[i].length + 1; j++) {
       if (j == x_y[i].length) {

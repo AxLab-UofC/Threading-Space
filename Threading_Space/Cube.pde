@@ -55,13 +55,13 @@ class Cube {
     id = i;
     lastUpdate = System.currentTimeMillis();
     isActive = false;
-    
   }
   
   void checkActive(long now) {
-    if (lastUpdate < now - 1500 && isActive) {
+    if (lastUpdate < now - 150) {
       isActive = false;
-      led(id, 0, 255, 255, 255);
+      //led(id, 0, 255, 255, 255);
+      motorDuration(id, -25, 25, 5);
     }
   }
   
@@ -87,16 +87,17 @@ class Cube {
     motorTarget(id, control, timeout, mode, maxspeed, speedchange, x, y, theta);
   }
   
-  void velocityTarget(int x, int y) {
+  boolean velocityTarget(int x, int y) {
     float elapsedTime = millis() - targetTime;
     float vx = (targetx - x) / elapsedTime;
     float vy = (targety - y) / elapsedTime;
     
-    motorTargetVelocity(id, x, y, vx, vy);
+    boolean val = motorTargetVelocity(id, x, y, vx, vy);
     
     targetx = x;
     targety = y;
     targetTime = millis();
+    return val;
   }
   
   void velocityTarget(int x, int y, float vx, float vy) {
@@ -121,8 +122,21 @@ class Cube {
   
     // Updates position values
   void positionUpdate(int upx, int upy, int uptheta) {    
-    x = upx;
-    y = upy;
+    boolean inMat1 = ((upx <= 339) && (upy <= 250));
+    boolean nearMat7 = ((y >= 359) && (x >= 187) && (x <= 797));
+    if (nearMat7) {
+      println("Near Mat 7");
+    }
+    
+    if (inMat1 && nearMat7) {
+      x = upx + 306;
+      y = upy + 432;
+      print("Swapping!");
+    } else {
+      x = upx;
+      y = upy;
+    }
+
     theta = uptheta; 
     lastUpdate = System.currentTimeMillis();
     

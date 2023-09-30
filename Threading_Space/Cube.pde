@@ -122,20 +122,8 @@ class Cube {
   
     // Updates position values
   void positionUpdate(int upx, int upy, int uptheta) {    
-    boolean inMat1 = ((upx <= 339) && (upy <= 250));
-    boolean nearMat7 = ((y >= 359) && (x >= 187) && (x <= 797));
-    if (nearMat7) {
-      println("Near Mat 7");
-    }
-    
-    if (inMat1 && nearMat7) {
-      x = upx + 306;
-      y = upy + 432;
-      print("Swapping!");
-    } else {
-      x = upx;
-      y = upy;
-    }
+    x = upx;
+    y = upy;
 
     theta = uptheta; 
     lastUpdate = System.currentTimeMillis();

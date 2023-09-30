@@ -10,8 +10,8 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 12;
-int nPairs = 6;
+int nCubes = 10;
+int nPairs = 5;
 int cubesPerHost = 12;
 int maxMotorSpeed = 115;
 
@@ -23,7 +23,7 @@ String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -39,8 +39,8 @@ PairVisual[] pairsViz;
 //for Threading Space Visualization
 int xmin = 34;
 int ymin = 35;
-int xmax = 949;
-int ymax = 898; //898;
+int xmax = 644;
+int ymax = 466; //898;
 int max = min(ymax,xmax);
 float xyScale = 1;
 int vert = 500;
@@ -112,15 +112,15 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    //xmin = 45;
-    //ymin = 45;
-    //xmax = 455;
-    //ymax = 455;
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
 
-    //num_x = 10;
-    //num_y = 10;
-    //x_size = 450;
-    //y_size = 450;
+    num_x = 10;
+    num_y = 10;
+    x_size = 450;
+    y_size = 450;
 
     max = min(ymax,xmax);
     xmid = (int) (xmax + xmin)/2;

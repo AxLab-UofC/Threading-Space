@@ -134,7 +134,7 @@ void motorTarget(int cubeId, int mode, int x, int y, int theta){
   int actualcubeid = cubeId % cubesPerHost;
 
    if (!cubes[actualcubeid].onFloor) {
-    y = ymax - y;
+    x = xmax - x + xmin;;
     theta = 360 - theta;
   }
 
@@ -154,7 +154,7 @@ void motorTarget(int cubeId, int control, int timeout, int mode, int maxspeed, i
   int actualcubeid = cubeId % cubesPerHost;
 
   if (!cubes[actualcubeid].onFloor) {
-    y = ymax - y;
+    x = xmax - x + xmin;;
     theta = 360 - theta;
   }
 

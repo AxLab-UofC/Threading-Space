@@ -1,7 +1,7 @@
 boolean motorTargetVelocity(int id, int x, int y, float vx, float vy) {
   
   if (!cubes[id].onFloor) {
-    x = xmax - x;
+    x = xmax - x + xmin;
     vy = -vx;
   }
 
@@ -71,7 +71,7 @@ boolean motorTargetVelocity(int id, int x, int y, float vx, float vy) {
 
     float dd = cubes[id].distance(x, y)/50.0;
     dd = min(dd, 1);
-    //if (dd <.50) return true; // keep the motor moving
+    //if (dd <.15) return true; // keep the motor moving
 
 
     float left_ = constrain(aa + (lr[0]*dd), -maxMotorSpeed, maxMotorSpeed);

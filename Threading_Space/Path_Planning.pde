@@ -196,11 +196,12 @@ ArrayList<Frame> runPlanner() {
       planned_path[i] = Arrays.asList(temp).stream().mapToInt(Integer::intValue).toArray();
     }
     if (!done) {
-      if (testMode) {
-        frames.add(new Frame(moveType.BOTTOM, planned_path));
-      } else {
-        frames.add(new Frame(moveType.PAIR, planned_path));
-      }
+      frames.add(new Frame(moveType.PAIR, planned_path));
+      //if (testMode) {
+      //  frames.add(new Frame(moveType.BOTTOM, planned_path));
+      //} else {
+      //  frames.add(new Frame(moveType.PAIR, planned_path));
+      //}
     }
   }
   return frames;

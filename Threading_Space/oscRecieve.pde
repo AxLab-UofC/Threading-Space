@@ -10,7 +10,6 @@ int hostIndex(String host) {
 void oscEvent(OscMessage msg) {
   int hostId = hostIndex(msg.address( ).substring(1));
   int id = (cubesPerHost * hostId) + msg.get(1).intValue();
-  //println(msg.address( ).substring(1) , id, msg.addrPattern());
   
   if (msg.checkAddrPattern("/position")) {
     //this collects position information 

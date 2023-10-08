@@ -53,23 +53,23 @@ class Pair {
   }
 }
 
-void moveTargets(int[][] spots) {
-   for (int i = 0; i < spots.length; i++) {
-    motorTarget(i, 0, spots[i][0], spots[i][1], spots[i][2]);
-  }
-}
+//void moveTargets(int[][] spots) {
+//   for (int i = 0; i < spots.length; i++) {
+//    motorTarget(i, 0, spots[i][0], spots[i][1], spots[i][2]);
+//  }
+//}
 
-void moveTargets(float[][] spots) {
-   for (int i = 0; i < spots.length; i++) {
-    motorTarget(i, 0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
-  }
-}
+//void moveTargets(float[][] spots) {
+//   for (int i = 0; i < spots.length; i++) {
+//    motorTarget(i, 0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
+//  }
+//}
 
-void multiMovePairs(int[][] spots) {
-   for(int i = 0;i < spots.length; i++) {
-    pairs[i].multiTarget(0, spots);
-  }
-}
+//void multiMovePairs(int[][] spots) {
+//   for(int i = 0;i < spots.length; i++) {
+//    pairs[i].multiTarget(0, spots);
+//  }
+//}
 
 void movePairs(int[][][] spots) {
   for(int i = 0;i < spots.length; i++) {
@@ -101,37 +101,37 @@ void movePairsVelocity(int[][][] targets) {
 }
 
 
-void movePairs(float[][] spots) {
-  for(int i = 0;i < spots.length; i++) {
-    pairs[i].target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
-  }
-}
+//void movePairs(float[][] spots) {
+//  for(int i = 0;i < spots.length; i++) {
+//    pairs[i].target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
+//  }
+//}
 
 
-void moveTop(int[][] spots) {
-  for(int i = 0;i < spots.length; i++) {
-    pairs[i].t.target(0, spots[i][0], spots[i][1], spots[i][2]);
-  }
-}
+//void moveTop(int[][] spots) {
+//  for(int i = 0;i < spots.length; i++) {
+//    pairs[i].t.target(0, spots[i][0], spots[i][1], spots[i][2]);
+//  }
+//}
 
-void moveTop(float[][] spots) {
-  for(int i = 0;i < spots.length; i++) {
-    pairs[i].t.target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
-  }
-}
+//void moveTop(float[][] spots) {
+//  for(int i = 0;i < spots.length; i++) {
+//    pairs[i].t.target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
+//  }
+//}
 
-void moveBottom(int[][] spots) {
-  for(int i = 0;i < spots.length; i++) {
-    pairs[i].b.target(0, spots[i][0], spots[i][1], spots[i][2]);
-  }
-}
+//void moveBottom(int[][] spots) {
+//  for(int i = 0;i < spots.length; i++) {
+//    pairs[i].b.target(0, spots[i][0], spots[i][1], spots[i][2]);
+//  }
+//}
 
-void moveBottom(float[][] spots) {
-  for(int i = 0;i < spots.length; i++) {
-    pairs[i].b.target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
+//void moveBottom(float[][] spots) {
+//  for(int i = 0;i < spots.length; i++) {
+//    pairs[i].b.target(0, int(spots[i][0]), int(spots[i][1]), int(spots[i][2]));
     
-  }
-}
+//  }
+//}
 
 void stopAll() {
    for (int i = 0; i < cubes.length; i++) {

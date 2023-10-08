@@ -10,16 +10,17 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 10;
-int nPairs = 5;
-int cubesPerHost = 12;
+
+int nPairs = 8;
+int nCubes = nPairs * 2;
+int cubesPerHost = nPairs;
 int maxMotorSpeed = 115;
 
 int lastpressed;
 boolean globalLoading; 
 
 //server ids
-String[] hosts = {"127.0.0.1","169.254.0.2"};
+String[] hosts = {"127.0.0.1","169.254.249.26"};
 
 
 //For testing on small mat
@@ -39,8 +40,8 @@ PairVisual[] pairsViz;
 //for Threading Space Visualization
 int xmin = 34;
 int ymin = 35;
-int xmax = 644;
-int ymax = 466; //898;
+int xmax = 949;
+int ymax = 898;
 int max = min(ymax,xmax);
 float xyScale = 1;
 int vert = 500;
@@ -112,15 +113,15 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    xmin = 45;
-    ymin = 45;
-    xmax = 455;
-    ymax = 455;
+    //xmin = 45;
+    //ymin = 45;
+    //xmax = 455;
+    //ymax = 455;
 
-    num_x = 10;
-    num_y = 10;
-    x_size = 450;
-    y_size = 450;
+    //num_x = 10;
+    //num_y = 10;
+    //x_size = 450;
+    //y_size = 450;
 
     max = min(ymax,xmax);
     xmid = (int) (xmax + xmin)/2;
@@ -128,12 +129,12 @@ void setup() {
 
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i + nPairs, i); //For Laptop-TOIO
+      pairs[i] = new Pair(nPairs + i, i); //For Laptop-TOIO
     }
   } else {
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
+      pairs[i] = new Pair(i, nPairs + i); //For Laptop-TOIO
     }
   }
 
@@ -305,16 +306,16 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = dark;
       }
       realChoose = guiChoose;
-      globalLoading = true; 
-      setupGUI(); //<>// //<>//
+      globalLoading = true;  //<>//
+      setupGUI(); //<>// //<>// //<>//
       animator.startInteractive(); //<>// //<>//
       setupGUI(); 
       lastpressed = millis();
 
       break;
 
-      case 7:
-       if (guiChoose != animChoose.WAVE) { //<>// //<>//
+      case 7: //<>//
+       if (guiChoose != animChoose.WAVE) { //<>// //<>// //<>//
        guiState = GUImode.SELECT; //<>// //<>//
         guiChoose = animChoose.WAVE;    
         myLineColor = light;
@@ -322,7 +323,7 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = dark;
         setupGUI();
       }
-      lastpressed = millis();
+      lastpressed = millis(); //<>//
       break; //<>// //<>//
       
       case 10:
@@ -334,21 +335,21 @@ public void controlEvent(ControlEvent theEvent) {
       }
       setupGUI(); 
       break;
-      
+       //<>//
       case 11: //<>//
       //led(int); 
       //println("controlEvent: accessing a string from controller '"+theEvent.getName()+"': "+theEvent.getStringValue());
       break; 
-      
-      case 12:  //<>//
+       //<>//
+      case 12:  //<>// //<>//
       //swap 1 //<>// //<>//
-      break;
+      break; //<>//
        //<>//
       case 13:
       //swap 2
-      break; 
+      break;  //<>//
       //<>//
-      
+       //<>//
   } //<>//
 }
 

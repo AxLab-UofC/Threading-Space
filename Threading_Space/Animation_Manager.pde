@@ -367,7 +367,7 @@ class SmoothSequence extends Sequence {
   int startTime;
   int currTime;
   float timeLimit = 20;
-  int period = 10;
+  float period = 10;
   
   int[][] targets;
   int[][][] indieTargets;
@@ -406,7 +406,7 @@ class SmoothSequence extends Sequence {
     timeLimit = limit;
   }
   
-  void setPeriod(int newPeriod) {
+  void setPeriod(float newPeriod) {
     period = newPeriod;
   }
   

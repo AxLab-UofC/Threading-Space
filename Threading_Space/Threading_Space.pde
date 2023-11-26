@@ -20,7 +20,7 @@ int lastpressed;
 boolean globalLoading; 
 
 //server ids
-String[] hosts = {"127.0.0.1","169.254.0.2"};
+String[] hosts = {"127.0.0.1","169.254.249.26"};
 
 
 //For testing on small mat
@@ -40,8 +40,8 @@ PairVisual[] pairsViz;
 //for Threading Space Visualization
 int xmin = 34;
 int ymin = 35;
-int xmax = 644;
-int ymax = 466; //898;
+int xmax = 949;
+int ymax = 898;
 int max = min(ymax,xmax);
 float xyScale = 1;
 int vert = 500;
@@ -306,8 +306,8 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = dark;
       }
       realChoose = guiChoose;
-      globalLoading = true; 
-      setupGUI(); //<>// //<>//
+      globalLoading = true;  //<>//
+      setupGUI(); //<>// //<>// //<>//
       animator.startInteractive(); //<>// //<>//
       setupGUI(); 
       lastpressed = millis();
@@ -315,8 +315,8 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
       case 7:
-       if (guiChoose != animChoose.WAVE) { //<>// //<>//
-       guiState = GUImode.SELECT; //<>// //<>//
+       if (guiChoose != animChoose.WAVE) {
+       guiState = GUImode.SELECT;
         guiChoose = animChoose.WAVE;    
         myLineColor = light;
         myCylinderColor = light;
@@ -324,7 +324,7 @@ public void controlEvent(ControlEvent theEvent) {
         setupGUI();
       }
       lastpressed = millis();
-      break; //<>// //<>//
+      break;
       
       case 10:
       ledToggle(); 
@@ -336,20 +336,20 @@ public void controlEvent(ControlEvent theEvent) {
       setupGUI(); 
       break;
       
-      case 11: //<>//
+      case 11: 
       //led(int); 
       //println("controlEvent: accessing a string from controller '"+theEvent.getName()+"': "+theEvent.getStringValue());
       break; 
-      
-      case 12:  //<>//
-      //swap 1 //<>// //<>//
+       //<>//
+      case 12:
+
       break;
        //<>//
       case 13:
       //swap 2
-      break; 
+      break;  //<>//
       //<>//
-      
+       //<>//
   } //<>//
 }
 

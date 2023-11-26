@@ -148,7 +148,7 @@ void setupGUI() {
             .setPosition(guiX+230, guiYadj+(2*guioffset))
             .setSize(200, 30)
             .setRange(-1, 1)
-            .setValue(0)
+            .setValue(0.35)
             .setCaptionLabel("Total Speed")
             .setValue(globalAngleOffsetSpeed);
         
@@ -156,7 +156,7 @@ void setupGUI() {
             .setPosition(guiX+230, guiYadj+(3*guioffset))
             .setSize(200, 30)
             .setRange(-1, 1)
-            .setValue(0)
+            .setValue(0.35)
             .setCaptionLabel("Top Speed")
             .setValue(t_offsetAngleSpeed);
         
@@ -164,7 +164,7 @@ void setupGUI() {
             .setPosition(guiX+230, guiYadj+(4*guioffset))
             .setSize(200, 30)
             .setRange(-1, 1)
-            .setValue(0)
+            .setValue(0.35)
             .setCaptionLabel("Bottom Speed")
             .setValue(b_offsetAngleSpeed);
         
@@ -174,7 +174,7 @@ void setupGUI() {
             .setRange(100, 300)
             .setValue(200)
             .setCaptionLabel("Top Radius")
-            .setValue(globalt_radius);
+            .setValue(max*0.33);
             
           cp5.addSlider("globalb_radius")
             .setPosition(guiX+230, guiYadj+(6*guioffset))
@@ -189,20 +189,20 @@ void setupGUI() {
           cp5.addSlider("globalAngleOffsetSpeed")
             .setPosition(guiX+230, guiYadj+(3*guioffset))
             .setSize(200, 30)
-            .setRange(0, 1)
-            .setValue(0.5)
+            .setRange(0, 0.5)
+            .setValue(0.25)
             .setCaptionLabel("Speed")
             .setValue(globalAngleOffsetSpeed);
           break;
           
           case WAVE: 
-           cp5.addSlider("globalLineOffset")
+           cp5.addSlider("globalAmplitude")
             .setPosition(guiX+230, guiYadj+(4*guioffset))
             .setSize(200, 30)
-            .setRange(0, 100)
-            .setValue(50)
-            .setCaptionLabel("Speed")
-            .setValue(globalLineOffset);
+            .setRange(60, 120)
+            .setValue(80)
+            .setCaptionLabel("Amplitude")
+            .setValue(globalAmplitude);
           break;
       }
      }

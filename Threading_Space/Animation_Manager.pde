@@ -367,7 +367,7 @@ class SmoothSequence extends Sequence {
   int startTime;
   int currTime;
   float timeLimit = 20;
-  int period = 10;
+  float period = 10;
   
   int[][] targets;
   int[][][] indieTargets;
@@ -406,7 +406,7 @@ class SmoothSequence extends Sequence {
     timeLimit = limit;
   }
   
-  void setPeriod(int newPeriod) {
+  void setPeriod(float newPeriod) {
     period = newPeriod;
   }
   
@@ -671,6 +671,7 @@ class Frame {
       
       case INDEPENDENT:
         for (int i = 0; i < indieTargets.length; i++) {
+          //paits[i].target(0,5,0,
           pairs[i].t.target(0, 5, 0, speed, 0, indieTargets[i][0][0], indieTargets[i][0][1], indieTargets[i][0][2]);
           pairs[i].b.target(0, 5, 0, speed, 0, indieTargets[i][1][0], indieTargets[i][1][1], indieTargets[i][1][2]);
         }

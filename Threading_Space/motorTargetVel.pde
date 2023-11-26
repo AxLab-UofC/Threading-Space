@@ -2,7 +2,7 @@ boolean motorTargetVelocity(int id, int x, int y, float vx, float vy) {
   
   if (!cubes[id].onFloor) {
     x = xmax - x + xmin;
-    vy = -vx;
+    vx = -vx;
   }
 
   if (cubes[id].isActive) {

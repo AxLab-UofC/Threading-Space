@@ -13,16 +13,16 @@ float b_offsetAngleSpeed =  0; //-0.05;
 float globalInnerAngleOffset=0;
 float globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-float globalt_radius = xmax * ((float) 3/9);
+float globalt_radius = max * ((float) 1.5/9);
 float t_radiusSpeed = 0.7;
 
-float globalb_radius = xmax * ((float) 3/9);
+float globalb_radius = max * ((float) 1.5/9);
 float b_radiusSpeed = -2;
 
-float t_inner_radius = 100;
-float t_outer_radius = 300;
-float b_inner_radius = 100;
-float b_outer_radius = 300;
+float t_inner_radius = max * ((float) 1/9);
+float t_outer_radius = max * ((float) 2/9);
+float b_inner_radius = max * ((float) 1/9);
+float b_outer_radius = max * ((float) 2/9);
 
 int lastMillis = 0;
 
@@ -54,10 +54,10 @@ void resetVariables() {
     globalb_radius = xmax * ((float) 3/ 9);
     b_radiusSpeed = 0;
 
-    t_inner_radius = 100;
-    t_outer_radius = 300;
-    b_inner_radius = 100;
-    b_outer_radius = 300;
+    t_inner_radius = max * ((float) 1/9);
+    t_outer_radius = max * ((float) 2/9);
+    b_inner_radius = max * ((float) 1/9);
+    b_outer_radius = max * ((float) 2/9);
 
     lastMillis = millis();
 

@@ -10,9 +10,10 @@ import java.util.*;
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nCubes = 10;
-int nPairs = 5;
-int cubesPerHost = 12;
+
+int nPairs = 6;
+int nCubes = nPairs * 2;
+int cubesPerHost = nPairs * 2;
 int maxMotorSpeed = 115;
 
 int lastpressed;
@@ -23,7 +24,7 @@ String[] hosts = {"127.0.0.1","169.254.0.2"};
 
 
 //For testing on small mat
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro

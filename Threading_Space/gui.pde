@@ -156,7 +156,7 @@ void setupGUI() {
             .setPosition(guiX+230, guiYadj+(3*guioffset))
             .setSize(200, 30)
             .setRange(-1, 1)
-            .setValue(0.35)
+            .setValue(0)
             .setCaptionLabel("Top Speed")
             .setValue(t_offsetAngleSpeed);
         
@@ -164,7 +164,7 @@ void setupGUI() {
             .setPosition(guiX+230, guiYadj+(4*guioffset))
             .setSize(200, 30)
             .setRange(-1, 1)
-            .setValue(0.35)
+            .setValue(0)
             .setCaptionLabel("Bottom Speed")
             .setValue(b_offsetAngleSpeed);
         
@@ -182,7 +182,7 @@ void setupGUI() {
             .setRange(100, 300)
             .setValue(200)
             .setCaptionLabel("Bottom Radius")
-            .setValue(globalb_radius);
+            .setValue(max*0.33);
           break;
         
         case LINE:

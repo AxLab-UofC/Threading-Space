@@ -1,4 +1,4 @@
-import peasy.PeasyCam;
+import peasy.PeasyCam; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -11,9 +11,9 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 
-int nPairs = 8;
+int nPairs = 5;
 int nCubes = nPairs * 2;
-int cubesPerHost = nPairs;
+int cubesPerHost = nPairs * 2;
 int maxMotorSpeed = 115;
 
 int lastpressed;
@@ -40,8 +40,8 @@ PairVisual[] pairsViz;
 //for Threading Space Visualization
 int xmin = 34;
 int ymin = 35;
-int xmax = 949;
-int ymax = 898;
+int xmax = 644;
+int ymax = 466;
 int max = min(ymax,xmax);
 float xyScale = 1;
 int vert = 500;
@@ -118,10 +118,10 @@ void setup() {
     //xmax = 455;
     //ymax = 455;
 
-    //num_x = 10;
-    //num_y = 10;
-    //x_size = 450;
-    //y_size = 450;
+    num_x = 10;
+    num_y = 10;
+    x_size = 450;
+    y_size = 450;
 
     max = min(ymax,xmax);
     xmid = (int) (xmax + xmin)/2;
@@ -129,12 +129,12 @@ void setup() {
 
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(nPairs + i, i); //For Laptop-TOIO
+      pairs[i] = new Pair(i + nPairs, i); //For Laptop-TOIO
     }
   } else {
     for (int i = 0; i < nPairs; i++) {
       pairsViz[i] = new PairVisual();
-      pairs[i] = new Pair(i, nPairs + i); //For Laptop-TOIO
+      pairs[i] = new Pair(i * 2, (i * 2) + 1); //For Laptop-TOIO
     }
   }
 
@@ -306,25 +306,25 @@ public void controlEvent(ControlEvent theEvent) {
         myWaveColor = dark;
       }
       realChoose = guiChoose;
-      globalLoading = true;  //<>//
-      setupGUI(); //<>// //<>// //<>//
-      animator.startInteractive(); //<>// //<>//
+      globalLoading = true; 
+      setupGUI(); //<>// //<>//
+      animator.startInteractive(); //<>//
       setupGUI(); 
       lastpressed = millis();
 
       break;
 
-      case 7: //<>//
-       if (guiChoose != animChoose.WAVE) { //<>// //<>// //<>//
-       guiState = GUImode.SELECT; //<>// //<>//
+      case 7:
+       if (guiChoose != animChoose.WAVE) {
+       guiState = GUImode.SELECT;
         guiChoose = animChoose.WAVE;    
         myLineColor = light;
         myCylinderColor = light;
         myWaveColor = dark;
         setupGUI();
       }
-      lastpressed = millis(); //<>//
-      break; //<>// //<>//
+      lastpressed = millis();
+      break;
       
       case 10:
       ledToggle(); 
@@ -335,22 +335,22 @@ public void controlEvent(ControlEvent theEvent) {
       }
       setupGUI(); 
       break;
-       //<>//
-      case 11: //<>//
+      
+      case 11: 
       //led(int); 
       //println("controlEvent: accessing a string from controller '"+theEvent.getName()+"': "+theEvent.getStringValue());
       break; 
-       //<>//
-      case 12:  //<>// //<>//
-      //swap 1 //<>// //<>//
-      break; //<>//
-       //<>//
+      
+      case 12:
+
+      break;
+      
       case 13:
       //swap 2
-      break;  //<>//
-      //<>//
-       //<>//
-  } //<>//
+      break; 
+     
+      
+  }
 }
 
 class CircularButton implements ControllerView<Button> {

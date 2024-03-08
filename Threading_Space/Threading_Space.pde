@@ -14,6 +14,7 @@ import java.util.*;
 int nPairs = 5;
 int nCubes = nPairs * 2;
 int cubesPerHost = nPairs * 2;
+int cubesPerHost = nPairs * 2;
 int maxMotorSpeed = 115;
 
 int lastpressed;
@@ -24,7 +25,7 @@ String[] hosts = {"127.0.0.1","169.254.249.26"};
 
 
 //For testing on small mat
-boolean testMode = false;
+boolean testMode = true;
 
 
 //Enable and Disable Zorozoro
@@ -113,10 +114,10 @@ void setup() {
       pairs[i] = new Pair(zoropairs[i][0], zoropairs[i][1]); // For Zorozoro
     }
   } else if (testMode) {
-    //xmin = 45;
-    //ymin = 45;
-    //xmax = 455;
-    //ymax = 455;
+    xmin = 45;
+    ymin = 45;
+    xmax = 455;
+    ymax = 455;
 
     num_x = 10;
     num_y = 10;

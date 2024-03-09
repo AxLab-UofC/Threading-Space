@@ -1,4 +1,4 @@
-import peasy.PeasyCam; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+import peasy.PeasyCam;  //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -12,9 +12,8 @@ import java.util.*;
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 
 int nPairs = 5;
-int nCubes = nPairs * 2;
-int cubesPerHost = nPairs * 2;
-int cubesPerHost = nPairs * 2;
+int nCubes = 12;
+int cubesPerHost = 12;
 int maxMotorSpeed = 115;
 
 int lastpressed;
@@ -25,7 +24,7 @@ String[] hosts = {"127.0.0.1","169.254.249.26"};
 
 
 //For testing on small mat
-boolean testMode = true;
+boolean testMode = false;
 
 
 //Enable and Disable Zorozoro
@@ -41,8 +40,8 @@ PairVisual[] pairsViz;
 //for Threading Space Visualization
 int xmin = 34;
 int ymin = 35;
-int xmax = 644;
-int ymax = 466;
+int xmax = 644; //949;
+int ymax = 466; //898;
 int max = min(ymax,xmax);
 float xyScale = 1;
 int vert = 500;

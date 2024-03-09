@@ -1,5 +1,5 @@
 enum animChoose {
-  CYLINDER, LINE, WAVE
+  CYLINDER, LINE, WAVE, PUPPET
 }
 
 Textfield LED; 

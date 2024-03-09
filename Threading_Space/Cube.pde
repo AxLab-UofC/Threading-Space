@@ -61,7 +61,7 @@ class Cube {
     if (lastUpdate < now - 150) {
       isActive = false;
       //led(id, 0, 255, 255, 255);
-      motorDuration(id, -25, 25, 5);
+      //motorDuration(id, -25, 25, 5);
     }
   }
   

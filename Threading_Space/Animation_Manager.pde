@@ -72,6 +72,10 @@ class AnimManager {
       case CYLINDER:
         add(new PathPlanSequence(animCylinderTwist()));
         break;
+        
+      case PUPPET:
+        add(new PathPlanSequence(animCircle(0)));
+        break;
       
       case LINE:
         add(new PathPlanSequence(animRotateLine()));
@@ -163,6 +167,10 @@ class AnimManager {
           
           case LINE:
             targets = animRotateLine();
+            break;
+            
+          case PUPPET:
+            targets = translate(lineGen());
             break;
   
           case WAVE:

@@ -74,10 +74,11 @@ class AnimManager {
         break;
         
       case PUPPET:
-        add(new PathPlanSequence(animCircle(0)));
+        add(new PathPlanSequence(lineGen()));
         break;
       
       case LINE:
+        println(cubes[10].x, cubes[10].y, cubes[11].x, cubes[11].y);
         add(new PathPlanSequence(animRotateLine()));
         break;
         
@@ -186,11 +187,14 @@ class AnimManager {
     }
     
       if (animator.animState == animatorMode.INTERACTIVE)  {
-        println("Interactive!");
         int[][][] targets;
         switch (realChoose) {
           case CYLINDER:
             targets = animCylinderTwist();
+            break;
+            
+          case PUPPET:
+            targets = translate(lineGen());
             break;
           
           case LINE:
@@ -500,6 +504,9 @@ class UntangleSequence extends Sequence {
         return false;
         
       case LINE:
+        return true;
+        
+      case PUPPET:
         return true;
       
       case WAVE:

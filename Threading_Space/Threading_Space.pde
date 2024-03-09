@@ -1,4 +1,4 @@
-import peasy.PeasyCam;  //<>//
+import peasy.PeasyCam;  //<>// //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -54,8 +54,8 @@ int ymid = (int) (ymax + ymin)/2;
 
 int num_x = 15;
 int num_y = 15;
-int x_size = 990;
-int y_size = 990;
+int x_size = 990; // 990;
+int y_size = 990; //990;
 int x_shift = xmin + 20;
 int y_shift = ymin + 20;
 int num_instances = 1;
@@ -260,12 +260,15 @@ public void controlEvent(ControlEvent theEvent) {
       break;
 
     case 3:
+     if (guiChoose != animChoose.WAVE) {
+        globalAmplitude = 50;
+     } 
      guiChoose = animChoose.WAVE;      
      myLineColor = light;
-      myCylinderColor = light;
-      myWaveColor = dark;
-      setupGUI();
-      break;
+     myCylinderColor = light;
+     myWaveColor = dark;
+     setupGUI();
+     break;
 
     case 4:
       if (guiChoose != animChoose.LINE) {
@@ -304,11 +307,11 @@ public void controlEvent(ControlEvent theEvent) {
         myLineColor = light;
         myCylinderColor = light;
         myWaveColor = dark;
-      }
-      realChoose = guiChoose;
+      } //<>//
+      realChoose = guiChoose; //<>//
       globalLoading = true; 
-      setupGUI(); //<>// //<>//
-      animator.startInteractive(); //<>//
+      setupGUI();
+      animator.startInteractive();
       setupGUI(); 
       lastpressed = millis();
 
@@ -316,7 +319,7 @@ public void controlEvent(ControlEvent theEvent) {
 
       case 7:
        if (guiChoose != animChoose.WAVE) {
-       guiState = GUImode.SELECT;
+        guiState = GUImode.SELECT;
         guiChoose = animChoose.WAVE;    
         myLineColor = light;
         myCylinderColor = light;

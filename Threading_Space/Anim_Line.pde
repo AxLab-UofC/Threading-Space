@@ -1,6 +1,6 @@
 float globalLineOffset;
 float globalLineOffsetSpeed = 0.25;
-float globalAmplitude;
+float globalAmplitude = 50;
 
 int[][][] animLine(){
   
@@ -61,7 +61,6 @@ int[][] animWaveY() {
   int[][] targets = new int[nPairs][3];
 
   float time = millis() / 1000.0;
-  float globalAmplitude = 120;  
   float frequency = 2;    
   
   int startY = ymid; // Centered along y-axis
@@ -82,7 +81,6 @@ int[][][] animWaveYCross() {
   int[][][] targets = new int[nPairs][2][3];
 
   float time = millis() / 1000.0;
-  float globalAmplitude = 120;  
   float frequency = 2;    
 
 

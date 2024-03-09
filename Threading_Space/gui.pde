@@ -47,7 +47,7 @@ void setupGUI() {
     case SCREENSAVER:
       cp5.addButton("EXPLORE")
         .setValue(100)
-        .setPosition(width/2 - 100,height * 9/10)
+        .setPosition(width/2 - 100, height * 9/10)
         .setSize(200,50)
         .setFont(buttonfont)
         .setColorBackground(color(100,100,100))
@@ -195,15 +195,15 @@ void setupGUI() {
             .setValue(globalAngleOffsetSpeed);
           break;
           
-          case WAVE: 
-           cp5.addSlider("globalAmplitude")
-            .setPosition(guiX+230, guiYadj+(4*guioffset))
-            .setSize(200, 30)
-            .setRange(60, 120)
-            .setValue(80)
-            .setCaptionLabel("Amplitude")
-            .setValue(globalAmplitude);
-          break;
+        case WAVE: 
+         cp5.addSlider("globalAmplitude")
+          .setPosition(guiX+230, guiYadj+(4*guioffset))
+          .setSize(200, 30)
+          .setRange(0, 100)
+          .setValue(50)
+          .setCaptionLabel("Amplitude")
+          .setValue(globalAmplitude);
+        break;
       }
      }
     

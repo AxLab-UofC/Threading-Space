@@ -33,47 +33,30 @@ void keyPressed() {
     case 'u':
       animator.untangle();
       break;
-  
-    case 'f':
-      int[][] notes = {{30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 64, 20}, 
-                       {30, 0, 20}, {30, 63, 20}, {30, 0, 20}, {30, 59, 20}, {30, 0, 20}, {30, 62, 20}, {30, 0, 20}, {30, 60, 20}, {30, 57, 20}};
-      midi(0, 1, notes);
-      break;
       
-    case 'o':
-      animator.skip();
-      break;
+  case 'n':
+    animator.skip();
+    break;
     
-   case 'a':
+   case 'r':
      if (animator.animState == animatorMode.INTERACTIVE);
      animator.startScreensaver();
-    break;
+      break;
 
     case 'c':
       movePairs(animCircle(0));
       break;
-    
-    case 'p':
-      movePairs(pairCheck());
-      break;
-    
+ 
     case 'd':
       debugMode = !debugMode;
       setupGUI(); 
       break;
     
-    case 'k':
+    case 'l':
       ledToggle();
       break;
       
-    case 'j':
-      swap(3, 4);
-      break;
    
-    case 'l':
-      movePairs(animCircle(0));
-      break;
-    
     case 's':
       if (animator.status == moveStatus.NONE) {
         animator.start();
@@ -85,6 +68,15 @@ void keyPressed() {
     case 'v':
       visualOn = !visualOn;
       break;
+      
+   case 'p':
+     globalLoading = true; 
+     setupGUI(); 
+     realChoose = animChoose.PUPPET;
+     animator.startInteractive();
+     setupGUI(); 
+     break;
+     
     
     default:
       break;

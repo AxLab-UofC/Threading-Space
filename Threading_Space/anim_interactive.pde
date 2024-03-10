@@ -13,6 +13,11 @@ boolean sign(float num) {
 int[][] lineGen() {
   int xmid = (cubes[10].x + cubes[11].x) / 2;
   int ymid = (cubes[10].y + cubes[11].y) / 2;
+  float frequency = 2; 
+  float time = millis() / 1000.0;
+  //cubes[10].motor(true, 10, false, 50);
+  
+  
   
   int[][] targets = new int[nPairs][2];
   
@@ -34,13 +39,13 @@ int[][] lineGen() {
         } else {
           circx = (int) lerp(limits[0], limits[1], (float) i / (nPairs - 1));
         }
-        
-        targets[i][0] = circx;
+        println(cos(frequency * time + (i * PI / nPairs)));
+        targets[i][0] = int(circx + 15 * cos(frequency * time + (i * PI / nPairs)));
         targets[i][1] = lineGet(ymid, xmid, s, circx);
       }
     } else {
        for (int i = 0; i < nPairs; i++) {
-        targets[i][0] = xmid;
+        targets[i][0] = int(xmid + 15 * cos(frequency * time + (i * PI / nPairs)));
         targets[i][1] = (int) lerp(newymin, newymax, (float) i / (nPairs - 1));
       }
     }
@@ -48,7 +53,7 @@ int[][] lineGen() {
 
   } else {
       for (int i = 0; i < nPairs; i++) {
-        targets[i][0] = xmin + (i * 50);
+        targets[i][0] = (int) lerp(xmin, xmax, (float) i / (nPairs - 1));
         targets[i][1] = ymid;
       }
   }

@@ -34,9 +34,9 @@ void keyPressed() {
       animator.untangle();
       break;
       
-  case 'n':
-    animator.skip();
-    break;
+    case 'n':
+      animator.skip();
+      break;
     
    case 'r':
      if (animator.animState == animatorMode.INTERACTIVE);
@@ -71,10 +71,8 @@ void keyPressed() {
       
    case 'p':
      globalLoading = true; 
-     setupGUI(); 
      realChoose = animChoose.PUPPET;
      animator.startInteractive();
-     setupGUI(); 
      break;
      
     

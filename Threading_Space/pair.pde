@@ -174,8 +174,9 @@ int[][][] translate(int[][] twod) {
 void led(int id) {
   if (cubes[id].onFloor) {
     led(id, 0, 255, 0, 0);
-  }
-  else {
+  } else if (id == 10 || id == 11) {
+    led(id, 0, 255, 0, 255);
+  } else {
     led(id, 0, 0, 0, 255);
   }
 }

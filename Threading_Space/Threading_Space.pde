@@ -1,4 +1,4 @@
-import peasy.PeasyCam;  //<>// //<>//
+import peasy.PeasyCam;  //<>// //<>// //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -42,7 +42,7 @@ int xmin = 34;
 int ymin = 35;
 int xmax = 644; //949;
 int ymax = 466; //898;
-int max = min(ymax,xmax);
+int max = min(ymax, xmax);
 float xyScale = 1;
 int vert = 500;
 
@@ -307,8 +307,8 @@ public void controlEvent(ControlEvent theEvent) {
         myLineColor = light;
         myCylinderColor = light;
         myWaveColor = dark;
-      } //<>//
-      realChoose = guiChoose; //<>//
+      } //<>// //<>//
+      realChoose = guiChoose; //<>// //<>//
       globalLoading = true; 
       setupGUI();
       animator.startInteractive();

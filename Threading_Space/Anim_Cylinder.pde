@@ -48,20 +48,21 @@ void resetVariables() {
     globalInnerAngleOffset=0;
     globalInnerAngleOffsetSpeed = 0.2; //0.05;
 
-    globalt_radius = xmax * ((float) 3/ 9);
+    globalt_radius = xmax * ((float) 1.5/ 9);
     t_radiusSpeed = 0;
 
-    globalb_radius = xmax * ((float) 3/ 9);
+    globalb_radius = xmax * ((float) 1.5/ 9);
     b_radiusSpeed = 0;
 
     t_inner_radius = max * ((float) 1/9);
     t_outer_radius = max * ((float) 2/9);
     b_inner_radius = max * ((float) 1/9);
     b_outer_radius = max * ((float) 2/9);
+    
+    globalLineOffsetSpeed = 0.25;
+    globalAmplitude = 50;
 
     lastMillis = millis();
-
-    globalLineOffsetSpeed = 0.25;
 }
 
 

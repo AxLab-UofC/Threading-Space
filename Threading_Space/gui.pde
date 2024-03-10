@@ -171,16 +171,16 @@ void setupGUI() {
           cp5.addSlider("globalt_radius")
             .setPosition(guiX+230, guiYadj+(5*guioffset))
             .setSize(200, 30)
-            .setRange(100, 300)
-            .setValue(200)
+            .setRange(t_inner_radius, t_outer_radius)
+            .setValue(max * ((float) 1.5/9))
             .setCaptionLabel("Top Radius")
             .setValue(max*0.33);
             
           cp5.addSlider("globalb_radius")
             .setPosition(guiX+230, guiYadj+(6*guioffset))
             .setSize(200, 30)
-            .setRange(100, 300)
-            .setValue(200)
+            .setRange(b_inner_radius, b_outer_radius)
+            .setValue(max * ((float) 1.5/9))
             .setCaptionLabel("Bottom Radius")
             .setValue(max*0.33);
           break;

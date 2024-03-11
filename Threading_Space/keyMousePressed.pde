@@ -71,6 +71,7 @@ void keyPressed() {
       
    case 'p':
      globalLoading = true; 
+     guiChoose = animChoose.PUPPET;
      realChoose = animChoose.PUPPET;
      animator.startInteractive();
      break;

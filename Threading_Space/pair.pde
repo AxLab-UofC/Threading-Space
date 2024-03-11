@@ -95,8 +95,10 @@ void movePairsVelocity(int[][][] targets, float[][][] velocity) {
 
 void movePairsVelocity(int[][][] targets) {
   for (int i = 0; i < targets.length; i++) {
-    pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1]);
-    pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1]);
+    //pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1]);
+    //pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1]);
+    pairs[i].t.target(0, targets[i][0][0], targets[i][0][1], 0);
+    pairs[i].b.target(0, targets[i][1][0], targets[i][1][1], 0);
   }  
 }
 
@@ -172,10 +174,10 @@ int[][][] translate(int[][] twod) {
 }
 
 void led(int id) {
-  if (cubes[id].onFloor) {
-    led(id, 0, 255, 0, 0);
-  } else if (id == 10 || id == 11) {
+  if (id == 10 || id == 11) {
     led(id, 0, 255, 0, 255);
+  } else if (cubes[id].onFloor) {
+    led(id, 0, 255, 0, 0);
   } else {
     led(id, 0, 0, 0, 255);
   }

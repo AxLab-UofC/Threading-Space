@@ -203,12 +203,12 @@ class Cube {
   
   //Execute this code on button press
   void buttonDown() {
-    println("Button Pressed!");
+    //println("Button Pressed!");
   }
   
   //Execute this code on button release
   void buttonUp() {
-    println("Button Released");
+    //println("Button Released");
   }
   
   //Execute this code on collision

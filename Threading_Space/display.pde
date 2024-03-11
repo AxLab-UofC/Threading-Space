@@ -188,10 +188,19 @@ void drawDisplay() {
         }
         line(xmax - pairs[i].t.x, pairs[i].t.y, vert - toioCylinderH/2, pairs[i].b.x, pairs[i].b.y, -vert+ toioCylinderH/2);
       }
-    }
+    } 
 
     popMatrix();
   }
+  
+  
+  for (int i = nPairs * 2; i < nCubes; i++) {
+    pushMatrix();
+    translate(cubes[i].x -xmax/2, cubes[i].y -ymax/2, -vert + 5);
+    drawCylinder(10, toioCylinderR, toioCylinderH, toioStrokeCol, toioFillCol);
+    popMatrix();
+  } 
+  
 }
 
 //Function to draw Cylinder

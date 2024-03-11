@@ -1,4 +1,4 @@
-import peasy.PeasyCam;  //<>// //<>// //<>//
+import peasy.PeasyCam; //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -307,8 +307,8 @@ public void controlEvent(ControlEvent theEvent) {
         myLineColor = light;
         myCylinderColor = light;
         myWaveColor = dark;
-      } //<>// //<>//
-      realChoose = guiChoose; //<>// //<>//
+      } //<>// //<>// //<>//
+      realChoose = guiChoose; //<>// //<>// //<>//
       globalLoading = true; 
       setupGUI();
       animator.startInteractive();

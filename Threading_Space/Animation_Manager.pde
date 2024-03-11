@@ -65,7 +65,10 @@ class AnimManager {
   }
   
   void startInteractive() {
-    untangleClear();
+    if (currSeq != null) {
+      untangleClear();
+    }
+    
     stop();
     resetVariables();
     switch (realChoose) {
@@ -175,8 +178,8 @@ class AnimManager {
             break;
   
           case WAVE:
-             targets = translate(animWaveY()); 
-             break; 
+           targets = translate(animWaveY()); 
+           break; 
           
           default:
             targets = animCylinderTwist();

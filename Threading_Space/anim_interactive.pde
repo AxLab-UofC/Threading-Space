@@ -19,10 +19,9 @@ int[][] lineGen() {
   
   
   
-  int[][] targets = new int[nPairs][2];
+  int[][] targets = new int[nPairs][3];
   
   if (cubes[10].y - cubes[11].y != 0) {
-
     float s = (float) (cubes[10].x - cubes[11].x) / (float) (cubes[10].y - cubes[11].y);
     int[] limits = lineLimits(ymid, xmid, s);
     
@@ -31,7 +30,20 @@ int[][] lineGen() {
       flip = !flip;
     }
     
-    if (s != 0) {
+    for (int i = 0; i < nPairs; i++) {
+      int circx;
+      if (flip) {
+        circx = (int) lerp(limits[0], limits[1], 1 - (float) i / (nPairs - 1));
+      } else {
+        circx = (int) lerp(limits[0], limits[1], (float) i / (nPairs - 1));
+      }
+      targets[i][0] = int(circx + 15 * cos(frequency * time + (i * PI / nPairs)));
+      targets[i][1] = lineGet(ymid, xmid, s, circx);
+      targets[i][2] = 0;     
+    }
+    prevs = s;
+  } else {
+      int[] limits = lineLimits(ymid, xmid, prevs);
       for (int i = 0; i < nPairs; i++) {
         int circx;
         if (flip) {
@@ -39,22 +51,9 @@ int[][] lineGen() {
         } else {
           circx = (int) lerp(limits[0], limits[1], (float) i / (nPairs - 1));
         }
-        println(cos(frequency * time + (i * PI / nPairs)));
         targets[i][0] = int(circx + 15 * cos(frequency * time + (i * PI / nPairs)));
-        targets[i][1] = lineGet(ymid, xmid, s, circx);
-      }
-    } else {
-       for (int i = 0; i < nPairs; i++) {
-        targets[i][0] = int(xmid + 15 * cos(frequency * time + (i * PI / nPairs)));
-        targets[i][1] = (int) lerp(newymin, newymax, (float) i / (nPairs - 1));
-      }
-    }
-    prevs = s;
-
-  } else {
-      for (int i = 0; i < nPairs; i++) {
-        targets[i][0] = (int) lerp(xmin, xmax, (float) i / (nPairs - 1));
-        targets[i][1] = ymid;
+        targets[i][1] = lineGet(ymid, xmid, prevs, circx);
+        targets[i][2] = 0;     
       }
   }
   

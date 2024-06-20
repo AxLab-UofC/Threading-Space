@@ -56,7 +56,7 @@ boolean motorTargetVelocity(int id, int x, int y, float vx, float vy) {
 
     float velIntegrate = sqrt(sq(vx)+sq(vy)); // integrate velocity x + y
 
-    float aimMotSpeed = velIntegrate / 2.0; // translate the speed (pixel/s)  to motor control command /// Maximum is 115 =>
+    float aimMotSpeed = velIntegrate / 5.0; // translate the speed (pixel/s)  to motor control command /// Maximum is 115 =>
     //println("Vel Intagrate:", velIntegrate, "aimMotSpeed: ", aimMotSpeed);
 
 
@@ -69,7 +69,7 @@ boolean motorTargetVelocity(int id, int x, int y, float vx, float vy) {
     }
 
 
-    float dd = cubes[id].distance(x, y)/50.0;
+    float dd = cubes[id].distance(x, y)/70.0;
     dd = min(dd, 1);
     if (dd < 1) motorDuration(id, 0, 0, 0);; // keep the motor moving
 

@@ -44,7 +44,7 @@ int xmax = 644; //949;
 int ymax = 466; //898;
 int max = min(ymax, xmax);
 float xyScale = 1;
-int vert = 500;
+int vert = 300;
 
 
 int xmid = (int) (xmax + xmin)/2;
@@ -144,8 +144,9 @@ void setup() {
   //size(1400, 1100, P3D);
 
   cam = new PeasyCam(this, 400);
-  cam.setDistance(1600);
+  cam.setDistance(950);
   cam.rotateX(-PI/2);
+  // scam.rotateY(PI/2);
 
   titlefont = loadFont("Code-Light-80.vlw");
   debugfont = loadFont("Agenda-Light-48.vlw");

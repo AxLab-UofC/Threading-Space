@@ -89,7 +89,6 @@ class Cube {
   
   boolean velocityTarget(int x, int y) {
     float elapsedTime = millis() - targetTime;
-    println(elapsedTime);
     float vx = (targetx - x) / elapsedTime;
     float vy = (targety - y) / elapsedTime;
     

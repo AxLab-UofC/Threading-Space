@@ -5,7 +5,7 @@ Threading Space is a kinetic sculpture that explores how spatial perception can 
 The Core loop of Threading Space is:
 - The Animation System calculates the posistions of the toios
 - Using `motorVelocityTarget`, a new velocity is sent to the toios based on their current and target posistions/velocities
-- The Visualization and GUI is updates
+- The Visualization and GUI is updated based on the new expected and actual locations of the toios
 
 # Core Animation System
 The core animation system accepts two kinds of sequences:

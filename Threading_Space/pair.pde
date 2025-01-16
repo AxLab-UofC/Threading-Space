@@ -95,10 +95,10 @@ void movePairsVelocity(int[][][] targets, float[][][] velocity) {
 
 void movePairsVelocity(int[][][] targets) {
   for (int i = 0; i < targets.length; i++) {
-    //pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1]);
-    //pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1]);
-    pairs[i].t.target(0, targets[i][0][0], targets[i][0][1], 0);
-    pairs[i].b.target(0, targets[i][1][0], targets[i][1][1], 0);
+    pairs[i].t.velocityTarget(targets[i][0][0], targets[i][0][1]);
+    pairs[i].b.velocityTarget(targets[i][1][0], targets[i][1][1]);
+    // pairs[i].t.target(0, targets[i][0][0], targets[i][0][1], 0);
+    // pairs[i].b.target(0, targets[i][1][0], targets[i][1][1], 0);
   }  
 }
 

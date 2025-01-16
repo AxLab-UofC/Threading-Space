@@ -81,7 +81,7 @@ class AnimManager {
         break;
       
       case LINE:
-        println(cubes[10].x, cubes[10].y, cubes[11].x, cubes[11].y);
+        //println(cubes[10].x, cubes[10].y, cubes[11].x, cubes[11].y);
         add(new PathPlanSequence(animRotateLine()));
         break;
         

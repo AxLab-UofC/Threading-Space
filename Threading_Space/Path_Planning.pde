@@ -1,7 +1,7 @@
 // Inputs for python file
 String DEBUG = "False";
 
-String command = "/Library/Developer/CommandLineTools/usr/bin/python3 ";
+String command = "/opt/anaconda3/bin/python3 ";
 String plannerDirectory = ""; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";

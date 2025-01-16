@@ -22,3 +22,9 @@ general_planner_v1.0.1/toio_map_examples/
 general_planner_v1.0.1/start.txt
 general_planner_v1.0.1/goal.txt
 general_planner_v1.0.1/output_path.txt
+
+# I don't want to add .vscode/
+.vscode/
+
+# I don't want to add env
+env/

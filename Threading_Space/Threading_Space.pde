@@ -1,4 +1,4 @@
-import peasy.PeasyCam; //<>//
+import peasy.PeasyCam; //<>// //<>// //<>// //<>//
 PeasyCam cam;
 import deadpixel.command.*;
 
@@ -11,8 +11,8 @@ import java.util.*;
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
 
-int nPairs = 5;
-int nCubes = 10;
+int nPairs = 4;
+int nCubes = nPairs * 2;
 int cubesPerHost = 12;
 int maxMotorSpeed = 115;
 
@@ -25,6 +25,11 @@ String[] hosts = {"127.0.0.1","169.254.249.26"};
 
 //For testing on small mat
 boolean testMode = false;
+
+//For toggle MSI, screensaver mode
+boolean msi = true;
+int[] playTimes = {0, 30};
+boolean waitingForMinute = false;
 
 
 //Enable and Disable Zorozoro
@@ -161,9 +166,14 @@ void setup() {
   blendMode(BLEND);
 
   animator = new AnimManager();
-  screensaver();
+  if(msi) { // toggle MSI
+    msi();
+  } else {
+    screensaver(); // Defining what the animation is going to be
+  }
+  
   animator.setViz();
-  //animator.start();
+  animator.start();
 }
 
 void draw() {
@@ -202,8 +212,12 @@ void draw() {
     text("Playing Speed: " + playSpeed, debugUIx, debugUIy);
     textSize(20);
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
-
-    text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+    
+    if (!msi) {
+      text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+    } else {
+      text("(MSI) STATUS:" + animator.getStatus(), debugUIx, debugUIy+90);
+    }
     if (animator.size() > 0 && animator.getCurrentSeq() != null) {
       Sequence currSeq = animator.getCurrentSeq();
       if (animator.untangling) {
@@ -221,6 +235,35 @@ void draw() {
       } else if (currSeq instanceof SmoothSequence) {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
         text("Second "+ (smoothseq.currTime / 1000) + "/" + round(smoothseq.timeLimit), debugUIx, debugUIy+150);
+      }
+    }
+    if (msi) {
+      //text("Current Time: " + nf(hour(), 2) + ":" + nf(minute(), 2) + ":" + nf(second(), 2), 50, 50);
+      int currMin = minute();
+      int currHour = hour();
+      int nextMin = 60;
+      int nextHour;
+      int minMin = 60;
+      
+      for (int i = 0; i < playTimes.length; i++) { 
+        if (playTimes[i] < nextMin && playTimes[i] > currMin) {
+          nextMin = playTimes[i];
+        }
+        if (playTimes[i] < minMin) {
+          minMin = playTimes[i];
+        }
+      }
+      
+      if (nextMin == 60) {
+        nextHour = (currHour+1)%24;
+        nextMin = minMin;
+      } else {
+        nextHour = currHour;
+      }
+      
+      Sequence currSeq = animator.getCurrentSeq();
+      if (currSeq instanceof SmoothSequence) {
+        text("Next Iteration: " + nf(nextHour, 2) + ":" + nf(nextMin, 2), debugUIx, debugUIy+210);
       }
     }
   }

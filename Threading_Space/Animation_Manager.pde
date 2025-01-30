@@ -217,30 +217,63 @@ class AnimManager {
     }
   }
   
+  //waitingForMinute = false;
+  int targetMinute1, targetMinute2;
+  int lastCheckMillis = 0;
+  
+  void startWaitForMinute() {
+    waitingForMinute = true;
+    lastCheckMillis = millis(); // Track when we last checked the time
+  }
+  
+  void checkWaitForMinute() {
+    if (!waitingForMinute) return;  // Do nothing if not waiting
+    if (millis() - lastCheckMillis > 5000) {  // Check every 5 seconds
+      lastCheckMillis = millis();  // Reset timer
+      int currentMinute = minute();
+      for (int i = 0; i < playTimes.length; i++) {
+        if (currentMinute == playTimes[i]) {
+          waitingForMinute = false;  // Stop waiting
+          restart();  // Resume animation
+        }
+      }
+    }
+  }
+
+  
   void update() {
     interactiveUpdate();
     
-    if (animState == animatorMode.INTERACTIVE) {
-      return;
-    }
-    
+    if (animState == animatorMode.INTERACTIVE) return;
+  
+    checkWaitForMinute(); // Non-blocking time check
+  
+    if (waitingForMinute) return;  // Skip animation update while waiting
+  
     boolean seqComplete = false;
     if (sequences.size() > 0) {
       seqComplete = currSeq.update(); 
     }
-    
+  
     if (seqComplete) {
       untangling = false;
       if (currSeq.tangle) {
         untangling = true;
         currSeq = currSeq.genUntangle();
-        stop(); start();
+        stop(); 
+        start();
       } else if (iterator + 1 >= sequences.size()) {
-        if (loop) {
+        if (loop && msi) {
+          startWaitForMinute();  // Start non-blocking wait
+        } else if (loop && !msi) {
           restart();
         } else {
           if (animState == animatorMode.TOSCREENSAVER) {
-            screensaver();
+            if (!msi) {
+              screensaver();
+            } else {
+              msi();
+            }
             animState = animatorMode.SCREENSAVER;
             guiState = GUImode.SCREENSAVER;
             resetVariables();
@@ -264,6 +297,7 @@ class AnimManager {
       }
     }
   }
+
   
   void untangle() {
     stop();

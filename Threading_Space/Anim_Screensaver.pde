@@ -1,68 +1,104 @@
+//How the Code Works:
+//SmoothSequence and DiscreteSequence:
+
+//SmoothSequence: Smoothly interpolates over time for animations.
+//DiscreteSequence: Plays animations in discrete steps (not used much in this snippet).
+//Adding Sequences:
+
+//A sequence (e.g., SmoothSequence) is created and configured with:
+//A function that defines the animation (e.g., animCircle, animJellyfish).
+//Parameters like setPeriod (loop duration for the animation) and setTimeLimit (total duration of the animation).
+//The sequence is then added to the animator using animator.add(seq).
+//Animation Functions:
+
+//Functions like animCircle, animJellyfish, etc., generate target positions or shapes for the animation.
+//These functions take time (t) as input, which varies from 0 to 1 or beyond depending on the sequence configuration.
+//Looping:
+
+//animator.setLoop() ensures all sequences loop indefinitely in the specified order.How the Code Works:
+//SmoothSequence and DiscreteSequence:
+
+//SmoothSequence: Smoothly interpolates over time for animations.
+//DiscreteSequence: Plays animations in discrete steps (not used much in this snippet).
+//Adding Sequences:
+
+//A sequence (e.g., SmoothSequence) is created and configured with:
+//A function that defines the animation (e.g., animCircle, animJellyfish).
+//Parameters like setPeriod (loop duration for the animation) and setTimeLimit (total duration of the animation).
+//The sequence is then added to the animator using animator.add(seq).
+//Animation Functions:
+
+//Functions like animCircle, animJellyfish, etc., generate target positions or shapes for the animation.
+//These functions take time (t) as input, which varies from 0 to 1 or beyond depending on the sequence configuration.
+//Looping:
+
+//animator.setLoop() ensures all sequences loop indefinitely in the specified order.
+
 void screensaver() {
   SmoothSequence seq;
-  DiscreteSequence disc;
+  //DiscreteSequence disc;
   
-  seq = new SmoothSequence((float t) -> animJellyfish(t));
+  seq = new SmoothSequence((float t) -> animJellyfish(t)); //1
   seq.setPeriod(5);
   seq.setTimeLimit(10);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animCircle(t));
+  seq = new SmoothSequence((float t) -> animCircle(t)); //2
   seq.setPeriod(15);
   seq.setTimeLimit(15);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animCircleTwist(t));
+  seq = new SmoothSequence((float t) -> animCircleTwist(t)); //3
   seq.setPeriod(15);
   seq.setTimeLimit(20);
   seq.setTangle(true);
   animator.add(seq);
   
-  animator.add(new PathPlanSequence(animRotateLine(0)));
+  animator.add(new PathPlanSequence(animRotateLine(0))); //4
   
-  seq = new SmoothSequence((float t) -> animRotateLine(t));
+  seq = new SmoothSequence((float t) -> animRotateLine(t)); //5
   seq.setPeriod(16);
   seq.setTimeLimit(32);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animRotateLineTwist(t));
+  seq = new SmoothSequence((float t) -> animRotateLineTwist(t)); //6
   seq.setPeriod(20);
   seq.setTimeLimit(10);
   seq.setTangle(true);
   animator.add(seq);
-  
-  seq = new SmoothSequence((float t) -> animRotateLine(t));
+   
+  seq = new SmoothSequence((float t) -> animRotateLine(t)); //7
   seq.setPeriod(16);
   seq.setTimeLimit(8);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animLine(t));
+  seq = new SmoothSequence((float t) -> animLine(t)); //8
   seq.setPeriod(8);
   seq.setTimeLimit(16);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animRotateLine(t + .5));
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .5)); //9
   seq.setPeriod(16);
   seq.setTimeLimit(4);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animWave(t));
+  seq = new SmoothSequence((float t) -> animWave(t)); //10
   seq.setTimeLimit(20);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> animRotateLine(t + .75));
+  seq = new SmoothSequence((float t) -> animRotateLine(t + .75)); //11
   seq.setPeriod(16);
   seq.setTimeLimit(4);
   animator.add(seq);
   
-  animator.add(new PathPlanSequence(animCircle(0)));
+  animator.add(new PathPlanSequence(animCircle(0))); //12
   
-  seq = new SmoothSequence((float t) -> animCircle(t));
+  seq = new SmoothSequence((float t) -> animCircle(t)); //13
   seq.setPeriod(15);
   seq.setTimeLimit(15);
   animator.add(seq);
   
-  seq = new SmoothSequence((float t) -> asymTwist(t));
+  seq = new SmoothSequence((float t) -> asymTwist(t)); //14
   seq.setPeriod(10);
   seq.setTimeLimit(10);
   seq.setTangle(true);
@@ -71,6 +107,39 @@ void screensaver() {
   
   animator.setLoop();
 }
+
+void msi() { //runs the sequence once, and then at designated minute intervals
+  SmoothSequence seq;
+  //DiscreteSequence disc;
+  
+  seq = new SmoothSequence((float t) -> animJellyfish(t)); //1 
+  seq.setPeriod(5);
+  seq.setTimeLimit(10);
+  animator.add(seq);
+  
+  animator.add(new PathPlanSequence(animRotateLine(0))); //4
+  
+  seq = new SmoothSequence((float t) -> animRotateLine(t)); //5
+  seq.setPeriod(16);
+  seq.setTimeLimit(10);
+  animator.add(seq);
+  
+  animator.add(new PathPlanSequence(animCircle(0))); //12
+  
+  seq = new SmoothSequence((float t) -> animCircle(t)); //13
+  seq.setPeriod(15);
+  seq.setTimeLimit(10);
+  animator.add(seq);
+  
+  seq = new SmoothSequence((float t) -> asymTwist(t)); //14
+  seq.setPeriod(10);
+  seq.setTimeLimit(10);
+  seq.setTangle(true);
+  animator.add(seq);
+
+  animator.setLoop();
+}
+
 
 int[][]   animCircle(float t) {
   float angleOffset = t * (2 * PI);

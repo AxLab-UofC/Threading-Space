@@ -5,32 +5,40 @@ import deadpixel.command.*;
 import oscP5.*;
 import netP5.*;
 
+//For new Mac silicon chip to render 3D correctly:
+import com.jogamp.opengl.GLProfile;
+{
+  GLProfile.initSingleton();
+}
+
 import java.util.*;
 
 //constants
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-
 int nPairs = 4;
 int nCubes = nPairs * 2;
 int cubesPerHost = 12;
-int maxMotorSpeed = 115;
+int maxMotorSpeed = 115; // really this shouldn't be changed
 
+//To toggle MSI screensaver mode
+boolean msi = true;
+int[] playTimes = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}; //minutes at which the program runs (by clockface schedule every hour)
+
+// Keeping track of the batteries
+Table battery_table;
+String folderPath = "/Users/lukejimenez/AxLab/Threading-Space/Threading_Space/data" + File.separator; // CHANGE FOR EACH COMPUTER (the location where the battery data should go)
+String file_name = getLatestTableFilename();
+
+//For testing on small mat
+boolean testMode = false;
+
+boolean waitingForMinute = false;
 int lastpressed;
 boolean globalLoading; 
 
 //server ids
 String[] hosts = {"127.0.0.1","169.254.249.26"};
-
-
-//For testing on small mat
-boolean testMode = false;
-
-//For toggle MSI, screensaver mode
-boolean msi = true;
-int[] playTimes = {0, 30};
-boolean waitingForMinute = false;
-
 
 //Enable and Disable Zorozoro
 boolean zorozoro = false;
@@ -44,7 +52,7 @@ PairVisual[] pairsViz;
 
 //for Threading Space Visualization
 int xmin = 34;
-int ymin = 35;
+int ymin = 35; 
 int xmax = 644; //949;
 int ymax = 466; //898;
 int max = min(ymax, xmax);
@@ -87,12 +95,6 @@ color light = color(150,150,150);
 color toggle_ = color(150,150,150);
 
 boolean debugtoggle = false; 
-
-//For new Mac silicon chip to render 3D correctly:
-import com.jogamp.opengl.GLProfile;
-{
-  GLProfile.initSingleton();
-}
 
 void setup() {
   //create OSC servers
@@ -167,9 +169,15 @@ void setup() {
 
   animator = new AnimManager();
   if(msi) { // toggle MSI
-    msi();
+    msi_screensaver();
   } else {
     screensaver(); // Defining what the animation is going to be
+  }
+  
+  // setup battery table
+  if (msi) {
+    battery_table = new Table();
+    set_new_table();
   }
   
   animator.setViz();
@@ -228,9 +236,10 @@ void draw() {
       if (currSeq instanceof DiscreteSequence) {
         DiscreteSequence discseq = (DiscreteSequence) currSeq;
         text("Frame " + (discseq.iterator + 1) + "/" + discseq.size() + ": "+ discseq.status, debugUIx, debugUIy+150);
+        text("Pathfinding status by pair (top, bottom):", debugUIx, debugUIy+180);
         textSize(24);
         for (int i  = 0; i < pairs.length; i++) {
-          text("Toio " + i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+180);
+          text("Toio " + 2*i + ": "+ pairs[i].t.status + " " + pairs[i].b.status, debugUIx, 30 * i + debugUIy+210);
         }
       } else if (currSeq instanceof SmoothSequence) {
         SmoothSequence smoothseq = (SmoothSequence) currSeq;
@@ -238,7 +247,6 @@ void draw() {
       }
     }
     if (msi) {
-      //text("Current Time: " + nf(hour(), 2) + ":" + nf(minute(), 2) + ":" + nf(second(), 2), 50, 50);
       int currMin = minute();
       int currHour = hour();
       int nextMin = 60;
@@ -263,7 +271,11 @@ void draw() {
       
       Sequence currSeq = animator.getCurrentSeq();
       if (currSeq instanceof SmoothSequence) {
-        text("Next Iteration: " + nf(nextHour, 2) + ":" + nf(nextMin, 2), debugUIx, debugUIy+210);
+        if (waitingForMinute) {
+          text("Waiting until next cycle: " + nf(nextHour, 2) + ":" + nf(nextMin, 2), debugUIx, debugUIy+210);
+        } else {
+          text("Currently operational...", debugUIx, debugUIy+210);
+        }
       }
     }
   }

@@ -49,6 +49,14 @@ void drawDisplay() {
   translate(0, 0, vert);
   rect(0, 0, xmax, ymax);
   popMatrix();
+  
+  //For debugging the offset
+  //stroke(255, 0, 0); // Red line
+  //strokeWeight(2);
+  //line(-xmax/2, -ymax/2, vert, xmax/2, ymax/2, vert); 
+  
+  //stroke(0, 0, 255); // Blue line
+  //line(-xmax/2, -ymax/2, -vert, xmax/2, ymax/2, -vert);
 
 
   for (int i = 0; i < nPairs; i++) {
@@ -83,7 +91,7 @@ void drawDisplay() {
         if (topActive) {
           if (cubes[i].isActive) {
             stroke(1);
-            line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, xmax - pairs[i].t.x, pairs[i].t.y, vert - 5);
+            line(pairsViz[i].t.x, pairsViz[i].t.y, vert - 5, xmax - pairs[i].t.x, pairs[i].t.y, vert - 5); //line between target and actual toio pos
           }
 
           pushMatrix();

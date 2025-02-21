@@ -226,7 +226,7 @@ class AnimManager {
     lastCheckMillis = millis(); // Track when we last checked the time
   }
   
-  void checkWaitForMinute() {
+  void checkWaitForMinute() { //checks for running time while waiting
     if (!waitingForMinute) return;  // Do nothing if not waiting
     if (millis() - lastCheckMillis > 5000) {  // Check every 5 seconds
       lastCheckMillis = millis();  // Reset timer
@@ -234,6 +234,8 @@ class AnimManager {
       for (int i = 0; i < playTimes.length; i++) {
         if (currentMinute == playTimes[i]) {
           waitingForMinute = false;  // Stop waiting
+          println("restarting and updating table");
+          update_table();
           restart();  // Resume animation
         }
       }
@@ -272,7 +274,7 @@ class AnimManager {
             if (!msi) {
               screensaver();
             } else {
-              msi();
+              msi_screensaver();
             }
             animState = animatorMode.SCREENSAVER;
             guiState = GUImode.SCREENSAVER;
@@ -665,6 +667,7 @@ class PathPlanSequence extends DiscreteSequence {
     if (frames.size() == 0) {
       frames = planPath(finalTargets);
     } 
+    
     
     frames.get(iterator).execute();
     status = moveStatus.INPROGRESS;

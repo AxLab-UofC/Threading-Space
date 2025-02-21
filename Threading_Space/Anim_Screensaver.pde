@@ -1,39 +1,3 @@
-//How the Code Works:
-//SmoothSequence and DiscreteSequence:
-
-//SmoothSequence: Smoothly interpolates over time for animations.
-//DiscreteSequence: Plays animations in discrete steps (not used much in this snippet).
-//Adding Sequences:
-
-//A sequence (e.g., SmoothSequence) is created and configured with:
-//A function that defines the animation (e.g., animCircle, animJellyfish).
-//Parameters like setPeriod (loop duration for the animation) and setTimeLimit (total duration of the animation).
-//The sequence is then added to the animator using animator.add(seq).
-//Animation Functions:
-
-//Functions like animCircle, animJellyfish, etc., generate target positions or shapes for the animation.
-//These functions take time (t) as input, which varies from 0 to 1 or beyond depending on the sequence configuration.
-//Looping:
-
-//animator.setLoop() ensures all sequences loop indefinitely in the specified order.How the Code Works:
-//SmoothSequence and DiscreteSequence:
-
-//SmoothSequence: Smoothly interpolates over time for animations.
-//DiscreteSequence: Plays animations in discrete steps (not used much in this snippet).
-//Adding Sequences:
-
-//A sequence (e.g., SmoothSequence) is created and configured with:
-//A function that defines the animation (e.g., animCircle, animJellyfish).
-//Parameters like setPeriod (loop duration for the animation) and setTimeLimit (total duration of the animation).
-//The sequence is then added to the animator using animator.add(seq).
-//Animation Functions:
-
-//Functions like animCircle, animJellyfish, etc., generate target positions or shapes for the animation.
-//These functions take time (t) as input, which varies from 0 to 1 or beyond depending on the sequence configuration.
-//Looping:
-
-//animator.setLoop() ensures all sequences loop indefinitely in the specified order.
-
 void screensaver() {
   SmoothSequence seq;
   //DiscreteSequence disc;
@@ -108,11 +72,10 @@ void screensaver() {
   animator.setLoop();
 }
 
-void msi() { //runs the sequence once, and then at designated minute intervals
+void msi_screensaver() { //runs the sequence once, and then at designated minute intervals //NOTE: make name more specific
   SmoothSequence seq;
-  //DiscreteSequence disc;
   
-  seq = new SmoothSequence((float t) -> animJellyfish(t)); //1 
+  seq = new SmoothSequence((float t) -> animJellyfish(t)); //1
   seq.setPeriod(5);
   seq.setTimeLimit(10);
   animator.add(seq);
@@ -133,7 +96,7 @@ void msi() { //runs the sequence once, and then at designated minute intervals
   
   seq = new SmoothSequence((float t) -> asymTwist(t)); //14
   seq.setPeriod(10);
-  seq.setTimeLimit(10);
+  seq.setTimeLimit(15);
   seq.setTangle(true);
   animator.add(seq);
 

@@ -22,15 +22,15 @@ Using an input function, the core animation system allows for
 # Files
 - Main
   - `Path_Planning`: Runs the command to generate the path planning
-  - `keyMousePressed`: Manages any key presses or mouse events
-  - `Threading_Space`: Manages the main loop
+  - `keyMousePressed`: Manages any key presses or mouse events, including debug mode
+  - `Threading_Space`: Manages the main loop and defines all user-defined variables (i.e. number of toios, toggle MSI mode, etc.)
  
 - The Animation System
-  - `Animation_Manager`: Controls the flow between different animations
+  - `Animation_Manager`: Controls the flow between different animations; manages wait times if MSI
   - `anim_interactive`: Manages the Interactive animations: Each interactive animation has a set of variables that the user can change in real-time
   - `Anim_Cylinder`: An Interactive animation that has a cylinder at the top and on the bottom
   - `Anim_Line`:  An Interactive animation that has a line at the top and on the bottom
-  - `Anim_Screensaver`:  Contains all the non-interactive animations
+  - `Anim_Screensaver`:  Contains all the non-interactive animations, including the MSI-specific animation
 
 - Visualization
   - `visual`: Manages the 3D positions of the cubes in the visualization. This allows for the visualization of threading space to be synced or independant from their physical locations.
@@ -43,6 +43,15 @@ Using an input function, the core animation system allows for
   - `MotorTargetVel`: Stores the `motorTargetVelocity` command which will use PID to smoothly follow a moving target
   - `oscRecieve`: Manages all received OSC messages
   - `oscSend`: Sends OSC Messages
+  - `Battery_Management`: Manages the battery-life record, saved as csv file (if in MSI mode)
 
+# MSI mode
+Screensaver will operate at designated time-intervals (not constantly) 
+- Toggle MSI mode by msi=true, see `Threading_Space`
+- Operation times defined by int[] playTimes, see also `Threading_Space`
+- MSI screensaver behavior defined in `Anim_Screensaver`: msi_screensaver()
+  - To alter the MSI-specific sequence, see sequences defined within
+- MSI battery collection files are saved by name and date. 
+  - Format: YYYYMMDD_x for x files made
 
 The Full Laptop-Toio Documnentation can be found [here](https://github.com/AxLab-UofC/Laptop-TOIO)

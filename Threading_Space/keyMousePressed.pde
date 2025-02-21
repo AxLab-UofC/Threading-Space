@@ -30,39 +30,40 @@ void keyPressed() {
   }
   
   switch(key) {
-    case 'u':
-      animator.untangle();
-      break;
       
-    case 'n':
+    case 'n': // skip the current animation in the sequence
       animator.skip();
       break;
     
-   case 'r':
-     if (animator.animState == animatorMode.INTERACTIVE);
-     animator.startScreensaver();
-      break;
+   case 'r': // set the system to screensaver mode. If in MSI mode, will run through screensaveranimation before waiting until the next iteration
+     if (animator.animState == animatorMode.INTERACTIVE) {
+       animator.startScreensaver();
+     } else {
+       resetVariables();
+       animator.reset();
+       animator.startScreensaver();
+     }
+     break;
     
-   //case 'm':
-   //  if (animator.animState == animatorMode.INTERACTIVE);
-   //  animator.startMsi();
-   //   break;
+   case 'u': 
+      animator.untangle();
+      break;
 
     case 'c':
       movePairs(animCircle(0));
       break;
  
-    case 'd':
+    case 'd': // debug mode
       debugMode = !debugMode;
       setupGUI(); 
       break;
     
-    case 'l':
+    case 'l': // turn off and on the lights (red for bottom, blue for top)
       ledToggle();
       break;
       
    
-    case 's':
+    case 's': // stop and start the system (i.e. pause)
       if (animator.status == moveStatus.NONE) {
         animator.start();
       } else {
@@ -74,7 +75,7 @@ void keyPressed() {
       visualOn = !visualOn;
       break;
       
-   case 'p':
+   case 'p': 
      globalLoading = true; 
      guiChoose = animChoose.PUPPET;
      realChoose = animChoose.PUPPET;

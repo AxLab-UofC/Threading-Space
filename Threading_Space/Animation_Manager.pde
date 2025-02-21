@@ -15,6 +15,9 @@ class AnimManager {
   boolean viz = false;
   boolean untangling = false;
   
+  //for untangle msi
+  Sequence specialSeq;
+  
   animatorMode animState = animatorMode.SCREENSAVER;
   
   AnimManager() {
@@ -259,13 +262,15 @@ class AnimManager {
   
     if (seqComplete) {
       untangling = false;
-      if (currSeq.tangle) {
+      if (currSeq.tangle && !msi) {
         untangling = true;
         currSeq = currSeq.genUntangle();
         stop(); 
         start();
       } else if (iterator + 1 >= sequences.size()) {
         if (loop && msi) {
+          specialSeq = currSeq.genUntangle(); //new addition
+          run_special_now = true;
           startWaitForMinute();  // Start non-blocking wait
         } else if (loop && !msi) {
           restart();

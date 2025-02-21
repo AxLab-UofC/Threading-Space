@@ -1,7 +1,7 @@
 // Inputs for python file
 String DEBUG = "False";
 
-String command = "/Users/lukejimenez/AxLab/Threading-Space/env/bin/python3 "; // SET by computer
+//String command = "/Users/lukejimenez/AxLab/Threading-Space/env/bin/python3 "; // SET by computer
 String plannerDirectory = ""; //Enter path to general_planner directory.
 String plannerFile = "Toio_Map_Generator.py";
 String startFile = "start.txt";

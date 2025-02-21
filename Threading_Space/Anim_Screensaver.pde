@@ -75,31 +75,31 @@ void screensaver() {
 void msi_screensaver() { //runs the sequence once, and then at designated minute intervals //NOTE: make name more specific
   SmoothSequence seq;
   
-  seq = new SmoothSequence((float t) -> animJellyfish(t)); //1
-  seq.setPeriod(5);
-  seq.setTimeLimit(10);
-  animator.add(seq);
+  //seq = new SmoothSequence((float t) -> animJellyfish(t)); //1
+  //seq.setPeriod(5);
+  //seq.setTimeLimit(10);
+  //animator.add(seq);
   
-  animator.add(new PathPlanSequence(animRotateLine(0))); //4
+  //animator.add(new PathPlanSequence(animRotateLine(0))); //4
   
-  seq = new SmoothSequence((float t) -> animRotateLine(t)); //5
-  seq.setPeriod(16);
-  seq.setTimeLimit(10);
-  animator.add(seq);
+  //seq = new SmoothSequence((float t) -> animRotateLine(t)); //5
+  //seq.setPeriod(16);
+  //seq.setTimeLimit(10);
+  //animator.add(seq);
   
-  animator.add(new PathPlanSequence(animCircle(0))); //12
+  //animator.add(new PathPlanSequence(animCircle(0))); //12
   
-  seq = new SmoothSequence((float t) -> animCircle(t)); //13
-  seq.setPeriod(15);
-  seq.setTimeLimit(10);
-  animator.add(seq);
+  //seq = new SmoothSequence((float t) -> animCircle(t)); //13
+  //seq.setPeriod(15);
+  //seq.setTimeLimit(10);
+  //animator.add(seq);
   
   seq = new SmoothSequence((float t) -> asymTwist(t)); //14
   seq.setPeriod(10);
   seq.setTimeLimit(15);
   seq.setTangle(true);
   animator.add(seq);
-
+  
   animator.setLoop();
 }
 

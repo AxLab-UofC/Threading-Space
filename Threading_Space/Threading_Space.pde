@@ -13,15 +13,18 @@ import com.jogamp.opengl.GLProfile;
 
 import java.util.*;
 
-//constants
+//USER-DEFINED VARIABLES:
 //The soft limit on how many toios a laptop can handle is in the 10-12 range
 //the more toios you connect to, the more difficult it becomes to sustain the connection
-int nPairs = 4;
+int nPairs = 4; // the number of pairs of cubes being used
 int nCubes = nPairs * 2;
-int cubesPerHost = 12;
+int cubesPerHost = 12; // this is a maximum, for zoro zoro
 int maxMotorSpeed = 115; // really this shouldn't be changed
 
-//To toggle MSI screensaver mode
+// Make sure to use the correct python instillation, by computer
+String command = "/Users/lukejimenez/AxLab/Threading-Space/env/bin/python3 "; //"which python3", // remember the space at the end
+
+//To toggle MSI screensaver mode: plays a set animation by schedule
 boolean msi = true;
 int[] playTimes = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}; //minutes at which the program runs (by clockface schedule every hour)
 
@@ -32,10 +35,14 @@ String file_name = getLatestTableFilename();
 
 //For testing on small mat
 boolean testMode = false;
+//END USER-DEFINED VARIABLES 
 
+// working variables
 boolean waitingForMinute = false;
 int lastpressed;
 boolean globalLoading; 
+boolean is_paused = false; //this is not the same as the pause which occurs for msi scheduling
+boolean run_special_now = false;
 
 //server ids
 String[] hosts = {"127.0.0.1","169.254.249.26"};
@@ -222,9 +229,17 @@ void draw() {
     text("Press UP/DOWN to tune", debugUIx+20, debugUIy+30);
     
     if (!msi) {
-      text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+      if (is_paused) {
+        text("STATUS: " + animator.getStatus() + " (PAUSED)", debugUIx, debugUIy+90);
+      } else {
+        text("STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+      }
     } else {
-      text("(MSI) STATUS:" + animator.getStatus(), debugUIx, debugUIy+90);
+      if (is_paused) {
+        text("(MSI) STATUS: " + animator.getStatus() + " (PAUSED)", debugUIx, debugUIy+90);
+      } else {
+        text("(MSI) STATUS: " + animator.getStatus(), debugUIx, debugUIy+90);
+      }
     }
     if (animator.size() > 0 && animator.getCurrentSeq() != null) {
       Sequence currSeq = animator.getCurrentSeq();
